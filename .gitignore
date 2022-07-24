@@ -1,0 +1,6 @@
+__pycache__/
+.env
+.vscode
+
+archive_data/
+log/
