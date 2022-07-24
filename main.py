@@ -168,7 +168,7 @@ def main():
         'stock_price': '股价',
         'stock_percent': '股价涨跌幅',
         'arbitrage_percent': '日内套利',
-        'convert_stock_price': '转股溢价率',
+        'convert_stock_price': '转股价格',
         'premium_rate': '转股溢价率',
 
         'remain_price': '剩余本息',
