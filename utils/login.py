@@ -32,7 +32,6 @@ def login(redirect_url, is_cookies_login=False):
     print("is_cookies_login", is_cookies_login)
     if is_cookies_login and cookie_str:
         target_url = redirect_url if redirect_url else login_url
-        print("target_url", target_url)
         set_cookies(chrome_driver, target_url, cookie_str)
     else:
         # login_status = mock_login_site(

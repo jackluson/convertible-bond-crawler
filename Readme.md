@@ -18,3 +18,10 @@
 
 如图
 ![screenshot1](./screenshots/screenshot1.jpg)
+
+
+## 数据输出
+
+提供两种输出方式：
+- excel 调用 `output_excel`
+- 入库到mysql中`store_database`

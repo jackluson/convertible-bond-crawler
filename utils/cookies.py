@@ -28,7 +28,6 @@ def set_cookies(chrome_driver, url, cookie_str):
     chrome_driver.get(url)
     # 2.需要先获取一下url，不然使用add_cookie会报错，这里有点奇怪
     cookie_list = parse_cookiestr(cookie_str)
-    print("cookie_list", cookie_list)
     chrome_driver.delete_all_cookies()
     for i in cookie_list:
         cookie = {}
@@ -38,7 +37,6 @@ def set_cookies(chrome_driver, url, cookie_str):
         # 4.这里需要先删掉之前那次访问时的同名cookie，不然自己设置的cookie会失效
         # chrome_driver.delete_cookie(i['name'])
         # 添加自己的cookie
-        print('cookie-->', cookie)
         try:
             chrome_driver.add_cookie(cookie)
         except Exception:
