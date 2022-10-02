@@ -38,7 +38,7 @@ rename_map = {
     'arbitrage_percent': '日内套利',
     'convert_stock_price': '转股价格',
     'premium_rate': '转股溢价率',
-    'pb': '每股净资产',
+    'pb': '市净率',
     'cb_to_pb': '转股价格/每股净资产',
 
     'remain_price': '剩余本息',
@@ -250,7 +250,7 @@ def main():
     df = pd.DataFrame.from_records(list)
     print(df)
     # 输出到excel
-    is_output = False
+    is_output = True
     if is_output:
         df.drop('id', axis=1, inplace=True)
         output_excel(df)
