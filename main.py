@@ -74,19 +74,26 @@ def get_bs_source(is_read_local=False):
         with open(path, "w", encoding='utf-8') as file:
             page_url = "https://www.ninwin.cn/index.php?m=cb&a=cb_all"
             chrome_driver = login(page_url, is_cookies_login=True)
-            # 获取每页的源代码
             time.sleep(5)
             data = chrome_driver.page_source
-            bs = BeautifulSoup(data, 'lxml')
+            table = chrome_driver.find_element_by_id(
+                'cb_hq')
+            # tbody = table.get_attribute('innerHTML')
+            tbody = table.find_element_by_xpath(
+                'tbody').get_attribute('innerHTML')
+            # row = table.find_elements_by_xpath('tbody/tr')
+
+            bs = BeautifulSoup(tbody, 'lxml')
             # prettify the soup object and convert it into a string
+            # file.write(data)
             file.write(str(bs.prettify()))
     return bs
 
 
 def output_excel(df):
-
+    date = datetime.now().strftime("%Y-%m-%d")
     df.rename(columns=rename_map, inplace=True)
-    df.to_excel('cb_list.xlsx', index=False)
+    df.to_excel('./out/' + date + '_cb_list.xlsx', index=False)
 
 
 def store_database(df):
@@ -116,10 +123,10 @@ def generate_insert_sql(target_dict, table_name, ignore_list):
 
 
 def main():
-
-    bs = get_bs_source()
+    bs = get_bs_source(False)
     # print(bs)
-    rows = bs.find('table', id="cb_hq").find('tbody').find_all('tr')
+    rows = bs.find_all('tr')
+    print("rows", len(rows))
     list = []
     worker = IdWorker()
     dt = datetime.now()
@@ -234,10 +241,15 @@ def main():
             raise Exception
 
     df = pd.DataFrame.from_records(list)
+    print(df)
     # 输出到excel
-    # output_excel(df)
-    # 入库
-    store_database(df)
+    is_output = True
+    if is_output:
+        df.drop('id', axis=1, inplace=True)
+        output_excel(df)
+    else:
+        # 入库
+        store_database(df)
     print('success!!! data total: ', len(list))
     # time.sleep(3600)
 
