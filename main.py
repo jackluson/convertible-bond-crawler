@@ -7,6 +7,7 @@ File Created: Saturday, 23rd July 2022 9:09:56 pm
 Copyright (c) 2022 Camel Lu
 '''
 import time
+import re
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
@@ -37,7 +38,8 @@ rename_map = {
     'arbitrage_percent': '日内套利',
     'convert_stock_price': '转股价格',
     'premium_rate': '转股溢价率',
-    'cb_to_pb': ' 转股价格/PB比例',
+    'pb': '每股净资产',
+    'cb_to_pb': '转股价格/每股净资产',
 
     'remain_price': '剩余本息',
     'remain_price_tax': '税后剩余本息',
@@ -123,7 +125,7 @@ def generate_insert_sql(target_dict, table_name, ignore_list):
 
 
 def main():
-    bs = get_bs_source(False)
+    bs = get_bs_source(True)
     # print(bs)
     rows = bs.find_all('tr')
     print("rows", len(rows))
@@ -180,9 +182,13 @@ def main():
                 0].get_text().strip()  # 股票市值
             remain_to_cap = row.find_all('td', {'class': "cb_to_share"})[
                 0].get_text().strip()[0:-1]  # 转债剩余/市值比例
-
-            cb_to_pb = row.find_all('td', {'class': "cb_elasticity_id"})[
-                0].get_text().strip()  # 转股价格/PB比例
+            pb_el = row.find_all('td', {'class': "cb_elasticity_id"})[
+                0]
+            pb = pb_el.get_text().strip()  # P/B比例
+            cb_to_pb = re.findall(
+                r"（转股价格/每股净资产）：(.+)", pb_el['title'].strip())[0]
+            # cb_to_pb = row.find_all('td', {'class': "cb_elasticity_id"})[
+            #     0].get_text().strip()  # 转股价格/每股净资产
 
             rate_expire = row.find_all('td', {'class': "cb_BT_id"})[
                 0].get_text().strip()[0:-1]  # 到期收益率
@@ -212,6 +218,7 @@ def main():
                 'arbitrage_percent': arbitrage_percent,
                 'convert_stock_price': convert_stock_price,
                 'premium_rate': premium_rate,
+                'pb': pb,
                 'cb_to_pb': cb_to_pb,
 
                 'remain_price': remain_price,
@@ -243,7 +250,7 @@ def main():
     df = pd.DataFrame.from_records(list)
     print(df)
     # 输出到excel
-    is_output = True
+    is_output = False
     if is_output:
         df.drop('id', axis=1, inplace=True)
         output_excel(df)
