@@ -26,6 +26,8 @@ rename_map = {
     'id': 'id',
     'cb_id': 'id',
     'cb_name': '可转债名称',
+    'is_repair_flag': '是否满足下修条件',
+    'repair_flag_remark': '下修备注',
     'cb_code': '可转债代码',
     'stock_name': '股票名称',
     'stock_code': '股票代码',
@@ -124,6 +126,9 @@ def generate_insert_sql(target_dict, table_name, ignore_list):
     return sql_insert
 
 
+repair_flag_style = 'color:blue'
+
+
 def main():
     bs = get_bs_source(True)
     # print(bs)
@@ -132,6 +137,8 @@ def main():
     list = []
     worker = IdWorker()
     dt = datetime.now()
+    is_output = True
+
     for index in range(0, len(rows)):
         row = rows[index]
         try:
@@ -147,6 +154,15 @@ def main():
             rating = row.get("data-rating")  # 债券评级
             cb_percent = row.find_all('td', {'class': "cb_mov2_id"})[
                 0].get_text().strip()[0:-1]  # 转债涨幅
+            cb_flags = row.find_all('td', {'class': "cb_name_id"})[
+                0].find_all('span')  # 转债名称
+            is_repair_flag = False
+            repair_flag_remark = ''
+            for flags in cb_flags:
+                if flags.get('style') == repair_flag_style:
+                    is_repair_flag = True
+                    repair_flag_remark = flags.get('title').strip()
+                    break
             arbitrage_percent = row.find_all('td', {'class': "cb_mov2_id"})[
                 1].get_text().strip()[0:-1]  # 日内套利
             stock_price = row.find_all('td', {'class': "stock_price_id"})[
@@ -203,7 +219,6 @@ def main():
             # fund_df = pd.DataFrame({'id': id_list, 'fund_code': code_list, 'morning_star_code': morning_star_code_list, 'fund_name': name_list, 'fund_cat': fund_cat,
             #                         'fund_rating_3': fund_rating_3, 'fund_rating_5': fund_rating_5, 'rate_of_return': rate_of_return})
             item = {
-                'id': worker.get_id(),
                 'cb_id': cb_id,
                 'cb_name': cb_name,
                 'cb_code': cb_code,
@@ -242,6 +257,11 @@ def main():
                 'new_style': float(new_style.replace(",", "")),
                 'rating': rating,
             }
+            if is_output:
+                item['is_repair_flag'] = is_repair_flag
+                item['repair_flag_remark'] = repair_flag_remark
+            else:
+                item['id'] = worker.get_id()
             list.append(item)
         except Exception:
             print(row)
@@ -250,9 +270,7 @@ def main():
     df = pd.DataFrame.from_records(list)
     print(df)
     # 输出到excel
-    is_output = True
     if is_output:
-        df.drop('id', axis=1, inplace=True)
         output_excel(df)
     else:
         # 入库
