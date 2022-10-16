@@ -15,6 +15,7 @@ from datetime import datetime
 
 from utils.login import login
 from utils.connect import connect
+from utils.excel import update_xlsx_file
 from lib.mysnowflake import IdWorker
 
 connect_instance = connect()
@@ -26,8 +27,6 @@ rename_map = {
     'id': 'id',
     'cb_id': 'id',
     'cb_name': '可转债名称',
-    'is_repair_flag': '是否满足下修条件',
-    'repair_flag_remark': '下修备注',
     'cb_code': '可转债代码',
     'stock_name': '股票名称',
     'stock_code': '股票代码',
@@ -63,6 +62,8 @@ rename_map = {
     'old_style': '老式双底',
     'new_style': '新式双底',
     'rating': '债券评级',
+    'is_repair_flag': '是否满足下修条件',
+    'repair_flag_remark': '下修备注',
 }
 
 
@@ -94,10 +95,12 @@ def get_bs_source(is_read_local=False):
     return bs
 
 
-def output_excel(df):
+def output_excel(df, *, sheet_name="All"):
     date = datetime.now().strftime("%Y-%m-%d")
-    df.rename(columns=rename_map, inplace=True)
-    df.to_excel('./out/' + date + '_cb_list.xlsx', index=False)
+    path = './out/' + date + '_cb_list.xlsx'
+    df_output = df.rename(columns=rename_map).reset_index(drop=True)
+    update_xlsx_file(path, df_output, sheet_name)
+    # df.to_excel(path, index=False)
 
 
 def store_database(df):
@@ -143,7 +146,6 @@ def main():
         row = rows[index]
         try:
             # print(row)
-
             cb_id = row.get("data-id")  # 获取属性值
             cb_name = row.get("data-cb_name")
             cb_code = row.get("data-cbcode")
@@ -226,15 +228,15 @@ def main():
                 'stock_code': stock_code,
                 'market': market,
 
-                'price': price,
+                'price': float(price),
                 'cb_percent': cb_percent,
                 'stock_price': stock_price,
                 'stock_percent': stock_percent,
                 'arbitrage_percent': arbitrage_percent,
                 'convert_stock_price': convert_stock_price,
-                'premium_rate': premium_rate,
+                'premium_rate': float(premium_rate),
                 'pb': pb,
-                'cb_to_pb': cb_to_pb,
+                'cb_to_pb': float(cb_to_pb),
 
                 'remain_price': remain_price,
                 'remain_price_tax': remain_price_tax,
@@ -247,10 +249,11 @@ def main():
 
                 'remain_amount': remain_amount,
                 'market_cap': int(market_cap.replace(",", "")),
-                'remain_to_cap': remain_to_cap,
+                'remain_to_cap': float(remain_to_cap),
 
 
-                'rate_expire': None if rate_expire == '<-100' else rate_expire,
+                # 快到期或者强赎的情况为<-100
+                'rate_expire': None if rate_expire == '<-100' else float(rate_expire),
                 'rate_return': rate_return,
 
                 'old_style': float(old_style.replace(",", "")),
@@ -271,12 +274,52 @@ def main():
     print(df)
     # 输出到excel
     if is_output:
-        output_excel(df)
+        output_excel(df, sheet_name='All')
+        filter_profit_due(df)
+        filter_return_lucky(df)
+        filter_double_low(df)
     else:
         # 入库
         store_database(df)
     print('success!!! data total: ', len(list))
     # time.sleep(3600)
+
+
+def filter_profit_due(df):
+    df_filter = df.loc[(df['rate_expire'] > 0)
+                       & (df['price'] < 115)
+                       & (df['date_convert_distance'] == '已到')
+                       & (df['cb_to_pb'] > 1.5)
+                       & (df['is_repair_flag'] == True)
+                       & (df['remain_to_cap'] > 10)
+                       ]
+
+    def my_filter(row):
+        if '暂不行使下修权利' in row.repair_flag_remark or '距离不下修承诺' in row.repair_flag_remark:
+            return False
+        return True
+    df_filter = df_filter[df_filter.apply(my_filter, axis=1)]
+    output_excel(df_filter, sheet_name="到期保底")
+
+
+def filter_return_lucky(df):
+    df_filter = df.loc[(df['price'] < 115)
+                       & (df['date_return_distance'] == '回售内')
+                       & (df['cb_to_pb'] > 1.5)
+                       & (df['is_repair_flag'] == True)
+                       & (df['remain_to_cap'] > 10)
+                       ]
+    output_excel(df_filter, sheet_name="回售摸彩")
+
+
+def filter_double_low(df):
+    df_filter = df.loc[(df['price'] < 130)
+                       & (df['date_convert_distance'] == '已到')
+                       & (df['cb_to_pb'] > 1.5)
+                       & (df['remain_to_cap'] > 10)
+                       & (df['premium_rate'] < 10)
+                       ]
+    output_excel(df_filter, sheet_name="低价格低溢价")
 
 
 if __name__ == "__main__":
