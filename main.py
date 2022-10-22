@@ -6,6 +6,7 @@ File Created: Saturday, 23rd July 2022 9:09:56 pm
 -----
 Copyright (c) 2022 Camel Lu
 '''
+import os
 import time
 import re
 from bs4 import BeautifulSoup
@@ -69,7 +70,8 @@ rename_map = {
 
 def get_bs_source(is_read_local=False):
     # 利用BeautifulSoup解析网页源代码
-    path = "output.html"
+    date = datetime.now().strftime("%Y-%m-%d")
+    path = './html/' + date + "_output.html"
     bs = None
     if is_read_local:
         htmlfile = open(path, 'r', encoding='utf-8')
@@ -133,15 +135,20 @@ repair_flag_style = 'color:blue'
 
 
 def main():
-    bs = get_bs_source(True)
+    isReadLocal = False
+    date = datetime.now().strftime("%Y-%m-%d")
+    output_path = './html/' + date + "_output.html"
+    if os.path.exists(output_path):
+        isReadLocal = True
+    bs = get_bs_source(isReadLocal)
     # print(bs)
     rows = bs.find_all('tr')
     print("rows", len(rows))
     list = []
     worker = IdWorker()
     dt = datetime.now()
-    is_output = True
-
+    is_output = False
+    is_save_database = True
     for index in range(0, len(rows)):
         row = rows[index]
         try:
@@ -221,25 +228,26 @@ def main():
             # fund_df = pd.DataFrame({'id': id_list, 'fund_code': code_list, 'morning_star_code': morning_star_code_list, 'fund_name': name_list, 'fund_cat': fund_cat,
             #                         'fund_rating_3': fund_rating_3, 'fund_rating_5': fund_rating_5, 'rate_of_return': rate_of_return})
             item = {
+                'id': worker.get_id(),
                 'cb_id': cb_id,
-                'cb_name': cb_name,
                 'cb_code': cb_code,
-                'stock_name': stock_name,
+                'cb_name': cb_name,
                 'stock_code': stock_code,
+                'stock_name': stock_name,
                 'market': market,
 
                 'price': float(price),
-                'cb_percent': cb_percent,
-                'stock_price': stock_price,
-                'stock_percent': stock_percent,
-                'arbitrage_percent': arbitrage_percent,
-                'convert_stock_price': convert_stock_price,
+                'cb_percent': float(cb_percent),
+                'stock_price': float(stock_price),
+                'stock_percent': float(stock_percent),
+                'arbitrage_percent': float(arbitrage_percent),
+                'convert_stock_price': float(convert_stock_price),
                 'premium_rate': float(premium_rate),
-                'pb': pb,
+                'pb': float(pb),
                 'cb_to_pb': float(cb_to_pb),
 
-                'remain_price': remain_price,
-                'remain_price_tax': remain_price_tax,
+                'remain_price': float(remain_price),
+                'remain_price_tax': float(remain_price_tax),
 
                 'is_unlist': is_unlist,
                 'issue_date': dt.strftime('%y-%m-%d') if issue_date == '今日上市' else issue_date,
@@ -247,24 +255,23 @@ def main():
                 'date_remain_distance': date_remain_distance,
                 'date_return_distance': date_return_distance,
 
-                'remain_amount': remain_amount,
+                'remain_amount': float(remain_amount),
                 'market_cap': int(market_cap.replace(",", "")),
                 'remain_to_cap': float(remain_to_cap),
 
 
                 # 快到期或者强赎的情况为<-100
-                'rate_expire': None if rate_expire == '<-100' else float(rate_expire),
+                'rate_expire': -100 if '<-100' in rate_expire else float(rate_expire),
                 'rate_return': rate_return,
 
                 'old_style': float(old_style.replace(",", "")),
                 'new_style': float(new_style.replace(",", "")),
                 'rating': rating,
+                'is_repair_flag': str(is_repair_flag),
+                'repair_flag_remark': repair_flag_remark
             }
-            if is_output:
-                item['is_repair_flag'] = is_repair_flag
-                item['repair_flag_remark'] = repair_flag_remark
-            else:
-                item['id'] = worker.get_id()
+            if is_output and not is_save_database:
+                del item['id']
             list.append(item)
         except Exception:
             print(row)
@@ -278,7 +285,7 @@ def main():
         filter_profit_due(df)
         filter_return_lucky(df)
         filter_double_low(df)
-    else:
+    if is_save_database:
         # 入库
         store_database(df)
     print('success!!! data total: ', len(list))
