@@ -7,17 +7,18 @@ File Created: Saturday, 23rd July 2022 9:09:56 pm
 Copyright (c) 2022 Camel Lu
 '''
 import os
-import time
 import re
-from bs4 import BeautifulSoup
-import pandas as pd
+import time
 from datetime import datetime
 
+import pandas as pd
+from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
 
-from utils.login import login
+from lib.mysnowflake import IdWorker
 from utils.connect import connect
 from utils.excel import update_xlsx_file
-from lib.mysnowflake import IdWorker
+from utils.login import login
 
 connect_instance = connect()
 connect = connect_instance.get('connect')
@@ -83,11 +84,10 @@ def get_bs_source(is_read_local=False):
             chrome_driver = login(page_url, is_cookies_login=True)
             time.sleep(5)
             data = chrome_driver.page_source
-            table = chrome_driver.find_element_by_id(
-                'cb_hq')
+            table = chrome_driver.find_element(By.ID, 'cb_hq')
             # tbody = table.get_attribute('innerHTML')
-            tbody = table.find_element_by_xpath(
-                'tbody').get_attribute('innerHTML')
+            tbody = table.find_element(
+                By.XPATH, 'tbody').get_attribute('innerHTML')
             # row = table.find_elements_by_xpath('tbody/tr')
 
             bs = BeautifulSoup(tbody, 'lxml')
@@ -147,8 +147,8 @@ def main():
     list = []
     worker = IdWorker()
     dt = datetime.now()
-    is_output = False
-    is_save_database = True
+    is_output = True
+    is_save_database = False
     for index in range(0, len(rows)):
         row = rows[index]
         try:
@@ -297,9 +297,10 @@ def filter_profit_due(df):
                        & (df['price'] < 115)
                        & (df['date_convert_distance'] == '已到')
                        & (df['cb_to_pb'] > 1.5)
-                       & (df['is_repair_flag'] == True)
+                       & (df['is_repair_flag'] == 'True')
                        & (df['remain_to_cap'] > 10)
                        ]
+    print("df_filter", df_filter)
 
     def my_filter(row):
         if '暂不行使下修权利' in row.repair_flag_remark or '距离不下修承诺' in row.repair_flag_remark:
@@ -313,7 +314,7 @@ def filter_return_lucky(df):
     df_filter = df.loc[(df['price'] < 115)
                        & (df['date_return_distance'] == '回售内')
                        & (df['cb_to_pb'] > 1.5)
-                       & (df['is_repair_flag'] == True)
+                       & (df['is_repair_flag'] == 'True')
                        & (df['remain_to_cap'] > 10)
                        ]
     output_excel(df_filter, sheet_name="回售摸彩")
