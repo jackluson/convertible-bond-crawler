@@ -107,7 +107,7 @@ def output_excel(df, *, sheet_name="All"):
 
 def store_database(df):
     sql_insert = generate_insert_sql(
-        rename_map, 'convertible_bond', ['id', 'cb_id', 'cb_code'])
+        rename_map, 'convertible_bond', ['id', 'cb_code'])
     list = df.values.tolist()
     cursor.executemany(sql_insert, list)
     connect.commit()
@@ -139,7 +139,8 @@ def main():
     date = datetime.now().strftime("%Y-%m-%d")
     output_path = './html/' + date + "_output.html"
     if os.path.exists(output_path):
-        isReadLocal = True
+        if os.path.getsize(output_path) > 0:
+            isReadLocal = True
     bs = get_bs_source(isReadLocal)
     # print(bs)
     rows = bs.find_all('tr')
