@@ -30,6 +30,10 @@
 
 ## 策略
 
+### 整体估值
+
+参考: [集思录转债等权指数](https://www.jisilu.cn/data/cbnew/cb_index/)
+
 可转债四象限区分
 
 ![bond_quadrant](./screenshots/bond_quadrant.png)

@@ -299,7 +299,7 @@ def filter_profit_due(df):
                        & (df['date_convert_distance'] == '已到')
                        & (df['cb_to_pb'] > 1.5)
                        & (df['is_repair_flag'] == 'True')
-                       & (df['remain_to_cap'] > 10)
+                       & (df['remain_to_cap'] > 8)
                        ]
     print("df_filter", df_filter)
 
