@@ -136,6 +136,9 @@ def filter_profit_due(df):
     output_excel(df_filter, sheet_name="到期保底")
 ```
 
-### 最后
+### 模拟盘
 
-Todo
+按照三大策略,每周复盘一次,检查入队,出队标的. 做好跟进, 相关 json 数据,文件在`check_make.py`的中
+
+如图:
+![check](./screenshots/check.jpg)

@@ -20,7 +20,7 @@ def get_last_holds():
     return last_holds
 
 
-def make_history_list():
+def archive_hold_list():
     buy_sell_filepath = 'buy_sell.json'
     f_buy_sell = open(buy_sell_filepath, "r")
     history_filepath = './history.json'
@@ -59,21 +59,52 @@ def check():
     for sheet_name in xls.sheet_names:
         if sheet_name != 'All':
             df_cur_sheet = xls.parse(sheet_name)
-            print('<------' + sheet_name + '------>')
+            # print('<------' + sheet_name + '------>')
             if type(df_all) is pd.DataFrame:
                 df_all = df_all.append(df_cur_sheet)
             else:
                 df_all = df_cur_sheet
     code_list = df_all['可转债代码'].apply(str).to_list()
     last_hold_list = get_last_holds().get('holdlist')
+    print('以下转债不在策略之外, 但目前持有:视情况可卖出:\n')
     for hold_item in last_hold_list:
         if hold_item.get('code') not in code_list:
             print(hold_item.get('code'), hold_item.get('name'))
 
 
+def check_no_hold():
+    date = datetime.now().strftime("%Y-%m-%d")
+    path = './out/' + date + '_cb_list.xlsx'
+    xls = pd.ExcelFile(path, engine='openpyxl')
+    df_all = None
+    for sheet_name in xls.sheet_names:
+        if sheet_name != 'All':
+            df_cur_sheet = xls.parse(sheet_name)
+            # print('<------' + sheet_name + '------>')
+            if type(df_all) is pd.DataFrame:
+                df_all = df_all.append(df_cur_sheet)
+            else:
+                df_all = df_cur_sheet
+    last_hold_list = get_last_holds().get('holdlist')
+    code_hold_list = []
+    for hold_item in last_hold_list:
+        code_hold_list.append(hold_item.get('code'))
+    print('以下转债在策略中,但暂未持有:视情况可买入:\n')
+    for index, item in df_all.iterrows():
+        if str(item['可转债代码']) not in code_hold_list and '暂不行使下修' not in item['下修备注']:
+            print(item['可转债代码'], item['可转债名称'], item['转债价格'],
+                  item['距离回售时间'], item['转股溢价率'])
+
+
 if __name__ == "__main__":
-    is_check = 1
-    if is_check:
+    opt = int(input("请输入下列序号执行操作:\n \
+        1: check 出队列表. \n \
+        2: check 入队列表.\n \
+        3: 归档持仓列表.\n \
+    输入："))
+    if opt == 1:
         check()
-    else:
-        make_history_list()
+    elif opt == 2:
+        check_no_hold()
+    elif opt == 3:
+        archive_hold_list()

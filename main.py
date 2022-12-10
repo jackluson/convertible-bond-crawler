@@ -148,8 +148,8 @@ def main():
     list = []
     worker = IdWorker()
     dt = datetime.now()
-    is_output = True
-    is_save_database = False
+    is_output = False
+    is_save_database = True
     for index in range(0, len(rows)):
         row = rows[index]
         try:
