@@ -8,6 +8,7 @@ Copyright (c) 2022 Camel Lu
 '''
 import os
 import re
+import string
 import time
 from datetime import datetime
 
@@ -148,8 +149,8 @@ def main():
     list = []
     worker = IdWorker()
     dt = datetime.now()
-    is_output = False
-    is_save_database = True
+    is_output = True
+    is_save_database = False
     for index in range(0, len(rows)):
         row = rows[index]
         try:
@@ -198,8 +199,13 @@ def main():
                 0].string.strip()  # 距离转股时间
             date_remain_distance = row.find_all('td', {'class': "cb_t_id"})[
                 1].get_text().strip()  # 剩余到期时间 待处理异常情况
+            date_remain_distance = date_remain_distance.translate(
+                str.maketrans("", "", string.whitespace))
             date_return_distance = row.find_all('td', {'class': "cb_t_id"})[
                 2].get_text().strip()  # 剩余回售时间 待处理异常情况
+            #item['距离回售时间'].translate(str.maketrans("", "", string.whitespace))
+            date_return_distance = date_return_distance.translate(
+                str.maketrans("", "", string.whitespace))
 
             remain_amount = row.get("data-remain_amount")  # 剩余规模
             # remain_amount = row.find_all('td', {'class': "remain_amount"})[
@@ -299,7 +305,7 @@ def filter_profit_due(df):
                        & (df['date_convert_distance'] == '已到')
                        & (df['cb_to_pb'] > 1.5)
                        & (df['is_repair_flag'] == 'True')
-                       & (df['remain_to_cap'] > 8)
+                       & (df['remain_to_cap'] > 5)
                        ]
     print("df_filter", df_filter)
 
@@ -316,7 +322,7 @@ def filter_return_lucky(df):
                        & (df['date_return_distance'] == '回售内')
                        & (df['cb_to_pb'] > 1.5)
                        & (df['is_repair_flag'] == 'True')
-                       & (df['remain_to_cap'] > 10)
+                       & (df['remain_to_cap'] > 5)
                        ]
     output_excel(df_filter, sheet_name="回售摸彩")
 
@@ -324,8 +330,9 @@ def filter_return_lucky(df):
 def filter_double_low(df):
     df_filter = df.loc[(df['price'] < 130)
                        & (df['date_convert_distance'] == '已到')
+                       & (df['date_return_distance'] != '无权')
                        & (df['cb_to_pb'] > 1.5)
-                       & (df['remain_to_cap'] > 10)
+                       & (df['remain_to_cap'] > 5)
                        & (df['premium_rate'] < 10)
                        ]
     output_excel(df_filter, sheet_name="低价格低溢价")

@@ -10,6 +10,7 @@ Copyright (c) 2022 Camel Lu
 import json
 from datetime import datetime
 import pandas as pd
+import numpy as np
 
 
 def get_last_holds():
@@ -90,10 +91,14 @@ def check_no_hold():
     for hold_item in last_hold_list:
         code_hold_list.append(hold_item.get('code'))
     print('以下转债在策略中,但暂未持有:视情况可买入:\n')
+    results = []
     for index, item in df_all.iterrows():
-        if str(item['可转债代码']) not in code_hold_list and '暂不行使下修' not in item['下修备注']:
-            print(item['可转债代码'], item['可转债名称'], item['转债价格'],
-                  item['距离回售时间'], item['转股溢价率'])
+        if str(item['可转债代码']) not in code_hold_list and (item['下修备注'] is np.nan or '暂不行使下修' not in item['下修备注']):
+            results.append(item)
+    df_result = pd.DataFrame(results)
+    df_result = df_result[['可转债代码', '可转债名称', '转债价格',
+                          '距离回售时间', '距离到期时间', '转股溢价率', '转债剩余/市值比例']].reset_index(drop=True)
+    print(df_result)
 
 
 if __name__ == "__main__":
