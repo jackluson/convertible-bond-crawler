@@ -142,3 +142,8 @@ def filter_profit_due(df):
 
 如图:
 ![check](./screenshots/check.jpg)
+
+### TODO
+
+- 企业负债率维度
+- 企业性质维度
