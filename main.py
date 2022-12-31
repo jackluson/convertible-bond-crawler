@@ -307,7 +307,6 @@ def filter_profit_due(df):
                        & (df['is_repair_flag'] == 'True')
                        & (df['remain_to_cap'] > 5)
                        ]
-    print("df_filter", df_filter)
 
     def my_filter(row):
         if '暂不行使下修权利' in row.repair_flag_remark or '距离不下修承诺' in row.repair_flag_remark:
@@ -328,7 +327,7 @@ def filter_return_lucky(df):
 
 
 def filter_double_low(df):
-    df_filter = df.loc[(df['price'] < 130)
+    df_filter = df.loc[(df['price'] < 128)
                        & (df['date_convert_distance'] == '已到')
                        & (df['date_return_distance'] != '无权')
                        & (df['cb_to_pb'] > 1.5)
