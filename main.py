@@ -60,6 +60,7 @@ rename_map = {
 
 
     'rate_expire': '到期收益率',
+    'rate_expire_aftertax': '税后到期收益率',
     'rate_return': '回售收益率',
 
     'old_style': '老式双底',
@@ -224,6 +225,8 @@ def main():
 
             rate_expire = row.find_all('td', {'class': "cb_BT_id"})[
                 0].get_text().strip()[0:-1]  # 到期收益率
+            rate_expire_aftertax = row.find_all('td', {'class': "cb_BT_id"})[
+                0].get('title').strip()[6:-1]  # 税后到期收益率
             rate_return = row.find_all('td', {'class': "cb_AT_id"})[
                 4].get_text().strip()[0:-1]  # 回售收益率
             old_style = row.find_all('td', {'class': "cb_wa_id"})[
@@ -269,6 +272,7 @@ def main():
 
                 # 快到期或者强赎的情况为<-100
                 'rate_expire': -100 if '<-100' in rate_expire else float(rate_expire),
+                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else float(rate_expire_aftertax),
                 'rate_return': rate_return,
 
                 'old_style': float(old_style.replace(",", "")),
@@ -300,8 +304,8 @@ def main():
 
 
 def filter_profit_due(df):
-    df_filter = df.loc[(df['rate_expire'] > 0)
-                       & (df['price'] < 115)
+    df_filter = df.loc[(df['rate_expire_aftertax'] > 0)
+                       #    & (df['price'] < 115)
                        & (df['date_convert_distance'] == '已到')
                        & (df['cb_to_pb'] > 1.5)
                        & (df['is_repair_flag'] == 'True')

@@ -48,12 +48,11 @@
 
 > 摊大饼策略集中在第二第三象限内
 
-### 到期保底
+### 到期保本
 
 #### 必须条件
 
-- 到期收益率>0 — 保底
-- 转债价格低于 115 — 130 以上卖出，100 保底，去中间值
+- 税后到期收益率 > 0 — 保本
 - 距离转股时间已到 — 这样正股上涨才带得动
 - 转股价格/每股净资产 > 1.5 — 下修有空间
 - 满足下修条件，且距离不下修承诺截止日小于一个月 — 截至时间有下修机会
@@ -133,7 +132,7 @@ def filter_profit_due(df):
             return False
         return True
     df_filter = df_filter[df_filter.apply(my_filter, axis=1)]
-    output_excel(df_filter, sheet_name="到期保底")
+    output_excel(df_filter, sheet_name="到期保本")
 ```
 
 ### 模拟盘
@@ -147,3 +146,7 @@ def filter_profit_due(df):
 
 - 企业负债率维度
 - 企业性质维度
+
+### ChangeLog
+
+- 2023-01-14: 修改到期保本策略条件（去掉 115 限制，到期收益率改为税后到期收益率）
