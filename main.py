@@ -317,7 +317,7 @@ def filter_profit_due(df):
             return False
         return True
     df_filter = df_filter[df_filter.apply(my_filter, axis=1)]
-    output_excel(df_filter, sheet_name="到期保底")
+    output_excel(df_filter, sheet_name="到期保本")
 
 
 def filter_return_lucky(df):
@@ -334,7 +334,7 @@ def filter_double_low(df):
     df_filter = df.loc[(df['price'] < 128)
                        & (df['date_convert_distance'] == '已到')
                        & (df['date_return_distance'] != '无权')
-                       & (df['cb_to_pb'] > 1.5)
+                       & (df['cb_to_pb'] > 1)
                        & (df['remain_to_cap'] > 5)
                        & (df['premium_rate'] < 10)
                        ]
