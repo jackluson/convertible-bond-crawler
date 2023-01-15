@@ -1,7 +1,7 @@
 # 宁稳网(旧富投网)、集思录可转债数据&策略分析
 
 <p align=center>
-<img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Logs"></a
+<img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20logs&color=1e8a7a" alt="Docs & Logs"></a
 >
 <img
     alt="visitor badge"
