@@ -75,6 +75,7 @@ def get_bs_source(is_read_local=False):
     # 利用BeautifulSoup解析网页源代码
     date = datetime.now().strftime("%Y-%m-%d")
     path = './html/' + date + "_output.html"
+
     bs = None
     if is_read_local:
         htmlfile = open(path, 'r', encoding='utf-8')
@@ -136,7 +137,7 @@ def generate_insert_sql(target_dict, table_name, ignore_list):
 repair_flag_style = 'color:blue'
 
 
-def main():
+def main(is_output, is_save_database):
     isReadLocal = False
     date = datetime.now().strftime("%Y-%m-%d")
     output_path = './html/' + date + "_output.html"
@@ -302,6 +303,8 @@ def main():
     print('success!!! data total: ', len(list))
     # time.sleep(3600)
 
+# df[df["A"].str.contains("Hello|Britain")]
+
 
 def filter_profit_due(df):
     df_filter = df.loc[(df['rate_expire_aftertax'] > 0)
@@ -321,9 +324,11 @@ def filter_profit_due(df):
 
 
 def filter_return_lucky(df):
-    df_filter = df.loc[(df['price'] < 115)
+    df_filter = df.loc[(df['price'] < 125)
+                       & (df['rate_expire_aftertax'] > -10)
                        & (df['date_return_distance'] == '回售内')
-                       & (df['cb_to_pb'] > 1.5)
+                       & (~df["cb_name"].str.contains("EB"))
+                       & (df['cb_to_pb'] > (1 + df['premium_rate'] * 0.008))
                        & (df['is_repair_flag'] == 'True')
                        & (df['remain_to_cap'] > 5)
                        ]
@@ -342,4 +347,15 @@ def filter_double_low(df):
 
 
 if __name__ == "__main__":
-    main()
+    input_value = input("请输入下列序号执行操作:\n \
+        1.“输出到本地” \n \
+        2.“输出到MySQL” \n \
+    输入：")
+    if input_value == '1':
+        is_save_database = False
+        is_output = True
+        main(is_output, is_save_database)
+    elif input_value == '2':
+        is_save_database = True
+        is_output = False
+        main(is_output, is_save_database)
