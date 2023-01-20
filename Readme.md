@@ -158,6 +158,7 @@ def filter_profit_due(df):
 
 - 企业负债率维度
 - 企业性质维度
+- 是否可以破净下修维度
 
 ### ChangeLog
 
