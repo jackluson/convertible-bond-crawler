@@ -3,4 +3,4 @@ __pycache__/
 .vscode
 
 archive_data/
-log/
+temp/
