@@ -27,47 +27,47 @@ cursor = connect_instance.get('cursor')
 
 # 要item字段一一对应,否则数据库插入顺序
 rename_map = {
-    'id': 'id',
-    'cb_id': 'id',
     'cb_name': '可转债名称',
     'cb_code': '可转债代码',
     'stock_name': '股票名称',
     'stock_code': '股票代码',
-    'market': '市场',
-
     'price': '转债价格',
+    'premium_rate': '转股溢价率',
+    'cb_to_pb': '转股价格/每股净资产',
+    'date_remain_distance': '距离到期时间',
+    'date_return_distance': '距离回售时间',
+    'rate_expire': '到期收益率',
+    'rate_expire_aftertax': '税后到期收益率',
+    'is_repair_flag': '是否满足下修条件',
+    'repair_flag_remark': '下修备注',
+
     'cb_percent': '转债涨跌幅',
     'stock_price': '股价',
     'stock_percent': '股价涨跌幅',
     'arbitrage_percent': '日内套利',
     'convert_stock_price': '转股价格',
-    'premium_rate': '转股溢价率',
     'pb': '市净率',
-    'cb_to_pb': '转股价格/每股净资产',
+    'market': '市场',
 
     'remain_price': '剩余本息',
     'remain_price_tax': '税后剩余本息',
 
     'is_unlist': '是否上市',
-    'issue_date': '发行日期',
     'date_convert_distance': '距离转股时间',
-    'date_remain_distance': '距离到期时间',
-    'date_return_distance': '距离回售时间',
+    'issue_date': '发行日期',
 
     'remain_amount': '剩余规模',
     'market_cap': '股票市值',
     'remain_to_cap': '转债剩余/市值比例',
 
 
-    'rate_expire': '到期收益率',
-    'rate_expire_aftertax': '税后到期收益率',
     'rate_return': '回售收益率',
 
     'old_style': '老式双底',
     'new_style': '新式双底',
     'rating': '债券评级',
-    'is_repair_flag': '是否满足下修条件',
-    'repair_flag_remark': '下修备注',
+    'id': 'id',
+    'cb_id': 'id',
 }
 
 
@@ -239,23 +239,29 @@ def main(is_output, is_save_database):
             # fund_df = pd.DataFrame({'id': id_list, 'fund_code': code_list, 'morning_star_code': morning_star_code_list, 'fund_name': name_list, 'fund_cat': fund_cat,
             #                         'fund_rating_3': fund_rating_3, 'fund_rating_5': fund_rating_5, 'rate_of_return': rate_of_return})
             item = {
-                'id': worker.get_id(),
-                'cb_id': cb_id,
                 'cb_code': cb_code,
                 'cb_name': cb_name,
                 'stock_code': stock_code,
                 'stock_name': stock_name,
-                'market': market,
-
                 'price': float(price),
+                'premium_rate': float(premium_rate),
+                'cb_to_pb': float(cb_to_pb),
+                'date_remain_distance': date_remain_distance,
+                # 快到期或者强赎的情况为<-100
+                'rate_expire': -100 if '<-100' in rate_expire else float(rate_expire),
+                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else float(rate_expire_aftertax),
+                'date_return_distance': date_return_distance,
+                'remain_to_cap': float(remain_to_cap),
+                'is_repair_flag': str(is_repair_flag),
+                'repair_flag_remark': repair_flag_remark,
+
                 'cb_percent': float(cb_percent),
                 'stock_price': float(stock_price),
                 'stock_percent': float(stock_percent),
                 'arbitrage_percent': float(arbitrage_percent),
                 'convert_stock_price': float(convert_stock_price),
-                'premium_rate': float(premium_rate),
                 'pb': float(pb),
-                'cb_to_pb': float(cb_to_pb),
+                'market': market,
 
                 'remain_price': float(remain_price),
                 'remain_price_tax': float(remain_price_tax),
@@ -263,27 +269,22 @@ def main(is_output, is_save_database):
                 'is_unlist': is_unlist,
                 'issue_date': dt.strftime('%y-%m-%d') if issue_date == '今日上市' else issue_date,
                 'date_convert_distance': date_convert_distance,
-                'date_remain_distance': date_remain_distance,
-                'date_return_distance': date_return_distance,
 
                 'remain_amount': float(remain_amount),
                 'market_cap': int(market_cap.replace(",", "")),
-                'remain_to_cap': float(remain_to_cap),
 
 
-                # 快到期或者强赎的情况为<-100
-                'rate_expire': -100 if '<-100' in rate_expire else float(rate_expire),
-                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else float(rate_expire_aftertax),
                 'rate_return': rate_return,
 
                 'old_style': float(old_style.replace(",", "")),
                 'new_style': float(new_style.replace(",", "")),
                 'rating': rating,
-                'is_repair_flag': str(is_repair_flag),
-                'repair_flag_remark': repair_flag_remark
+                'id': worker.get_id(),
+                'cb_id': cb_id,
             }
             if is_output and not is_save_database:
                 del item['id']
+                del item['cb_id']
             list.append(item)
         except Exception:
             print(row)
