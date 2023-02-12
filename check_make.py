@@ -93,11 +93,16 @@ def check_no_hold():
     print('以下转债在策略中,但暂未持有:视情况可买入:\n')
     results = []
     for index, item in df_all.iterrows():
-        if str(item['可转债代码']) not in code_hold_list and (item['下修备注'] is np.nan or '暂不行使下修' not in item['下修备注']):
+        print("index", index)
+        # print("item", item)
+        remark = item['下修备注']
+        if remark:
+            remark = ''
+        if str(item['可转债代码']) not in code_hold_list and (remark is np.nan or '暂不行使下修' not in remark):
             results.append(item)
     df_result = pd.DataFrame(results)
     df_result = df_result[['可转债代码', '可转债名称', '转债价格',
-                          '距离回售时间', '距离到期时间', '转股溢价率', '转债剩余/市值比例']].reset_index(drop=True)
+                          '距离回售时间', '距离到期时间', '转股溢价率', '转债剩余/市值比例', '税后到期收益率']].reset_index(drop=True)
     print(df_result)
 
 
