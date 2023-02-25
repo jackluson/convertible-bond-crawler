@@ -67,6 +67,7 @@ def check():
                 df_all = df_cur_sheet
     code_list = df_all['可转债代码'].apply(str).to_list()
     last_hold_list = get_last_holds().get('holdlist')
+    print("last_hold_list", pd.DataFrame(last_hold_list))
     print('以下转债不在策略之外, 但目前持有:视情况可卖出:\n')
     for hold_item in last_hold_list:
         if hold_item.get('code') not in code_list:
@@ -93,7 +94,6 @@ def check_no_hold():
     print('以下转债在策略中,但暂未持有:视情况可买入:\n')
     results = []
     for index, item in df_all.iterrows():
-        print("index", index)
         # print("item", item)
         remark = item['下修备注']
         if remark:
