@@ -1,3 +1,5 @@
+每周估值:https://www.jisilu.cn/data/cbnew/cb_index/
+
 <details open>
 <summary><h2 style="display:inline">2023-02-18行情回顾&操作</h2></summary>
 
