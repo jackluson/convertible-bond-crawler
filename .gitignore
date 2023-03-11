@@ -4,3 +4,4 @@ __pycache__/
 
 archive_data/
 temp/
+.DS_Store

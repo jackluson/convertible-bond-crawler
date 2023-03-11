@@ -14,7 +14,7 @@ import numpy as np
 
 
 def get_last_holds():
-    history_filepath = './history.json'
+    history_filepath = './log/position.json'
     f_history = open(history_filepath, "r")
     history_list = json.loads(f_history.read())
     last_holds = history_list[-1]
@@ -22,9 +22,9 @@ def get_last_holds():
 
 
 def archive_hold_list():
-    buy_sell_filepath = 'buy_sell.json'
+    buy_sell_filepath = './log/trade.json'
     f_buy_sell = open(buy_sell_filepath, "r")
-    history_filepath = './history.json'
+    history_filepath = './log/position.json'
     f_history = open(history_filepath, "r")
 
     data_buy_sell = json.loads(f_buy_sell.read())
@@ -35,13 +35,28 @@ def archive_hold_list():
     target_key = date_keys[-1]
     cur_buy_sell = data_buy_sell.get(target_key)
     cur_buys = cur_buy_sell.get('buy')
-    print("target_key", target_key)
     cur_holds = []
     cur_sell_keys = []
     for item in cur_buy_sell.get('sell'):
         cur_sell_keys.append(item.get('code'))
     for item in last_holds.get('holdlist'):
-        if not item.get('code') in cur_sell_keys:
+        # if not item.get('code') in cur_sell_keys:
+        #     cur_holds.append(item)
+        # else:
+        flag = True
+        for sell_item in cur_buy_sell.get('sell'):
+            if sell_item.get('code') == item.get('code'):
+                if sell_item.get("radio") > item.get('radio'):
+                    raise BaseException('卖出超过持有仓位')
+                elif sell_item.get("radio") < item.get('radio'):
+                    cur_holds.append({
+                        "code": sell_item.get("code"),
+                        "name": sell_item.get("name"),
+                        "radio": item.get('radio') - sell_item.get("radio")
+                    })
+                flag = False
+                break
+        if flag == True:
             cur_holds.append(item)
     cur_holds = [*cur_holds, *cur_buys]
 

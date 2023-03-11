@@ -27,10 +27,10 @@ cursor = connect_instance.get('cursor')
 
 # 要item字段一一对应,否则数据库插入顺序
 rename_map = {
-    'cb_name': '可转债名称',
     'cb_code': '可转债代码',
-    'stock_name': '股票名称',
+    'cb_name': '可转债名称',
     'stock_code': '股票代码',
+    'stock_name': '股票名称',
     'price': '转债价格',
     'premium_rate': '转股溢价率',
     'cb_to_pb': '转股价格/每股净资产',
@@ -38,6 +38,7 @@ rename_map = {
     'date_return_distance': '距离回售时间',
     'rate_expire': '到期收益率',
     'rate_expire_aftertax': '税后到期收益率',
+    'remain_to_cap': '转债剩余/市值比例',
     'is_repair_flag': '是否满足下修条件',
     'repair_flag_remark': '下修备注',
     'is_ransom_flag': '是否满足强赎条件',
@@ -55,12 +56,11 @@ rename_map = {
     'remain_price_tax': '税后剩余本息',
 
     'is_unlist': '是否上市',
-    'date_convert_distance': '距离转股时间',
     'issue_date': '发行日期',
+    'date_convert_distance': '距离转股时间',
 
     'remain_amount': '剩余规模',
     'market_cap': '股票市值',
-    'remain_to_cap': '转债剩余/市值比例',
 
 
     'rate_return': '回售收益率',
@@ -114,6 +114,7 @@ def store_database(df):
     sql_insert = generate_insert_sql(
         rename_map, 'convertible_bond', ['id', 'cb_code'])
     list = df.values.tolist()
+    print("sql_insert", sql_insert)
     cursor.executemany(sql_insert, list)
     connect.commit()
 
@@ -154,8 +155,6 @@ def main(is_output, is_save_database):
     list = []
     worker = IdWorker()
     dt = datetime.now()
-    is_output = True
-    is_save_database = False
     for index in range(0, len(rows)):
         row = rows[index]
         try:
@@ -254,10 +253,10 @@ def main(is_output, is_save_database):
                 'premium_rate': float(premium_rate),
                 'cb_to_pb': float(cb_to_pb),
                 'date_remain_distance': date_remain_distance,
+                'date_return_distance': date_return_distance,
                 # 快到期或者强赎的情况为<-100
                 'rate_expire': -100 if '<-100' in rate_expire else float(rate_expire),
                 'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else float(rate_expire_aftertax),
-                'date_return_distance': date_return_distance,
                 'remain_to_cap': float(remain_to_cap),
                 'is_repair_flag': str(is_repair_flag),
                 'repair_flag_remark': repair_flag_remark,
@@ -281,7 +280,6 @@ def main(is_output, is_save_database):
 
                 'remain_amount': float(remain_amount),
                 'market_cap': int(market_cap.replace(",", "")),
-
 
                 'rate_return': rate_return,
 
@@ -342,20 +340,33 @@ def filter_return_lucky(df):
                        & (df['is_repair_flag'] == 'True')
                        & (df['remain_to_cap'] > 5)
                        ]
+    df_filter = df_filter.sort_values(
+        by='new_style', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="回售摸彩")
 
 
 def filter_double_low(df):
     df_filter = df.loc[(df['date_convert_distance'] == '已到')
                        & (df['date_return_distance'] != '无权')
-                       & (df['date_return_distance'] != '回售内')
+                       & (~df["cb_name"].str.contains("EB"))
+                       #    & (df['date_return_distance'] != '回售内')
                        & (df['is_ransom_flag'] == 'False')
-                       & (df['cb_to_pb'] > 1)
-                       & (df['remain_to_cap'] > 5)
+                       & (df['cb_to_pb'] > 0.5)
+                       #    & (df['remain_to_cap'] > 5)
                        & (((df['price'] < 128)
                            & (df['premium_rate'] < 10)) | ((df['price'] < 120)
-                                                           & (df['premium_rate'] < 20)))
+                                                           & (df['premium_rate'] < 15)))
                        ]
+
+    def due_filter(row):
+        if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
+            day_count = float(row.date_remain_distance[0:-1])
+            return day_count > 90
+        return True
+    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
+
+    df_filter = df_filter.sort_values(
+        by='new_style', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="低价格低溢价")
 
 
