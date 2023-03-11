@@ -40,6 +40,8 @@ rename_map = {
     'rate_expire_aftertax': '税后到期收益率',
     'is_repair_flag': '是否满足下修条件',
     'repair_flag_remark': '下修备注',
+    'is_ransom_flag': '是否满足强赎条件',
+    'ransom_flag_remark': '强赎备注',
 
     'cb_percent': '转债涨跌幅',
     'stock_price': '股价',
@@ -135,6 +137,7 @@ def generate_insert_sql(target_dict, table_name, ignore_list):
 
 
 repair_flag_style = 'color:blue'
+repair_ransom_style = 'color:red'
 
 
 def main(is_output, is_save_database):
@@ -171,11 +174,15 @@ def main(is_output, is_save_database):
                 0].find_all('span')  # 转债名称
             is_repair_flag = False
             repair_flag_remark = ''
+            is_ransom_flag = False
+            ransom_flag_remark = ''
             for flags in cb_flags:
                 if flags.get('style') == repair_flag_style:
                     is_repair_flag = True
                     repair_flag_remark = flags.get('title').strip()
-                    break
+                if flags.get('style') == repair_ransom_style:
+                    is_ransom_flag = True
+                    ransom_flag_remark = flags.get('title').strip()
             arbitrage_percent = row.find_all('td', {'class': "cb_mov2_id"})[
                 1].get_text().strip()[0:-1]  # 日内套利
             stock_price = row.find_all('td', {'class': "stock_price_id"})[
@@ -254,6 +261,8 @@ def main(is_output, is_save_database):
                 'remain_to_cap': float(remain_to_cap),
                 'is_repair_flag': str(is_repair_flag),
                 'repair_flag_remark': repair_flag_remark,
+                'is_ransom_flag': str(is_ransom_flag),
+                'ransom_flag_remark': ransom_flag_remark,
 
                 'cb_percent': float(cb_percent),
                 'stock_price': float(stock_price),
@@ -337,12 +346,15 @@ def filter_return_lucky(df):
 
 
 def filter_double_low(df):
-    df_filter = df.loc[(df['price'] < 128)
-                       & (df['date_convert_distance'] == '已到')
+    df_filter = df.loc[(df['date_convert_distance'] == '已到')
                        & (df['date_return_distance'] != '无权')
+                       & (df['date_return_distance'] != '回售内')
+                       & (df['is_ransom_flag'] == 'False')
                        & (df['cb_to_pb'] > 1)
                        & (df['remain_to_cap'] > 5)
-                       & (df['premium_rate'] < 10)
+                       & (((df['price'] < 128)
+                           & (df['premium_rate'] < 10)) | ((df['price'] < 120)
+                                                           & (df['premium_rate'] < 20)))
                        ]
     output_excel(df_filter, sheet_name="低价格低溢价")
 
