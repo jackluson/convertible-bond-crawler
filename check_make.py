@@ -94,8 +94,9 @@ def check_no_hold():
     path = './out/' + date + '_cb_list.xlsx'
     xls = pd.ExcelFile(path, engine='openpyxl')
     df_all = None
+    exclude_sheet_names = ['All', '三低转债', '转股期未到']
     for sheet_name in xls.sheet_names:
-        if sheet_name != 'All':
+        if sheet_name not in exclude_sheet_names:
             df_cur_sheet = xls.parse(sheet_name)
             # print('<------' + sheet_name + '------>')
             if type(df_all) is pd.DataFrame:
@@ -117,7 +118,7 @@ def check_no_hold():
             results.append(item)
     df_result = pd.DataFrame(results)
     df_result = df_result[['可转债代码', '可转债名称', '转债价格',
-                          '距离回售时间', '距离到期时间', '转股溢价率', '转债剩余/市值比例', '税后到期收益率']].reset_index(drop=True)
+                          '距离回售时间', '距离到期时间', '转股溢价率', '转债剩余/市值比例', '税后到期收益率', "老式双底", "新式双底"]].reset_index(drop=True)
     print(df_result)
 
 

@@ -44,6 +44,9 @@ rename_map = {
     'is_ransom_flag': '是否满足强赎条件',
     'ransom_flag_remark': '强赎备注',
 
+    'remain_amount': '剩余规模',
+    'market_cap': '股票市值',
+
     'cb_percent': '转债涨跌幅',
     'stock_price': '股价',
     'stock_percent': '股价涨跌幅',
@@ -58,10 +61,6 @@ rename_map = {
     'is_unlist': '是否上市',
     'issue_date': '发行日期',
     'date_convert_distance': '距离转股时间',
-
-    'remain_amount': '剩余规模',
-    'market_cap': '股票市值',
-
 
     'rate_return': '回售收益率',
 
@@ -263,6 +262,9 @@ def main(is_output, is_save_database):
                 'is_ransom_flag': str(is_ransom_flag),
                 'ransom_flag_remark': ransom_flag_remark,
 
+                'remain_amount': float(remain_amount),
+                'market_cap': int(market_cap.replace(",", "")),
+
                 'cb_percent': float(cb_percent),
                 'stock_price': float(stock_price),
                 'stock_percent': float(stock_percent),
@@ -277,9 +279,6 @@ def main(is_output, is_save_database):
                 'is_unlist': is_unlist,
                 'issue_date': dt.strftime('%y-%m-%d') if issue_date == '今日上市' else issue_date,
                 'date_convert_distance': date_convert_distance,
-
-                'remain_amount': float(remain_amount),
-                'market_cap': int(market_cap.replace(",", "")),
 
                 'rate_return': rate_return,
 
@@ -305,6 +304,8 @@ def main(is_output, is_save_database):
         filter_profit_due(df)
         filter_return_lucky(df)
         filter_double_low(df)
+        filter_three_low(df)
+        filter_disable_converte(df)
     if is_save_database:
         # 入库
         store_database(df)
@@ -368,6 +369,41 @@ def filter_double_low(df):
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="低价格低溢价")
+
+
+def filter_three_low(df):
+    df_filter = df.loc[
+        (~df["cb_name"].str.contains("EB"))
+        #    & (df['date_return_distance'] != '回售内')
+        & (df['is_ransom_flag'] == 'False')
+        & (df['cb_to_pb'] > 0.5)
+        & (df['remain_amount'] < 1.5)
+        & (~((df['price'] > 130)
+             & (df['premium_rate'] > 100)))
+    ]
+
+    def due_filter(row):
+        if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
+            day_count = float(row.date_remain_distance[0:-1])
+            return day_count > 90
+        return True
+    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
+
+    df_filter = df_filter.sort_values(
+        by='remain_amount', ascending=True, ignore_index=True)
+    output_excel(df_filter, sheet_name="三低转债")
+
+
+def filter_disable_converte(df):
+    df_filter = df.loc[
+        (~df["cb_name"].str.contains("EB"))
+        & (df['date_convert_distance'] != '已到')
+        & (df['is_unlist'] == 'N')
+    ]
+
+    df_filter = df_filter.sort_values(
+        by='remain_amount', ascending=True, ignore_index=True)
+    output_excel(df_filter, sheet_name="转股期未到")
 
 
 if __name__ == "__main__":
