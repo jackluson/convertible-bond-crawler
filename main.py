@@ -47,9 +47,13 @@ rename_map = {
     'remain_amount': '剩余规模',
     'market_cap': '股票市值',
 
+    'last_price': '上期转债价格',
+    'last_cb_percent': '较上期涨跌幅',
     'cb_percent': '转债涨跌幅',
     'stock_price': '股价',
     'stock_percent': '股价涨跌幅',
+    'last_stock_price': '上期股价',
+    'last_stock_percent': '较上期股价涨跌幅',
     'arbitrage_percent': '日内套利',
     'convert_stock_price': '转股价格',
     'pb': '市净率',
@@ -58,7 +62,8 @@ rename_map = {
     'remain_price': '剩余本息',
     'remain_price_tax': '税后剩余本息',
 
-    'is_unlist': '是否上市',
+    'is_unlist': '未发行',
+    'last_is_unlist': '上期未发行',
     'issue_date': '发行日期',
     'date_convert_distance': '距离转股时间',
 
@@ -109,11 +114,20 @@ def output_excel(df, *, sheet_name="All"):
     # df.to_excel(path, index=False)
 
 
+def delete_key_for_store(data):
+    del data['last_price']
+    del data['last_cb_percent']
+    del data['last_stock_price']
+    del data['last_stock_percent']
+    del data['last_is_unlist']
+    return data
+
+
 def store_database(df):
+    delete_key_for_store(rename_map)
     sql_insert = generate_insert_sql(
         rename_map, 'convertible_bond', ['id', 'cb_code'])
     list = df.values.tolist()
-    print("sql_insert", sql_insert)
     cursor.executemany(sql_insert, list)
     connect.commit()
 
@@ -144,6 +158,14 @@ def main(is_output, is_save_database):
     isReadLocal = False
     date = datetime.now().strftime("%Y-%m-%d")
     output_path = './html/' + date + "_output.html"
+    compare_date = "2023-03-19"
+    print(f"比较时间为:{compare_date}")
+    last_path = './out/' + compare_date + '_cb_list.xlsx'
+    xls = pd.ExcelFile(last_path, engine='openpyxl')
+    df_last = xls.parse("All")
+    last_map = {}
+    for index, item in df_last.iterrows():
+        last_map[str(item['可转债代码'])] = item.to_dict()
     if os.path.exists(output_path):
         if os.path.getsize(output_path) > 0:
             isReadLocal = True
@@ -265,9 +287,13 @@ def main(is_output, is_save_database):
                 'remain_amount': float(remain_amount),
                 'market_cap': int(market_cap.replace(",", "")),
 
+                'last_price': None,
+                'last_cb_percent':  None,
                 'cb_percent': float(cb_percent),
                 'stock_price': float(stock_price),
                 'stock_percent': float(stock_percent),
+                'last_stock_price': None,
+                'last_stock_percent': None,
                 'arbitrage_percent': float(arbitrage_percent),
                 'convert_stock_price': float(convert_stock_price),
                 'pb': float(pb),
@@ -277,6 +303,7 @@ def main(is_output, is_save_database):
                 'remain_price_tax': float(remain_price_tax),
 
                 'is_unlist': is_unlist,
+                'last_is_unlist': "Y",
                 'issue_date': dt.strftime('%y-%m-%d') if issue_date == '今日上市' else issue_date,
                 'date_convert_distance': date_convert_distance,
 
@@ -288,24 +315,72 @@ def main(is_output, is_save_database):
                 'id': worker.get_id(),
                 'cb_id': cb_id,
             }
+            last_record = last_map.get(cb_code)
+            if last_record:
+                item['last_price'] = last_record.get(rename_map.get('price'))
+                item['last_stock_price'] = last_record.get(
+                    rename_map.get('stock_price'))
+                item['last_stock_percent'] = round((float(stock_price) - last_record.get(
+                    rename_map.get('stock_price')))/last_record.get(rename_map.get('stock_price'))*100, 2)
+                item['last_cb_percent'] = round((float(price) - last_record.get(
+                    rename_map.get('price')))/last_record.get(rename_map.get('price'))*100, 2)
+                item['last_is_unlist'] = last_record.get("是否上市")
             if is_output and not is_save_database:
                 del item['id']
                 del item['cb_id']
+            if is_save_database:
+                delete_key_for_store(item)
             list.append(item)
         except Exception:
             print(row)
-            raise Exception
 
     df = pd.DataFrame.from_records(list)
-    print(df)
     # 输出到excel
     if is_output:
         output_excel(df, sheet_name='All')
-        filter_profit_due(df)
-        filter_return_lucky(df)
-        filter_double_low(df)
-        filter_three_low(df)
-        filter_disable_converte(df)
+        all_df = df.loc[(df['is_unlist'] == 'N')]
+        all_df = all_df[all_df["last_cb_percent"].notnull()]
+        #  & ( & df['last_price'] == 100)
+        # print('all_df', df['last_is_unlist'])
+        all_percent = all_df["last_cb_percent"].mean().round(2)
+        all_df_with_unlist = all_df.loc[(all_df['last_is_unlist'] == 'N')]
+        all_percent_with_unlist = all_df_with_unlist.loc[(
+            all_df_with_unlist['last_is_unlist'] == 'N')]["last_cb_percent"].mean().round(2)
+        due_percent = filter_profit_due(df)["last_cb_percent"].mean().round(2)
+        return_lucky_percent = filter_return_lucky(
+            df)["last_cb_percent"].mean().round(2)
+        double_low_percent = filter_double_low(
+            df)["last_cb_percent"].mean().round(2)
+        three_low_percent = filter_three_low(
+            df)["last_cb_percent"].mean().round(2)
+        print(filter_disable_converte(
+            df))
+        disable_converte_percent = filter_disable_converte(
+            df)["last_cb_percent"].mean().round(2)
+        percents = [{
+            'name': '所有',
+            'percent': all_percent,
+        }, {
+            'name': '所有除新债',
+            'percent': all_percent_with_unlist
+        }, {
+            'name': '到期保本',
+            'percent': due_percent,
+        }, {
+            'name': '回售摸彩',
+            'percent': return_lucky_percent,
+        }, {
+            'name': '低价格低溢价',
+            'percent': double_low_percent,
+        }, {
+            'name': '三低转债',
+            'percent': three_low_percent,
+        }, {
+            'name': '转股期未到',
+            'percent': disable_converte_percent,
+        }
+        ]
+        output_excel(pd.DataFrame(percents), sheet_name="汇总")
     if is_save_database:
         # 入库
         store_database(df)
@@ -330,6 +405,7 @@ def filter_profit_due(df):
         return True
     df_filter = df_filter[df_filter.apply(my_filter, axis=1)]
     output_excel(df_filter, sheet_name="到期保本")
+    return df_filter
 
 
 def filter_return_lucky(df):
@@ -344,6 +420,7 @@ def filter_return_lucky(df):
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="回售摸彩")
+    return df_filter
 
 
 def filter_double_low(df):
@@ -369,6 +446,7 @@ def filter_double_low(df):
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="低价格低溢价")
+    return df_filter
 
 
 def filter_three_low(df):
@@ -392,6 +470,7 @@ def filter_three_low(df):
     df_filter = df_filter.sort_values(
         by='remain_amount', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="三低转债")
+    return df_filter
 
 
 def filter_disable_converte(df):
@@ -399,11 +478,13 @@ def filter_disable_converte(df):
         (~df["cb_name"].str.contains("EB"))
         & (df['date_convert_distance'] != '已到')
         & (df['is_unlist'] == 'N')
+        & (df['last_is_unlist'] == 'N')
     ]
 
     df_filter = df_filter.sort_values(
         by='remain_amount', ascending=True, ignore_index=True)
     output_excel(df_filter, sheet_name="转股期未到")
+    return df_filter
 
 
 if __name__ == "__main__":
