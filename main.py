@@ -158,7 +158,7 @@ def main(is_output, is_save_database):
     isReadLocal = False
     date = datetime.now().strftime("%Y-%m-%d")
     output_path = './html/' + date + "_output.html"
-    compare_date = "2023-03-19"
+    compare_date = "2023-03-25"
     print(f"比较时间为:{compare_date}")
     last_path = './out/' + compare_date + '_cb_list.xlsx'
     xls = pd.ExcelFile(last_path, engine='openpyxl')
@@ -324,7 +324,8 @@ def main(is_output, is_save_database):
                     rename_map.get('stock_price')))/last_record.get(rename_map.get('stock_price'))*100, 2)
                 item['last_cb_percent'] = round((float(price) - last_record.get(
                     rename_map.get('price')))/last_record.get(rename_map.get('price'))*100, 2)
-                item['last_is_unlist'] = last_record.get("是否上市")
+                item['last_is_unlist'] = last_record.get(
+                    rename_map.get("last_is_unlist"))
             if is_output and not is_save_database:
                 del item['id']
                 del item['cb_id']
@@ -346,7 +347,9 @@ def main(is_output, is_save_database):
         all_df_with_unlist = all_df.loc[(all_df['last_is_unlist'] == 'N')]
         all_percent_with_unlist = all_df_with_unlist.loc[(
             all_df_with_unlist['last_is_unlist'] == 'N')]["last_cb_percent"].mean().round(2)
-        due_percent = filter_profit_due(df)["last_cb_percent"].mean().round(2)
+        due_df = filter_profit_due(df)
+        print("due_df", due_df)
+        due_percent = due_df["last_cb_percent"].mean().round(2)
         return_lucky_percent = filter_return_lucky(
             df)["last_cb_percent"].mean().round(2)
         double_low_percent = filter_double_low(
@@ -456,8 +459,8 @@ def filter_three_low(df):
         & (df['is_ransom_flag'] == 'False')
         & (df['cb_to_pb'] > 0.5)
         & (df['remain_amount'] < 1.5)
-        & (~((df['price'] > 130)
-             & (df['premium_rate'] > 100)))
+        & (df['premium_rate'] < 30)
+        & (df['market_cap'] < 100)
     ]
 
     def due_filter(row):
