@@ -1,0 +1,1724 @@
+{
+  "2022-11-05": [
+    {
+      "name": "所有(距2022-10-22)",
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "所有除新债(距2022-10-22)",
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "到期保本(距2022-10-22)",
+      "percent": -0.03,
+      "stocks_percent": 2.4
+    },
+    {
+      "name": "回售摸彩(距2022-10-22)",
+      "percent": 0.22,
+      "stocks_percent": -0.59
+    },
+    {
+      "name": "低价格低溢价(距2022-10-22)",
+      "percent": 2.69,
+      "stocks_percent": 0.17
+    },
+    {
+      "name": "三低转债(距2022-10-22)",
+      "percent": 4.07,
+      "stocks_percent": 6.92
+    },
+    {
+      "name": "转股期未到(距2022-10-22)",
+      "percent": 1.85,
+      "stocks_percent": 4.57
+    },
+    {
+      "name": "多因子(距2022-10-22)",
+      "percent": 1.65,
+      "stocks_percent": -0.29
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -0.03,
+      "stocks_percent": 2.4
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 0.22,
+      "stocks_percent": -0.59
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 2.69,
+      "stocks_percent": 0.17
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 4.07,
+      "stocks_percent": 6.92
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.85,
+      "stocks_percent": 4.57
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 1.65,
+      "stocks_percent": -0.29
+    }
+  ],
+  "2022-11-11": [
+    {
+      "name": "所有(距2022-11-05)",
+      "percent": -0.19,
+      "stocks_percent": 0.61
+    },
+    {
+      "name": "所有除新债(距2022-11-05)",
+      "percent": -0.17,
+      "stocks_percent": 0.65
+    },
+    {
+      "name": "到期保本(距2022-11-05)",
+      "percent": 0.29,
+      "stocks_percent": 1.64
+    },
+    {
+      "name": "回售摸彩(距2022-11-05)",
+      "percent": 0.81,
+      "stocks_percent": 2.44
+    },
+    {
+      "name": "低价格低溢价(距2022-11-05)",
+      "percent": 2.45,
+      "stocks_percent": 3.86
+    },
+    {
+      "name": "三低转债(距2022-11-05)",
+      "percent": 0.49,
+      "stocks_percent": -1.22
+    },
+    {
+      "name": "转股期未到(距2022-11-05)",
+      "percent": -0.53,
+      "stocks_percent": -1.68
+    },
+    {
+      "name": "多因子(距2022-11-05)",
+      "percent": 0.5,
+      "stocks_percent": 0.47
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.01,
+      "stocks_percent": 3.53
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.03,
+      "stocks_percent": 3.57
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 0.26,
+      "stocks_percent": 4.08
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 1.03,
+      "stocks_percent": 1.84
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.21,
+      "stocks_percent": 4.04
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 4.58,
+      "stocks_percent": 5.62
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.31,
+      "stocks_percent": 2.81
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 2.16,
+      "stocks_percent": 0.18
+    }
+  ],
+  "2022-11-19": [
+    {
+      "name": "所有(距2022-11-11)",
+      "percent": -2.58,
+      "stocks_percent": 1.11
+    },
+    {
+      "name": "所有除新债(距2022-11-11)",
+      "percent": -2.56,
+      "stocks_percent": 1.14
+    },
+    {
+      "name": "到期保本(距2022-11-11)",
+      "percent": -1.54,
+      "stocks_percent": 3.69
+    },
+    {
+      "name": "回售摸彩(距2022-11-11)",
+      "percent": -1.64,
+      "stocks_percent": 0.4
+    },
+    {
+      "name": "低价格低溢价(距2022-11-11)",
+      "percent": -1.66,
+      "stocks_percent": 0.96
+    },
+    {
+      "name": "三低转债(距2022-11-11)",
+      "percent": -4.09,
+      "stocks_percent": 0.43
+    },
+    {
+      "name": "转股期未到(距2022-11-11)",
+      "percent": -2.8,
+      "stocks_percent": 1.52
+    },
+    {
+      "name": "多因子(距2022-11-11)",
+      "percent": -0.66,
+      "stocks_percent": 2.09
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -1.6,
+      "stocks_percent": 4.68
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -1.56,
+      "stocks_percent": 4.75
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -1.28,
+      "stocks_percent": 7.92
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -0.63,
+      "stocks_percent": 2.25
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 3.46,
+      "stocks_percent": 5.04
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 0.3,
+      "stocks_percent": 6.07
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -1.53,
+      "stocks_percent": 4.37
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 1.49,
+      "stocks_percent": 2.27
+    }
+  ],
+  "2022-12-03": [
+    {
+      "name": "所有(距2022-11-19)",
+      "percent": 2.41,
+      "stocks_percent": 1.01
+    },
+    {
+      "name": "所有除新债(距2022-11-19)",
+      "percent": 2.39,
+      "stocks_percent": 1.0
+    },
+    {
+      "name": "到期保本(距2022-11-19)",
+      "percent": 1.68,
+      "stocks_percent": -0.72
+    },
+    {
+      "name": "回售摸彩(距2022-11-19)",
+      "percent": 1.91,
+      "stocks_percent": 1.73
+    },
+    {
+      "name": "低价格低溢价(距2022-11-19)",
+      "percent": 2.75,
+      "stocks_percent": 3.35
+    },
+    {
+      "name": "三低转债(距2022-11-19)",
+      "percent": 5.18,
+      "stocks_percent": 4.4
+    },
+    {
+      "name": "转股期未到(距2022-11-19)",
+      "percent": 2.83,
+      "stocks_percent": -0.23
+    },
+    {
+      "name": "多因子(距2022-11-19)",
+      "percent": 2.5,
+      "stocks_percent": 1.89
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 0.77,
+      "stocks_percent": 5.74
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 0.79,
+      "stocks_percent": 5.8
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 0.38,
+      "stocks_percent": 7.14
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 1.27,
+      "stocks_percent": 4.02
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 6.31,
+      "stocks_percent": 8.56
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 5.5,
+      "stocks_percent": 10.74
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.26,
+      "stocks_percent": 4.13
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.03,
+      "stocks_percent": 4.2
+    }
+  ],
+  "2022-12-10": [
+    {
+      "name": "所有(距2022-12-03)",
+      "percent": -0.67,
+      "stocks_percent": -0.04
+    },
+    {
+      "name": "所有除新债(距2022-12-03)",
+      "percent": -0.66,
+      "stocks_percent": -0.05
+    },
+    {
+      "name": "到期保本(距2022-12-03)",
+      "percent": 0.22,
+      "stocks_percent": 2.43
+    },
+    {
+      "name": "回售摸彩(距2022-12-03)",
+      "percent": -0.75,
+      "stocks_percent": -0.96
+    },
+    {
+      "name": "低价格低溢价(距2022-12-03)",
+      "percent": -1.74,
+      "stocks_percent": -2.85
+    },
+    {
+      "name": "三低转债(距2022-12-03)",
+      "percent": -0.81,
+      "stocks_percent": -0.54
+    },
+    {
+      "name": "转股期未到(距2022-12-03)",
+      "percent": -1.39,
+      "stocks_percent": -2.14
+    },
+    {
+      "name": "多因子(距2022-12-03)",
+      "percent": -1.45,
+      "stocks_percent": -2.56
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 0.09,
+      "stocks_percent": 5.7
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 0.12,
+      "stocks_percent": 5.75
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 0.6,
+      "stocks_percent": 9.74
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 0.51,
+      "stocks_percent": 3.02
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 4.46,
+      "stocks_percent": 5.47
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 4.65,
+      "stocks_percent": 10.14
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -0.15,
+      "stocks_percent": 1.9
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 2.52,
+      "stocks_percent": 1.53
+    }
+  ],
+  "2022-12-17": [
+    {
+      "name": "所有(距2022-12-10)",
+      "percent": -2.73,
+      "stocks_percent": -1.77
+    },
+    {
+      "name": "所有除新债(距2022-12-10)",
+      "percent": -2.73,
+      "stocks_percent": -1.77
+    },
+    {
+      "name": "到期保本(距2022-12-10)",
+      "percent": -1.38,
+      "stocks_percent": -2.46
+    },
+    {
+      "name": "回售摸彩(距2022-12-10)",
+      "percent": -1.62,
+      "stocks_percent": -1.07
+    },
+    {
+      "name": "低价格低溢价(距2022-12-10)",
+      "percent": -1.81,
+      "stocks_percent": -0.56
+    },
+    {
+      "name": "三低转债(距2022-12-10)",
+      "percent": -6.82,
+      "stocks_percent": -2.28
+    },
+    {
+      "name": "转股期未到(距2022-12-10)",
+      "percent": -3.36,
+      "stocks_percent": -2.58
+    },
+    {
+      "name": "多因子(距2022-12-10)",
+      "percent": -2.5,
+      "stocks_percent": -1.06
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -2.64,
+      "stocks_percent": 3.83
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -2.61,
+      "stocks_percent": 3.88
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -0.79,
+      "stocks_percent": 7.04
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -1.12,
+      "stocks_percent": 1.92
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 2.57,
+      "stocks_percent": 4.88
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": -2.49,
+      "stocks_percent": 7.63
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -3.5,
+      "stocks_percent": -0.73
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": -0.04,
+      "stocks_percent": 0.45
+    }
+  ],
+  "2022-12-23": [
+    {
+      "name": "所有(距2022-12-17)",
+      "percent": -2.54,
+      "stocks_percent": -5.21
+    },
+    {
+      "name": "所有除新债(距2022-12-17)",
+      "percent": -2.52,
+      "stocks_percent": -5.18
+    },
+    {
+      "name": "到期保本(距2022-12-17)",
+      "percent": -2.0,
+      "stocks_percent": -4.46
+    },
+    {
+      "name": "回售摸彩(距2022-12-17)",
+      "percent": -1.35,
+      "stocks_percent": -5.4
+    },
+    {
+      "name": "低价格低溢价(距2022-12-17)",
+      "percent": -3.05,
+      "stocks_percent": -5.13
+    },
+    {
+      "name": "三低转债(距2022-12-17)",
+      "percent": -5.96,
+      "stocks_percent": -8.51
+    },
+    {
+      "name": "转股期未到(距2022-12-17)",
+      "percent": -3.46,
+      "stocks_percent": -6.78
+    },
+    {
+      "name": "多因子(距2022-12-17)",
+      "percent": -3.71,
+      "stocks_percent": -6.13
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -5.11,
+      "stocks_percent": -1.58
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -5.06,
+      "stocks_percent": -1.5
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -2.77,
+      "stocks_percent": 2.27
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -2.45,
+      "stocks_percent": -3.58
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": -0.56,
+      "stocks_percent": -0.5
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": -8.3,
+      "stocks_percent": -1.53
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -6.84,
+      "stocks_percent": -7.46
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": -3.75,
+      "stocks_percent": -5.71
+    }
+  ],
+  "2022-12-31": [
+    {
+      "name": "所有(距2022-12-23)",
+      "percent": 0.99,
+      "stocks_percent": 1.32
+    },
+    {
+      "name": "所有除新债(距2022-12-23)",
+      "percent": 0.96,
+      "stocks_percent": 1.26
+    },
+    {
+      "name": "到期保本(距2022-12-23)",
+      "percent": -0.04,
+      "stocks_percent": 0.59
+    },
+    {
+      "name": "回售摸彩(距2022-12-23)",
+      "percent": 0.24,
+      "stocks_percent": 0.56
+    },
+    {
+      "name": "低价格低溢价(距2022-12-23)",
+      "percent": 0.47,
+      "stocks_percent": -0.35
+    },
+    {
+      "name": "三低转债(距2022-12-23)",
+      "percent": 4.41,
+      "stocks_percent": 4.19
+    },
+    {
+      "name": "转股期未到(距2022-12-23)",
+      "percent": 1.03,
+      "stocks_percent": 2.58
+    },
+    {
+      "name": "多因子(距2022-12-23)",
+      "percent": 1.99,
+      "stocks_percent": 1.51
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -4.17,
+      "stocks_percent": -0.28
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -4.15,
+      "stocks_percent": -0.26
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -2.81,
+      "stocks_percent": 2.87
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -2.22,
+      "stocks_percent": -3.04
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": -0.09,
+      "stocks_percent": -0.85
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": -4.26,
+      "stocks_percent": 2.6
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -5.88,
+      "stocks_percent": -5.07
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": -1.83,
+      "stocks_percent": -4.29
+    }
+  ],
+  "2023-01-06": [
+    {
+      "name": "所有(距2022-12-31)",
+      "percent": 2.89,
+      "stocks_percent": 3.33
+    },
+    {
+      "name": "所有除新债(距2022-12-31)",
+      "percent": 2.89,
+      "stocks_percent": 3.33
+    },
+    {
+      "name": "到期保本(距2022-12-31)",
+      "percent": 2.39,
+      "stocks_percent": 3.56
+    },
+    {
+      "name": "回售摸彩(距2022-12-31)",
+      "percent": 1.4,
+      "stocks_percent": 1.58
+    },
+    {
+      "name": "低价格低溢价(距2022-12-31)",
+      "percent": 2.53,
+      "stocks_percent": 0.69
+    },
+    {
+      "name": "三低转债(距2022-12-31)",
+      "percent": 7.29,
+      "stocks_percent": 7.02
+    },
+    {
+      "name": "转股期未到(距2022-12-31)",
+      "percent": 2.83,
+      "stocks_percent": 4.29
+    },
+    {
+      "name": "多因子(距2022-12-31)",
+      "percent": 3.02,
+      "stocks_percent": 1.52
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -1.4,
+      "stocks_percent": 3.04
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -1.38,
+      "stocks_percent": 3.06
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -0.49,
+      "stocks_percent": 6.53
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -0.85,
+      "stocks_percent": -1.51
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 2.44,
+      "stocks_percent": -0.17
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 2.72,
+      "stocks_percent": 9.8
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -3.22,
+      "stocks_percent": -1.0
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 1.13,
+      "stocks_percent": -2.84
+    }
+  ],
+  "2023-01-14": [
+    {
+      "name": "所有(距2023-01-06)",
+      "percent": 0.08,
+      "stocks_percent": 0.28
+    },
+    {
+      "name": "所有除新债(距2023-01-06)",
+      "percent": 0.06,
+      "stocks_percent": 0.27
+    },
+    {
+      "name": "到期保本(距2023-01-06)",
+      "percent": 0.04,
+      "stocks_percent": 1.03
+    },
+    {
+      "name": "回售摸彩(距2023-01-06)",
+      "percent": 0.29,
+      "stocks_percent": 0.66
+    },
+    {
+      "name": "低价格低溢价(距2023-01-06)",
+      "percent": 0.13,
+      "stocks_percent": 0.78
+    },
+    {
+      "name": "三低转债(距2023-01-06)",
+      "percent": -1.18,
+      "stocks_percent": -1.46
+    },
+    {
+      "name": "转股期未到(距2023-01-06)",
+      "percent": 0.32,
+      "stocks_percent": -0.77
+    },
+    {
+      "name": "多因子(距2023-01-06)",
+      "percent": -0.02,
+      "stocks_percent": -0.08
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -1.32,
+      "stocks_percent": 3.33
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -1.32,
+      "stocks_percent": 3.34
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -0.45,
+      "stocks_percent": 7.63
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -0.56,
+      "stocks_percent": -0.86
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 2.57,
+      "stocks_percent": 0.61
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 1.51,
+      "stocks_percent": 8.2
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -2.91,
+      "stocks_percent": -1.76
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 1.11,
+      "stocks_percent": -2.92
+    }
+  ],
+  "2023-01-20": [
+    {
+      "name": "所有(距2023-01-14)",
+      "percent": 2.42,
+      "stocks_percent": 2.72
+    },
+    {
+      "name": "所有除新债(距2023-01-14)",
+      "percent": 2.43,
+      "stocks_percent": 2.72
+    },
+    {
+      "name": "到期保本(距2023-01-14)",
+      "percent": 1.73,
+      "stocks_percent": 3.28
+    },
+    {
+      "name": "回售摸彩(距2023-01-14)",
+      "percent": 2.29,
+      "stocks_percent": 3.37
+    },
+    {
+      "name": "低价格低溢价(距2023-01-14)",
+      "percent": 2.58,
+      "stocks_percent": 1.56
+    },
+    {
+      "name": "三低转债(距2023-01-14)",
+      "percent": -0.07,
+      "stocks_percent": -2.99
+    },
+    {
+      "name": "转股期未到(距2023-01-14)",
+      "percent": 2.3,
+      "stocks_percent": 3.36
+    },
+    {
+      "name": "多因子(距2023-01-14)",
+      "percent": 2.9,
+      "stocks_percent": 2.1
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.07,
+      "stocks_percent": 6.14
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.08,
+      "stocks_percent": 6.15
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 1.27,
+      "stocks_percent": 11.16
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 1.72,
+      "stocks_percent": 2.48
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.22,
+      "stocks_percent": 2.18
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 1.44,
+      "stocks_percent": 4.96
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -0.68,
+      "stocks_percent": 1.54
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.04,
+      "stocks_percent": -0.88
+    }
+  ],
+  "2023-02-04": [
+    {
+      "name": "所有(距2023-01-20)",
+      "percent": 1.68,
+      "stocks_percent": 3.84
+    },
+    {
+      "name": "所有除新债(距2023-01-20)",
+      "percent": 1.69,
+      "stocks_percent": 3.84
+    },
+    {
+      "name": "到期保本(距2023-01-20)",
+      "percent": 2.16,
+      "stocks_percent": 7.55
+    },
+    {
+      "name": "回售摸彩(距2023-01-20)",
+      "percent": 1.44,
+      "stocks_percent": 5.15
+    },
+    {
+      "name": "低价格低溢价(距2023-01-20)",
+      "percent": -0.08,
+      "stocks_percent": -0.53
+    },
+    {
+      "name": "三低转债(距2023-01-20)",
+      "percent": 5.55,
+      "stocks_percent": 4.08
+    },
+    {
+      "name": "转股期未到(距2023-01-20)",
+      "percent": 2.54,
+      "stocks_percent": 5.83
+    },
+    {
+      "name": "多因子(距2023-01-20)",
+      "percent": 2.12,
+      "stocks_percent": 3.14
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 2.77,
+      "stocks_percent": 10.22
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 2.79,
+      "stocks_percent": 10.23
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 3.46,
+      "stocks_percent": 19.55
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 3.18,
+      "stocks_percent": 7.76
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.14,
+      "stocks_percent": 1.64
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 7.07,
+      "stocks_percent": 9.24
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.84,
+      "stocks_percent": 7.46
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 6.25,
+      "stocks_percent": 2.23
+    }
+  ],
+  "2023-02-11": [
+    {
+      "name": "所有(距2023-02-04)",
+      "percent": -0.12,
+      "stocks_percent": 1.39
+    },
+    {
+      "name": "所有除新债(距2023-02-04)",
+      "percent": -0.12,
+      "stocks_percent": 1.39
+    },
+    {
+      "name": "到期保本(距2023-02-04)",
+      "percent": 0.15,
+      "stocks_percent": 0.37
+    },
+    {
+      "name": "回售摸彩(距2023-02-04)",
+      "percent": 1.44,
+      "stocks_percent": 5.92
+    },
+    {
+      "name": "低价格低溢价(距2023-02-04)",
+      "percent": -0.22,
+      "stocks_percent": 0.11
+    },
+    {
+      "name": "三低转债(距2023-02-04)",
+      "percent": -1.44,
+      "stocks_percent": -0.39
+    },
+    {
+      "name": "转股期未到(距2023-02-04)",
+      "percent": -0.07,
+      "stocks_percent": 1.54
+    },
+    {
+      "name": "多因子(距2023-02-04)",
+      "percent": -0.31,
+      "stocks_percent": 0.72
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 2.65,
+      "stocks_percent": 11.75
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 2.67,
+      "stocks_percent": 11.76
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 3.62,
+      "stocks_percent": 19.99
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 4.67,
+      "stocks_percent": 14.14
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 4.91,
+      "stocks_percent": 1.75
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 5.53,
+      "stocks_percent": 8.81
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.77,
+      "stocks_percent": 9.11
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 5.92,
+      "stocks_percent": 2.97
+    }
+  ],
+  "2023-02-18": [
+    {
+      "name": "所有(距2023-02-11)",
+      "percent": -1.67,
+      "stocks_percent": -1.32
+    },
+    {
+      "name": "所有除新债(距2023-02-11)",
+      "percent": -1.72,
+      "stocks_percent": -1.28
+    },
+    {
+      "name": "到期保本(距2023-02-11)",
+      "percent": -0.97,
+      "stocks_percent": -1.61
+    },
+    {
+      "name": "回售摸彩(距2023-02-11)",
+      "percent": -0.9,
+      "stocks_percent": 0.1
+    },
+    {
+      "name": "低价格低溢价(距2023-02-11)",
+      "percent": -1.17,
+      "stocks_percent": -0.65
+    },
+    {
+      "name": "三低转债(距2023-02-11)",
+      "percent": -3.09,
+      "stocks_percent": -2.75
+    },
+    {
+      "name": "转股期未到(距2023-02-11)",
+      "percent": -1.62,
+      "stocks_percent": -2.0
+    },
+    {
+      "name": "多因子(距2023-02-11)",
+      "percent": -1.17,
+      "stocks_percent": -0.62
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 0.94,
+      "stocks_percent": 10.27
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 0.9,
+      "stocks_percent": 10.33
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 2.61,
+      "stocks_percent": 18.06
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 3.73,
+      "stocks_percent": 14.25
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 3.68,
+      "stocks_percent": 1.09
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 2.27,
+      "stocks_percent": 5.82
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 0.12,
+      "stocks_percent": 6.93
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.68,
+      "stocks_percent": 2.33
+    }
+  ],
+  "2023-02-25": [
+    {
+      "name": "所有(距2023-02-18)",
+      "percent": 0.67,
+      "stocks_percent": 1.32
+    },
+    {
+      "name": "所有除新债(距2023-02-18)",
+      "percent": 0.67,
+      "stocks_percent": 1.32
+    },
+    {
+      "name": "到期保本(距2023-02-18)",
+      "percent": 0.39,
+      "stocks_percent": 1.6
+    },
+    {
+      "name": "回售摸彩(距2023-02-18)",
+      "percent": 0.53,
+      "stocks_percent": 2.48
+    },
+    {
+      "name": "低价格低溢价(距2023-02-18)",
+      "percent": 0.95,
+      "stocks_percent": 1.66
+    },
+    {
+      "name": "三低转债(距2023-02-18)",
+      "percent": -0.0,
+      "stocks_percent": 0.12
+    },
+    {
+      "name": "转股期未到(距2023-02-18)",
+      "percent": 0.45,
+      "stocks_percent": 0.12
+    },
+    {
+      "name": "多因子(距2023-02-18)",
+      "percent": 0.46,
+      "stocks_percent": 0.82
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.62,
+      "stocks_percent": 11.73
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.58,
+      "stocks_percent": 11.79
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 3.01,
+      "stocks_percent": 19.95
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 4.28,
+      "stocks_percent": 17.08
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 4.66,
+      "stocks_percent": 2.77
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 2.27,
+      "stocks_percent": 5.95
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 0.57,
+      "stocks_percent": 7.06
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 5.16,
+      "stocks_percent": 3.17
+    }
+  ],
+  "2023-03-04": [
+    {
+      "name": "所有(距2023-02-25)",
+      "percent": 0.64,
+      "stocks_percent": 0.04
+    },
+    {
+      "name": "所有除新债(距2023-02-25)",
+      "percent": 0.64,
+      "stocks_percent": 0.04
+    },
+    {
+      "name": "到期保本(距2023-02-25)",
+      "percent": 0.81,
+      "stocks_percent": 0.21
+    },
+    {
+      "name": "回售摸彩(距2023-02-25)",
+      "percent": 0.71,
+      "stocks_percent": 0.26
+    },
+    {
+      "name": "低价格低溢价(距2023-02-25)",
+      "percent": 1.07,
+      "stocks_percent": 0.63
+    },
+    {
+      "name": "三低转债(距2023-02-25)",
+      "percent": 1.27,
+      "stocks_percent": 1.47
+    },
+    {
+      "name": "转股期未到(距2023-02-25)",
+      "percent": 1.72,
+      "stocks_percent": 2.06
+    },
+    {
+      "name": "多因子(距2023-02-25)",
+      "percent": -0.16,
+      "stocks_percent": -1.26
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 2.27,
+      "stocks_percent": 11.77
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 2.23,
+      "stocks_percent": 11.83
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 3.84,
+      "stocks_percent": 20.2
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 5.02,
+      "stocks_percent": 17.38
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.78,
+      "stocks_percent": 3.42
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 3.57,
+      "stocks_percent": 7.51
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 2.3,
+      "stocks_percent": 9.27
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.99,
+      "stocks_percent": 1.87
+    }
+  ],
+  "2023-03-11": [
+    {
+      "name": "所有(距2023-03-04)",
+      "percent": -1.13,
+      "stocks_percent": -2.49
+    },
+    {
+      "name": "所有除新债(距2023-03-04)",
+      "percent": -1.13,
+      "stocks_percent": -2.49
+    },
+    {
+      "name": "到期保本(距2023-03-04)",
+      "percent": -0.23,
+      "stocks_percent": -1.71
+    },
+    {
+      "name": "回售摸彩(距2023-03-04)",
+      "percent": -0.99,
+      "stocks_percent": -2.16
+    },
+    {
+      "name": "低价格低溢价(距2023-03-04)",
+      "percent": -0.19,
+      "stocks_percent": -1.03
+    },
+    {
+      "name": "三低转债(距2023-03-04)",
+      "percent": 0.14,
+      "stocks_percent": -1.0
+    },
+    {
+      "name": "转股期未到(距2023-03-04)",
+      "percent": 0.03,
+      "stocks_percent": -0.2
+    },
+    {
+      "name": "多因子(距2023-03-04)",
+      "percent": -0.77,
+      "stocks_percent": -2.17
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.11,
+      "stocks_percent": 8.99
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.07,
+      "stocks_percent": 9.05
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 3.6,
+      "stocks_percent": 18.14
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 3.98,
+      "stocks_percent": 14.84
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.58,
+      "stocks_percent": 2.35
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 3.71,
+      "stocks_percent": 6.43
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 2.33,
+      "stocks_percent": 9.05
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.18,
+      "stocks_percent": -0.34
+    }
+  ],
+  "2023-03-19": [
+    {
+      "name": "所有(距2023-03-11)",
+      "percent": -0.02,
+      "stocks_percent": -0.97
+    },
+    {
+      "name": "所有除新债(距2023-03-11)",
+      "percent": -0.01,
+      "stocks_percent": -0.96
+    },
+    {
+      "name": "到期保本(距2023-03-11)",
+      "percent": 0.17,
+      "stocks_percent": 1.52
+    },
+    {
+      "name": "回售摸彩(距2023-03-11)",
+      "percent": 0.49,
+      "stocks_percent": -0.84
+    },
+    {
+      "name": "低价格低溢价(距2023-03-11)",
+      "percent": 0.29,
+      "stocks_percent": -0.22
+    },
+    {
+      "name": "三低转债(距2023-03-11)",
+      "percent": 4.87,
+      "stocks_percent": -0.13
+    },
+    {
+      "name": "转股期未到(距2023-03-11)",
+      "percent": -1.38,
+      "stocks_percent": -2.91
+    },
+    {
+      "name": "多因子(距2023-03-11)",
+      "percent": 0.04,
+      "stocks_percent": -0.87
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.09,
+      "stocks_percent": 7.93
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.06,
+      "stocks_percent": 8.0
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 3.78,
+      "stocks_percent": 19.94
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 4.49,
+      "stocks_percent": 13.88
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.89,
+      "stocks_percent": 2.12
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 8.76,
+      "stocks_percent": 6.29
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 0.92,
+      "stocks_percent": 5.88
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.22,
+      "stocks_percent": -1.21
+    }
+  ],
+  "2023-03-25": [
+    {
+      "name": "所有(距2023-03-19)",
+      "percent": 1.21,
+      "stocks_percent": 1.74
+    },
+    {
+      "name": "所有除新债(距2023-03-19)",
+      "percent": 1.22,
+      "stocks_percent": 1.76
+    },
+    {
+      "name": "到期保本(距2023-03-19)",
+      "percent": 1.17,
+      "stocks_percent": 1.69
+    },
+    {
+      "name": "回售摸彩(距2023-03-19)",
+      "percent": 0.84,
+      "stocks_percent": 4.62
+    },
+    {
+      "name": "低价格低溢价(距2023-03-19)",
+      "percent": 0.61,
+      "stocks_percent": -1.05
+    },
+    {
+      "name": "三低转债(距2023-03-19)",
+      "percent": 2.2,
+      "stocks_percent": 2.71
+    },
+    {
+      "name": "转股期未到(距2023-03-19)",
+      "percent": 0.66,
+      "stocks_percent": 2.17
+    },
+    {
+      "name": "多因子(距2023-03-19)",
+      "percent": 0.74,
+      "stocks_percent": -1.36
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 2.31,
+      "stocks_percent": 9.81
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 2.29,
+      "stocks_percent": 9.9
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 4.99,
+      "stocks_percent": 21.97
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 5.37,
+      "stocks_percent": 19.14
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 6.54,
+      "stocks_percent": 1.05
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 11.15,
+      "stocks_percent": 9.17
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.59,
+      "stocks_percent": 8.18
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.99,
+      "stocks_percent": -2.55
+    }
+  ],
+  "2023-04-01": [
+    {
+      "name": "所有(距2023-03-25)",
+      "percent": -0.43,
+      "stocks_percent": -0.9
+    },
+    {
+      "name": "所有除新债(距2023-03-25)",
+      "percent": -0.43,
+      "stocks_percent": -0.93
+    },
+    {
+      "name": "到期保本(距2023-03-25)",
+      "percent": 0.98,
+      "stocks_percent": 0.86
+    },
+    {
+      "name": "回售摸彩(距2023-03-25)",
+      "percent": -0.58,
+      "stocks_percent": -1.7
+    },
+    {
+      "name": "低价格低溢价(距2023-03-25)",
+      "percent": -0.76,
+      "stocks_percent": -1.83
+    },
+    {
+      "name": "三低转债(距2023-03-25)",
+      "percent": 0.09,
+      "stocks_percent": -0.05
+    },
+    {
+      "name": "转股期未到(距2023-03-25)",
+      "percent": -0.98,
+      "stocks_percent": -1.64
+    },
+    {
+      "name": "多因子(距2023-03-25)",
+      "percent": -0.89,
+      "stocks_percent": -1.77
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.87,
+      "stocks_percent": 8.82
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.85,
+      "stocks_percent": 8.88
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 6.02,
+      "stocks_percent": 23.02
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 4.76,
+      "stocks_percent": 17.11
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 5.73,
+      "stocks_percent": -0.8
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 11.25,
+      "stocks_percent": 9.12
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 0.59,
+      "stocks_percent": 6.41
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.06,
+      "stocks_percent": -4.27
+    }
+  ],
+  "2023-04-08": [
+    {
+      "name": "所有(距2023-04-01)",
+      "percent": 1.09,
+      "stocks_percent": 0.57
+    },
+    {
+      "name": "所有除新债(距2023-04-01)",
+      "percent": 1.1,
+      "stocks_percent": 0.59
+    },
+    {
+      "name": "到期保本(距2023-04-01)",
+      "percent": 1.17,
+      "stocks_percent": 3.57
+    },
+    {
+      "name": "回售摸彩(距2023-04-01)",
+      "percent": 0.12,
+      "stocks_percent": -1.23
+    },
+    {
+      "name": "低价格低溢价(距2023-04-01)",
+      "percent": 1.1,
+      "stocks_percent": 1.33
+    },
+    {
+      "name": "三低转债(距2023-04-01)",
+      "percent": 0.87,
+      "stocks_percent": -0.19
+    },
+    {
+      "name": "转股期未到(距2023-04-01)",
+      "percent": 0.92,
+      "stocks_percent": 0.3
+    },
+    {
+      "name": "多因子(距2023-04-01)",
+      "percent": 0.59,
+      "stocks_percent": 0.58
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 2.98,
+      "stocks_percent": 9.44
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 2.97,
+      "stocks_percent": 9.52
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 7.26,
+      "stocks_percent": 27.41
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 4.89,
+      "stocks_percent": 15.67
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 6.89,
+      "stocks_percent": 0.52
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 12.22,
+      "stocks_percent": 8.91
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.52,
+      "stocks_percent": 6.73
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 4.67,
+      "stocks_percent": -3.71
+    }
+  ]
+}

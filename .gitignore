@@ -1,7 +1,7 @@
 __pycache__/
 .env
 .vscode
-
 archive_data/
 temp/
 .DS_Store
+backlog/

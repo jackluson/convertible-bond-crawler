@@ -9,173 +9,41 @@ Copyright (c) 2022 Camel Lu
 import os
 import re
 import string
+import json
 import time
 from datetime import datetime
-
 import pandas as pd
-from bs4 import BeautifulSoup
-from selenium.webdriver.common.by import By
-
+import filter
 from lib.mysnowflake import IdWorker
-from utils.connect import connect
-from utils.excel import update_xlsx_file
-from utils.login import login
-
-connect_instance = connect()
-connect = connect_instance.get('connect')
-cursor = connect_instance.get('cursor')
-
-# 要item字段一一对应,否则数据库插入顺序
-rename_map = {
-    'cb_code': '可转债代码',
-    'cb_name': '可转债名称',
-    'stock_code': '股票代码',
-    'stock_name': '股票名称',
-    'price': '转债价格',
-    'premium_rate': '转股溢价率',
-    'cb_to_pb': '转股价格/每股净资产',
-    'date_remain_distance': '距离到期时间',
-    'date_return_distance': '距离回售时间',
-    'rate_expire': '到期收益率',
-    'rate_expire_aftertax': '税后到期收益率',
-    'remain_to_cap': '转债剩余/市值比例',
-    'is_repair_flag': '是否满足下修条件',
-    'repair_flag_remark': '下修备注',
-    'is_ransom_flag': '是否满足强赎条件',
-    'ransom_flag_remark': '强赎备注',
-
-    'remain_amount': '剩余规模',
-    'market_cap': '股票市值',
-
-    'last_price': '上期转债价格',
-    'last_cb_percent': '较上期涨跌幅',
-    'cb_percent': '转债涨跌幅',
-    'stock_price': '股价',
-    'stock_percent': '股价涨跌幅',
-    'last_stock_price': '上期股价',
-    'last_stock_percent': '较上期股价涨跌幅',
-    'arbitrage_percent': '日内套利',
-    'convert_stock_price': '转股价格',
-    'pb': '市净率',
-    'market': '市场',
-
-    'remain_price': '剩余本息',
-    'remain_price_tax': '税后剩余本息',
-
-    'is_unlist': '未发行',
-    'last_is_unlist': '上期未发行',
-    'issue_date': '发行日期',
-    'date_convert_distance': '距离转股时间',
-
-    'rate_return': '回售收益率',
-
-    'old_style': '老式双底',
-    'new_style': '新式双底',
-    'rating': '债券评级',
-    'id': 'id',
-    'cb_id': 'id',
-}
-
-
-def get_bs_source(is_read_local=False):
-    # 利用BeautifulSoup解析网页源代码
-    date = datetime.now().strftime("%Y-%m-%d")
-    path = './html/' + date + "_output.html"
-
-    bs = None
-    if is_read_local:
-        htmlfile = open(path, 'r', encoding='utf-8')
-        bs = BeautifulSoup(htmlfile.read(), 'lxml')
-        htmlfile.close()
-    else:
-        with open(path, "w", encoding='utf-8') as file:
-            page_url = "https://www.ninwin.cn/index.php?m=cb&a=cb_all"
-            chrome_driver = login(page_url, is_cookies_login=True)
-            time.sleep(5)
-            data = chrome_driver.page_source
-            table = chrome_driver.find_element(By.ID, 'cb_hq')
-            # tbody = table.get_attribute('innerHTML')
-            tbody = table.find_element(
-                By.XPATH, 'tbody').get_attribute('innerHTML')
-            # row = table.find_elements_by_xpath('tbody/tr')
-
-            bs = BeautifulSoup(tbody, 'lxml')
-            # prettify the soup object and convert it into a string
-            # file.write(data)
-            file.write(str(bs.prettify()))
-    return bs
-
-
-def output_excel(df, *, sheet_name="All"):
-    date = datetime.now().strftime("%Y-%m-%d")
-    path = './out/' + date + '_cb_list.xlsx'
-    df_output = df.rename(columns=rename_map).reset_index(drop=True)
-    update_xlsx_file(path, df_output, sheet_name)
-    # df.to_excel(path, index=False)
-
-
-def delete_key_for_store(data):
-    del data['last_price']
-    del data['last_cb_percent']
-    del data['last_stock_price']
-    del data['last_stock_percent']
-    del data['last_is_unlist']
-    return data
-
-
-def store_database(df):
-    delete_key_for_store(rename_map)
-    sql_insert = generate_insert_sql(
-        rename_map, 'convertible_bond', ['id', 'cb_code'])
-    list = df.values.tolist()
-    cursor.executemany(sql_insert, list)
-    connect.commit()
-
-
-def generate_insert_sql(target_dict, table_name, ignore_list):
-    keys = ','.join(target_dict.keys())
-    values = ','.join(['%s'] * len(target_dict))
-    update_values = ''
-    for key in target_dict.keys():
-        if key in ignore_list:
-            continue
-        update_values = update_values + '{0}=VALUES({0}),'.format(key)
-
-    sql_insert = "INSERT INTO {table} ({keys}) VALUES ({values})  ON DUPLICATE KEY UPDATE {update_values}; ".format(
-        table=table_name,
-        keys=keys,
-        values=values,
-        update_values=update_values[0:-1]
-    )
-    return sql_insert
-
-
+from utils.index import get_bs_source, store_database, output_excel, delete_key_for_store, plot
+from utils.json import write_fund_json_data
+from config import rename_map, strategy_list, out_dir, summary_filename, multiple_factors_config, real_temperature_map
 repair_flag_style = 'color:blue'
 repair_ransom_style = 'color:red'
 
 
-def main(is_output, is_save_database):
+def main(is_output, is_save_database, *, date, compare_date):
     isReadLocal = False
-    date = datetime.now().strftime("%Y-%m-%d")
     output_path = './html/' + date + "_output.html"
-    compare_date = "2023-03-25"
-    print(f"比较时间为:{compare_date}")
-    last_path = './out/' + compare_date + '_cb_list.xlsx'
-    xls = pd.ExcelFile(last_path, engine='openpyxl')
-    df_last = xls.parse("All")
+    print(f"上期时间为:{compare_date}")
     last_map = {}
-    for index, item in df_last.iterrows():
-        last_map[str(item['可转债代码'])] = item.to_dict()
+    is_start = date == compare_date
+    if is_start == False:
+        last_path = f'{out_dir}{compare_date}_cb_list.xlsx'
+        xls = pd.ExcelFile(last_path, engine='openpyxl')
+        df_all_last = xls.parse("All_ROW")
+        df_all_last['可转债代码'] = df_all_last['可转债代码'].astype(str)
+        for index, item in df_all_last.iterrows():
+            last_map[item['可转债代码']] = item.to_dict()
     if os.path.exists(output_path):
         if os.path.getsize(output_path) > 0:
             isReadLocal = True
-    bs = get_bs_source(isReadLocal)
+    bs = get_bs_source(date, isReadLocal)
     # print(bs)
     rows = bs.find_all('tr')
     print("rows", len(rows))
     list = []
     worker = IdWorker()
-    dt = datetime.now()
     for index in range(0, len(rows)):
         row = rows[index]
         try:
@@ -232,7 +100,7 @@ def main(is_output, is_save_database):
                 str.maketrans("", "", string.whitespace))
             date_return_distance = row.find_all('td', {'class': "cb_t_id"})[
                 2].get_text().strip()  # 剩余回售时间 待处理异常情况
-            #item['距离回售时间'].translate(str.maketrans("", "", string.whitespace))
+            # item['距离回售时间'].translate(str.maketrans("", "", string.whitespace))
             date_return_distance = date_return_distance.translate(
                 str.maketrans("", "", string.whitespace))
 
@@ -303,8 +171,8 @@ def main(is_output, is_save_database):
                 'remain_price_tax': float(remain_price_tax),
 
                 'is_unlist': is_unlist,
-                'last_is_unlist': "Y",
-                'issue_date': dt.strftime('%y-%m-%d') if issue_date == '今日上市' else issue_date,
+                'last_is_unlist': is_unlist if is_start else "Y",
+                'issue_date': date if issue_date == '今日上市' else issue_date,
                 'date_convert_distance': date_convert_distance,
 
                 'rate_return': rate_return,
@@ -325,7 +193,7 @@ def main(is_output, is_save_database):
                 item['last_cb_percent'] = round((float(price) - last_record.get(
                     rename_map.get('price')))/last_record.get(rename_map.get('price'))*100, 2)
                 item['last_is_unlist'] = last_record.get(
-                    rename_map.get("last_is_unlist"))
+                    rename_map.get("is_unlist"))
             if is_output and not is_save_database:
                 del item['id']
                 del item['cb_id']
@@ -338,52 +206,84 @@ def main(is_output, is_save_database):
     df = pd.DataFrame.from_records(list)
     # 输出到excel
     if is_output:
-        output_excel(df, sheet_name='All')
-        all_df = df.loc[(df['is_unlist'] == 'N')]
-        all_df = all_df[all_df["last_cb_percent"].notnull()]
-        #  & ( & df['last_price'] == 100)
-        # print('all_df', df['last_is_unlist'])
-        all_percent = all_df["last_cb_percent"].mean().round(2)
-        all_df_with_unlist = all_df.loc[(all_df['last_is_unlist'] == 'N')]
-        all_percent_with_unlist = all_df_with_unlist.loc[(
-            all_df_with_unlist['last_is_unlist'] == 'N')]["last_cb_percent"].mean().round(2)
-        due_df = filter_profit_due(df)
-        print("due_df", due_df)
-        due_percent = due_df["last_cb_percent"].mean().round(2)
-        return_lucky_percent = filter_return_lucky(
-            df)["last_cb_percent"].mean().round(2)
-        double_low_percent = filter_double_low(
-            df)["last_cb_percent"].mean().round(2)
-        three_low_percent = filter_three_low(
-            df)["last_cb_percent"].mean().round(2)
-        print(filter_disable_converte(
-            df))
-        disable_converte_percent = filter_disable_converte(
-            df)["last_cb_percent"].mean().round(2)
-        percents = [{
-            'name': '所有',
-            'percent': all_percent,
-        }, {
-            'name': '所有除新债',
-            'percent': all_percent_with_unlist
-        }, {
-            'name': '到期保本',
-            'percent': due_percent,
-        }, {
-            'name': '回售摸彩',
-            'percent': return_lucky_percent,
-        }, {
-            'name': '低价格低溢价',
-            'percent': double_low_percent,
-        }, {
-            'name': '三低转债',
-            'percent': three_low_percent,
-        }, {
-            'name': '转股期未到',
-            'percent': disable_converte_percent,
-        }
-        ]
-        output_excel(pd.DataFrame(percents), sheet_name="汇总")
+        output_excel(df, sheet_name='All_ROW', date=date)
+        filter_data_dict = {}
+        for strategy in strategy_list:
+            strategy_name = strategy['name']
+            filter_key = strategy['filter_key']
+            filter_processor = getattr(filter, filter_key)
+            if filter_key == 'filter_multiple_factors':
+                filter_data = filter_processor(
+                    df, date=date, multiple_factors_config=multiple_factors_config)
+            else:
+                filter_data = filter_processor(df)
+            output_excel(filter_data, sheet_name=strategy_name, date=date)
+            filter_data_dict[filter_key] = filter_data
+        if is_start:
+            print('success!!! data total: ', len(list))
+            return
+        all_df_rename = df.rename(columns=rename_map).reset_index()
+        percents = []
+        for strategy in strategy_list:
+            strategy_name = strategy['name']
+            head_count = strategy['head_count']
+            all_strategy_df = xls.parse(strategy['name'])
+            all_strategy_df['可转债代码'] = all_strategy_df['可转债代码'].astype(str)
+            strategy_df = all_strategy_df.head(
+                head_count)  # 读取前20条
+            print(f"{strategy_name}'s len", len(strategy_df))
+            strategy_df = pd.merge(all_df_rename, strategy_df,
+                                   on=['可转债代码'], how='inner')
+            cur_percent = strategy_df["较上期涨跌幅_x"].mean().round(2)
+            cur_stocks_percent = strategy_df["较上期股价涨跌幅_x"].mean().round(2)
+            strategy['percent'] = cur_percent
+            strategy['stocks_percent'] = cur_stocks_percent
+
+            percents.append({
+                'name': f'{strategy_name}(距{compare_date})',
+                'total': len(all_strategy_df),
+                'head': len(strategy_df),
+                'percent': strategy['percent'],
+                'stocks_percent': strategy['stocks_percent'],
+            })
+        filename = summary_filename
+        file_dir = f'{out_dir}'
+        pathname = file_dir + filename
+        if not os.path.exists(pathname):
+            stats_data = dict()
+        else:
+            with open(pathname) as json_file:
+                stats_data = json.load(json_file)
+        last_period_percents = stats_data.get(
+            compare_date) if stats_data.get(compare_date) else []
+        for strategy in strategy_list:
+            last_accumulate_item = dict()
+            start = strategy['start']
+            for percent in last_period_percents:
+                if percent['name'] == f'累计{strategy["name"]}({start}至今)':
+                    last_accumulate_item = percent
+            last_accumulate = last_accumulate_item.get(
+                'percent') if last_accumulate_item.get('percent') else 0
+            last_stocks_accumulate = last_accumulate_item.get(
+                'stocks_percent') if last_accumulate_item.get('stocks_percent') else 0
+            percents.append({
+                'name': f'累计{strategy["name"]}({start}至今)',
+                'percent': round(((last_accumulate / 100 + 1) * (1 + strategy.get('percent') / 100) - 1) * 100, 2),
+                'stocks_percent': round(((last_stocks_accumulate / 100 + 1) * (1 + strategy.get('stocks_percent') / 100) - 1) * 100, 2)
+            })
+        # last_accumulate_item = dict()
+        # for percent in last_period_percents:
+        #     if percent['name'] == '累计涨跌幅(all)':
+        #         last_accumulate_item = percent
+        # last_accumulate = last_accumulate_item.get(
+        #     'percent') if last_accumulate_item.get('percent') else 0
+        # percents.append({
+        #     'name': '累计涨跌幅(all)',
+        #     'percent': round(((last_accumulate / 100 + 1) * (1 + all_percent / 100) - 1) * 100, 2),
+        # })
+        stats_data[date] = percents
+        write_fund_json_data(stats_data, filename, file_dir)
+        output_excel(pd.DataFrame(percents), sheet_name="汇总", date=date)
     if is_save_database:
         # 入库
         store_database(df)
@@ -393,108 +293,39 @@ def main(is_output, is_save_database):
 # df[df["A"].str.contains("Hello|Britain")]
 
 
-def filter_profit_due(df):
-    df_filter = df.loc[(df['rate_expire_aftertax'] > 0)
-                       #    & (df['price'] < 115)
-                       & (df['date_convert_distance'] == '已到')
-                       & (df['cb_to_pb'] > 1.5)
-                       & (df['is_repair_flag'] == 'True')
-                       & (df['remain_to_cap'] > 5)
-                       ]
+def backtest():
+    htmlFiles = os.listdir('./html/')
+    dateList = []
+    for file in htmlFiles:
+        dateList.append(file[0:10])
 
-    def my_filter(row):
-        if '暂不行使下修权利' in row.repair_flag_remark or '距离不下修承诺' in row.repair_flag_remark:
-            return False
-        return True
-    df_filter = df_filter[df_filter.apply(my_filter, axis=1)]
-    output_excel(df_filter, sheet_name="到期保本")
-    return df_filter
-
-
-def filter_return_lucky(df):
-    df_filter = df.loc[(df['price'] < 125)
-                       & (df['rate_expire_aftertax'] > -10)
-                       & (df['date_return_distance'] == '回售内')
-                       & (~df["cb_name"].str.contains("EB"))
-                       & (df['cb_to_pb'] > (1 + df['premium_rate'] * 0.008))
-                       & (df['is_repair_flag'] == 'True')
-                       & (df['remain_to_cap'] > 5)
-                       ]
-    df_filter = df_filter.sort_values(
-        by='new_style', ascending=True, ignore_index=True)
-    output_excel(df_filter, sheet_name="回售摸彩")
-    return df_filter
-
-
-def filter_double_low(df):
-    df_filter = df.loc[(df['date_convert_distance'] == '已到')
-                       & (df['date_return_distance'] != '无权')
-                       & (~df["cb_name"].str.contains("EB"))
-                       #    & (df['date_return_distance'] != '回售内')
-                       & (df['is_ransom_flag'] == 'False')
-                       & (df['cb_to_pb'] > 0.5)
-                       #    & (df['remain_to_cap'] > 5)
-                       & (((df['price'] < 128)
-                           & (df['premium_rate'] < 10)) | ((df['price'] < 120)
-                                                           & (df['premium_rate'] < 15)))
-                       ]
-
-    def due_filter(row):
-        if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
-            day_count = float(row.date_remain_distance[0:-1])
-            return day_count > 90
-        return True
-    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
-
-    df_filter = df_filter.sort_values(
-        by='new_style', ascending=True, ignore_index=True)
-    output_excel(df_filter, sheet_name="低价格低溢价")
-    return df_filter
-
-
-def filter_three_low(df):
-    df_filter = df.loc[
-        (~df["cb_name"].str.contains("EB"))
-        #    & (df['date_return_distance'] != '回售内')
-        & (df['is_ransom_flag'] == 'False')
-        & (df['cb_to_pb'] > 0.5)
-        & (df['remain_amount'] < 1.5)
-        & (df['premium_rate'] < 30)
-        & (df['market_cap'] < 100)
-    ]
-
-    def due_filter(row):
-        if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
-            day_count = float(row.date_remain_distance[0:-1])
-            return day_count > 90
-        return True
-    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
-
-    df_filter = df_filter.sort_values(
-        by='remain_amount', ascending=True, ignore_index=True)
-    output_excel(df_filter, sheet_name="三低转债")
-    return df_filter
-
-
-def filter_disable_converte(df):
-    df_filter = df.loc[
-        (~df["cb_name"].str.contains("EB"))
-        & (df['date_convert_distance'] != '已到')
-        & (df['is_unlist'] == 'N')
-        & (df['last_is_unlist'] == 'N')
-    ]
-
-    df_filter = df_filter.sort_values(
-        by='remain_amount', ascending=True, ignore_index=True)
-    output_excel(df_filter, sheet_name="转股期未到")
-    return df_filter
+    sorted_dates = sorted(dateList)
+    for idx, date in enumerate(sorted_dates):
+        cur_date = date
+        if idx == 0:
+            last_date = date
+        else:
+            last_date = sorted_dates[idx - 1]
+        print(idx, cur_date, last_date)
+        date = cur_date
+        compare_date = last_date
+        is_save_database = False
+        is_output = True
+        multiple_factors_config['real_temperature'] = real_temperature_map.get(
+            date)
+        main(is_output, is_save_database, date=date,
+             compare_date=compare_date)
 
 
 if __name__ == "__main__":
+
     input_value = input("请输入下列序号执行操作:\n \
         1.“输出到本地” \n \
         2.“输出到MySQL” \n \
+        3.“回测” \n \
+        4.“可视化” \n \
     输入：")
+    multiple_factors_config['real_temperature'] = 36.5
     if input_value == '1':
         is_save_database = False
         is_output = True
@@ -503,3 +334,7 @@ if __name__ == "__main__":
         is_save_database = True
         is_output = False
         main(is_output, is_save_database)
+    elif input_value == '3':
+        backtest()
+    elif input_value == '4':
+        plot()
