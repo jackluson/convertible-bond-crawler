@@ -20,12 +20,14 @@ from utils.json import write_fund_json_data
 from config import rename_map, strategy_list, out_dir, summary_filename, multiple_factors_config, real_temperature_map
 repair_flag_style = 'color:blue'
 repair_ransom_style = 'color:red'
+pre_ransom_style = 'color:Fuchsia'
 
 
-def main(is_output, is_save_database, *, date, compare_date):
+def impl(is_output, is_save_database, *, date, compare_date):
     isReadLocal = False
     output_path = './html/' + date + "_output.html"
     print(f"上期时间为:{compare_date}")
+    print(f"当前股市温度为:{multiple_factors_config['real_temperature']}")
     last_map = {}
     is_start = date == compare_date
     if is_start == False:
@@ -35,6 +37,12 @@ def main(is_output, is_save_database, *, date, compare_date):
         df_all_last['可转债代码'] = df_all_last['可转债代码'].astype(str)
         for index, item in df_all_last.iterrows():
             last_map[item['可转债代码']] = item.to_dict()
+    filename = f'stdevry_{date}.json'
+    # filename = f'stdevry.json'
+    file_dir = os.getcwd() + f'/out/stdevry/'
+    code_stdevry_map = dict()
+    with open(file_dir + filename) as json_file:
+        code_stdevry_map = json.load(json_file)
     if os.path.exists(output_path):
         if os.path.getsize(output_path) > 0:
             isReadLocal = True
@@ -51,7 +59,7 @@ def main(is_output, is_save_database, *, date, compare_date):
             cb_id = row.get("data-id")  # 获取属性值
             cb_name = row.get("data-cb_name")
             cb_code = row.get("data-cbcode")
-            stock_code = row.get("data-stock_code")[2:]
+            stock_code = str(row.get("data-stock_code")[2:])
             market = row.get("data-stock_code")[0:2]
             stock_name = row.get("data-stock_name")
             price = row.get("data-cb_price")  # 可转债价格
@@ -64,6 +72,7 @@ def main(is_output, is_save_database, *, date, compare_date):
             repair_flag_remark = ''
             is_ransom_flag = False
             ransom_flag_remark = ''
+            pre_ransom_remark = ''
             for flags in cb_flags:
                 if flags.get('style') == repair_flag_style:
                     is_repair_flag = True
@@ -71,6 +80,8 @@ def main(is_output, is_save_database, *, date, compare_date):
                 if flags.get('style') == repair_ransom_style:
                     is_ransom_flag = True
                     ransom_flag_remark = flags.get('title').strip()
+                if flags.get('style') == pre_ransom_style:
+                    pre_ransom_remark = flags.get('title').strip()
             arbitrage_percent = row.find_all('td', {'class': "cb_mov2_id"})[
                 1].get_text().strip()[0:-1]  # 日内套利
             stock_price = row.find_all('td', {'class': "stock_price_id"})[
@@ -133,13 +144,16 @@ def main(is_output, is_save_database, *, date, compare_date):
             #       stock_name, old_style, new_style, stock_percent, date_convert_distance, date_return_distance, date_remain_distance)
             # fund_df = pd.DataFrame({'id': id_list, 'fund_code': code_list, 'morning_star_code': morning_star_code_list, 'fund_name': name_list, 'fund_cat': fund_cat,
             #                         'fund_rating_3': fund_rating_3, 'fund_rating_5': fund_rating_5, 'rate_of_return': rate_of_return})
+            item_stock = code_stdevry_map.get(stock_code)
             item = {
                 'cb_code': cb_code,
                 'cb_name': cb_name,
                 'stock_code': stock_code,
                 'stock_name': stock_name,
+                'industry': item_stock.get('industry') if item_stock else '-',
                 'price': float(price),
                 'premium_rate': float(premium_rate),
+                'stock_stdevry': item_stock.get('stdevry') if item_stock else '-',
                 'cb_to_pb': float(cb_to_pb),
                 'date_remain_distance': date_remain_distance,
                 'date_return_distance': date_return_distance,
@@ -149,6 +163,7 @@ def main(is_output, is_save_database, *, date, compare_date):
                 'remain_to_cap': float(remain_to_cap),
                 'is_repair_flag': str(is_repair_flag),
                 'repair_flag_remark': repair_flag_remark,
+                'pre_ransom_remark': pre_ransom_remark,
                 'is_ransom_flag': str(is_ransom_flag),
                 'ransom_flag_remark': ransom_flag_remark,
 
@@ -201,7 +216,7 @@ def main(is_output, is_save_database, *, date, compare_date):
                 delete_key_for_store(item)
             list.append(item)
         except Exception:
-            print(row)
+            raise (Exception)
 
     df = pd.DataFrame.from_records(list)
     # 输出到excel
@@ -288,9 +303,6 @@ def main(is_output, is_save_database, *, date, compare_date):
         # 入库
         store_database(df)
     print('success!!! data total: ', len(list))
-    # time.sleep(3600)
-
-# df[df["A"].str.contains("Hello|Britain")]
 
 
 def backtest():
@@ -313,7 +325,7 @@ def backtest():
         is_output = True
         multiple_factors_config['real_temperature'] = real_temperature_map.get(
             date)
-        main(is_output, is_save_database, date=date,
+        impl(is_output, is_save_database, date=date,
              compare_date=compare_date)
 
 
@@ -321,19 +333,23 @@ if __name__ == "__main__":
 
     input_value = input("请输入下列序号执行操作:\n \
         1.“输出到本地” \n \
-        2.“输出到MySQL” \n \
+        2.“存到数据库” \n \
         3.“回测” \n \
         4.“可视化” \n \
     输入：")
-    multiple_factors_config['real_temperature'] = 36.5
+    date = datetime.now().strftime("%Y-%m-%d")
+    multiple_factors_config['real_temperature'] = 35.65
+    compare_date = "2023-04-08"
     if input_value == '1':
         is_save_database = False
         is_output = True
-        main(is_output, is_save_database)
+        impl(is_output, is_save_database, date=date,
+             compare_date=compare_date)
     elif input_value == '2':
         is_save_database = True
         is_output = False
-        main(is_output, is_save_database)
+        impl(is_output, is_save_database, date=date,
+             compare_date=compare_date)
     elif input_value == '3':
         backtest()
     elif input_value == '4':

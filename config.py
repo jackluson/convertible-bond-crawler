@@ -13,8 +13,10 @@ rename_map = {
     'cb_name': '可转债名称',
     'stock_code': '股票代码',
     'stock_name': '股票名称',
+    'industry': '行业',
     'price': '转债价格',
     'premium_rate': '转股溢价率',
+    'stock_stdevry': '正股波动率',
     'cb_to_pb': '转股价格/每股净资产',
     'date_remain_distance': '距离到期时间',
     'date_return_distance': '距离回售时间',
@@ -23,6 +25,7 @@ rename_map = {
     'remain_to_cap': '转债剩余/市值比例',
     'is_repair_flag': '是否满足下修条件',
     'repair_flag_remark': '下修备注',
+    'pre_ransom_remark': '预满足强赎备注',
     'is_ransom_flag': '是否满足强赎条件',
     'ransom_flag_remark': '强赎备注',
 
@@ -61,7 +64,12 @@ rename_map = {
 
 head_count = 10
 premium_bemchmark = 30
-out_dir = f'./out_dynamic_{head_count}_premium_bemchmark_{premium_bemchmark}/'
+stdevry_bemchmark = 30
+bond_ratio = 0.7
+stock_ratio = 0.3
+price_bemchmark = 110
+# out_dir = f'./backlog/bond_ratio_{bond_ratio}_stock_ratio_{stock_ratio}_price_{price_bemchmark}_count_{head_count}_premium_{premium_bemchmark}_stdevry_{stdevry_bemchmark}/'
+out_dir = f'./out/'
 summary_filename = f'summary.json'
 strategy_list = [
     # {
@@ -117,25 +125,28 @@ strategy_list = [
 multiple_factors_config = {
     'benchmark_temperature': 30,  # 基准温度
     # 'real_temperature'
-    'bond_ratio': 0.7,  # 债性系数
-    'stock_ratio': 0.3,  # 股性系数
-    'price_bemchmark': 115,  # 价格基准
+    'bond_ratio': bond_ratio,  # 债性系数
+    'stock_ratio': stock_ratio,  # 股性系数
+    'price_bemchmark': price_bemchmark,  # 价格基准
     'premium_bemchmark': premium_bemchmark,  # 溢价率基准
-
-    'stock_option_ratio': 0.3,  # 可转债期权系数 -- 用到期时间衡量, 减分项, 小于一年减分
+    'stock_pb_ratio': 0.2,  # 正股PB系数 减分项, 小于1.5减分
+    'stock_stdevry_ratio': 0.2,  # 正股波动率系数
+    'stock_option_ratio': 0.2,  # 可转债期权系数 -- 用到期时间衡量, 减分项, 小于一年减分
+    'remain_ratio': 0.3,  # 可转债剩余市值系数
+    'stock_market_cap_ratio': 0.1,  # 正股市值系数
     'stock_option_bemchmark_days': 360,  # 可转债期权基准天数
-    'stock_remain_ratio': 0.3,  # 正股剩余市值系数
-    'stock_remain_bemchmark_min': 3,  # 剩余市值加分项
-    'stock_remain_bemchmark_max': 30,  # 剩余市值减分项
-    'stock_remain_score_min': 0.6,  # 剩余市值最低分
-    'stock_pb_ratio': 0.3,  # 正股PB系数 减分项, 小于1.5减分
+    'remain_bemchmark_min': 3,  # 剩余市值加分项
+    'remain_bemchmark_max': 30,  # 剩余市值减分项
+    'remain_score_min': 0.6,  # 剩余市值最低分
     'pb_bemchmark': 1.5,  # 正股PB基准
     'pb_score_min': 0.6,  # 正股PB最低分
-    'stock_market_cap_ratio': 0.1,  # 正股市值系数
     'stock_market_cap_bemchmark_min': 50,  # 正股市值加分项
     'stock_market_cap_bemchmark_max': 500,  # 正股市值减分项
     'stock_market_cap_score_min': 0.6,  # 正股市值最低分
     'stock_market_cap_score_max': 1.5,  # 正股市值最高分
+    'stock_stdevry_bemchmark': stdevry_bemchmark,  # 波动率基准
+    'stock_stdevry_score_min': 0.6,  # 正股波动率最低分
+    'stock_stdevry_score_max': 1.5,  # 正股波动率最高分
 }
 
 real_temperature_map = {
@@ -160,5 +171,6 @@ real_temperature_map = {
     '2023-03-19': 35.68,
     '2023-03-25': 38.4,
     '2023-04-01': 36.58,
-    '2023-04-08': 36.59
+    '2023-04-08': 36.59,
+    '2023-04-15': 35.65
 }

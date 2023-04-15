@@ -29,7 +29,7 @@ def archive_hold_list():
     date = datetime.now().strftime("%Y-%m-%d")
     data_path = './out/' + date + '_cb_list.xlsx'
     xls = pd.ExcelFile(data_path, engine='openpyxl')
-    all_cb = xls.parse("All")
+    all_cb = xls.parse("所有")
     all_cb_map = {}
     for index, item in all_cb.iterrows():
         all_cb_map[str(item['可转债代码'])] = item.to_dict()
@@ -103,7 +103,7 @@ def check():
     xls = pd.ExcelFile(path, engine='openpyxl')
     df_all = None
     for sheet_name in xls.sheet_names:
-        if sheet_name != 'All':
+        if sheet_name != '所有' or sheet_name != '所有除新债' or sheet_name != '转股期未到':
             df_cur_sheet = xls.parse(sheet_name, dtype={
                 "可转债代码": np.str,
             })
@@ -126,7 +126,7 @@ def check_no_hold():
     path = './out/' + date + '_cb_list.xlsx'
     xls = pd.ExcelFile(path, engine='openpyxl')
     df_all = None
-    exclude_sheet_names = ['到期保本', '回售摸彩', '低价格低溢价', ]
+    exclude_sheet_names = ['到期保本', '回售摸彩', '低价格低溢价', '三低转债', '多因子']
     for sheet_name in xls.sheet_names:
         if sheet_name in exclude_sheet_names:
             df_cur_sheet = xls.parse(sheet_name)

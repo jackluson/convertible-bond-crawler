@@ -76,13 +76,18 @@ def delete_key_for_store(data):
     del data['last_stock_price']
     del data['last_stock_percent']
     del data['last_is_unlist']
+    del data['industry']
+    del data['stock_stdevry']
+    del data['pre_ransom_remark']
+    if data.get('weight_score'):
+        del data['weight_score']
     return data
 
 
 def store_database(df):
-    delete_key_for_store(rename_map)
+    store_map = delete_key_for_store(rename_map)
     sql_insert = generate_insert_sql(
-        rename_map, 'convertible_bond', ['id', 'cb_code'])
+        store_map, 'convertible_bond', ['id', 'cb_code'])
     list = df.values.tolist()
     cursor.executemany(sql_insert, list)
     connect.commit()
@@ -123,6 +128,7 @@ def plot():
     # df_percents = df3.cumsum()
     # %matplotlib inline
     plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']
-    df_percents.cumprod().round(4).plot(grid=True, figsize=(15, 7))
+    df_percents.cumprod().round(4).plot(
+        grid=True, figsize=(15, 7), title=file_dir[10:-1])
     mplcursors.cursor(hover=True)
     plt.show()

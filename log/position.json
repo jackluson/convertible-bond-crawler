@@ -302,5 +302,90 @@
         "last_percent": -0.02
       }
     ]
+  },
+  {
+    "date": "2023-04-15",
+    "last_percent": -0.5,
+    "holdlist": [
+      {
+        "code": "123076",
+        "name": "强力转债",
+        "radio": 1,
+        "cur_price": 107.95,
+        "last_percent": -0.38
+      },
+      {
+        "code": "127061",
+        "name": "美锦转债",
+        "radio": 1,
+        "cur_price": 111.588,
+        "last_percent": 0.25
+      },
+      {
+        "code": "113519",
+        "name": "长久转债",
+        "radio": 1,
+        "cur_price": 119.119,
+        "last_percent": -0.27
+      },
+      {
+        "code": "128044",
+        "name": "岭南转债",
+        "radio": 0.5,
+        "cur_price": 128.45,
+        "last_percent": -0.97
+      },
+      {
+        "code": "128081",
+        "name": "海亮转债",
+        "radio": 1,
+        "cur_price": 126.866,
+        "last_percent": 0.17
+      },
+      {
+        "code": "110077",
+        "name": "洪城转债",
+        "radio": 1,
+        "cur_price": 127.502,
+        "last_percent": 0.69
+      },
+      {
+        "code": "127006",
+        "name": "敖东转债",
+        "radio": 1,
+        "cur_price": 123.925,
+        "last_percent": 0.09
+      },
+      {
+        "code": "113631",
+        "name": "皖天转债",
+        "radio": 1,
+        "cur_price": 118.972,
+        "last_percent": -0.91
+      },
+      {
+        "code": "128087",
+        "name": "孚日转债",
+        "radio": 1,
+        "cur_price": 123.007,
+        "last_percent": -0.94
+      },
+      {
+        "code": "113044",
+        "name": "大秦转债",
+        "radio": 0.5,
+        "buy_price": 112.937,
+        "cur_price": 113.995,
+        "last_percent": 0.83
+      },
+      {
+        "code": "113595",
+        "name": "花王转债",
+        "radio": 1,
+        "buy_price": 128.736,
+        "cur_price": 128.736,
+        "last_percent": -0.91
+      }
+    ]
   }
 ]

@@ -1,0 +1,198 @@
+{
+  "2023-04-15": [
+    {
+      "name": "所有(距2023-04-08)",
+      "total": 479,
+      "head": 477,
+      "percent": -0.53,
+      "stocks_percent": -0.21
+    },
+    {
+      "name": "所有除新债(距2023-04-08)",
+      "total": 478,
+      "head": 476,
+      "percent": -0.53,
+      "stocks_percent": -0.21
+    },
+    {
+      "name": "到期保本(距2023-04-08)",
+      "total": 7,
+      "head": 7,
+      "percent": 0.04,
+      "stocks_percent": -2.86
+    },
+    {
+      "name": "回售摸彩(距2023-04-08)",
+      "total": 8,
+      "head": 8,
+      "percent": -0.24,
+      "stocks_percent": -2.22
+    },
+    {
+      "name": "低价格低溢价(距2023-04-08)",
+      "total": 8,
+      "head": 8,
+      "percent": -0.17,
+      "stocks_percent": 0.06
+    },
+    {
+      "name": "三低转债(距2023-04-08)",
+      "total": 2,
+      "head": 2,
+      "percent": -2.72,
+      "stocks_percent": -2.48
+    },
+    {
+      "name": "转股期未到(距2023-04-08)",
+      "total": 60,
+      "head": 10,
+      "percent": -0.86,
+      "stocks_percent": -0.4
+    },
+    {
+      "name": "多因子(距2023-04-08)",
+      "total": 54,
+      "head": 10,
+      "percent": -0.08,
+      "stocks_percent": -1.61
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -0.53,
+      "stocks_percent": -0.21
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -0.53,
+      "stocks_percent": -0.21
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 0.04,
+      "stocks_percent": -2.86
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": -0.24,
+      "stocks_percent": -2.22
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": -0.17,
+      "stocks_percent": 0.06
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": -2.72,
+      "stocks_percent": -2.48
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -0.86,
+      "stocks_percent": -0.4
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": -0.08,
+      "stocks_percent": -1.61
+    }
+  ],
+  "2022-11-05": [
+    {
+      "name": "所有(距2022-10-22)",
+      "total": 436,
+      "head": 434,
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "所有除新债(距2022-10-22)",
+      "total": 436,
+      "head": 434,
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "到期保本(距2022-10-22)",
+      "total": 18,
+      "head": 18,
+      "percent": -0.03,
+      "stocks_percent": 2.4
+    },
+    {
+      "name": "回售摸彩(距2022-10-22)",
+      "total": 12,
+      "head": 12,
+      "percent": 0.22,
+      "stocks_percent": -0.59
+    },
+    {
+      "name": "低价格低溢价(距2022-10-22)",
+      "total": 8,
+      "head": 8,
+      "percent": 2.69,
+      "stocks_percent": 0.17
+    },
+    {
+      "name": "三低转债(距2022-10-22)",
+      "total": 2,
+      "head": 2,
+      "percent": 4.07,
+      "stocks_percent": 6.92
+    },
+    {
+      "name": "转股期未到(距2022-10-22)",
+      "total": 57,
+      "head": 20,
+      "percent": 1.85,
+      "stocks_percent": 4.57
+    },
+    {
+      "name": "多因子(距2022-10-22)",
+      "total": 96,
+      "head": 20,
+      "percent": 1.96,
+      "stocks_percent": -0.46
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": 1.2,
+      "stocks_percent": 2.9
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": -0.03,
+      "stocks_percent": 2.4
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 0.22,
+      "stocks_percent": -0.59
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 2.69,
+      "stocks_percent": 0.17
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": 4.07,
+      "stocks_percent": 6.92
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": 1.85,
+      "stocks_percent": 4.57
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 1.96,
+      "stocks_percent": -0.46
+    }
+  ]
+}
