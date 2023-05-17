@@ -63,57 +63,61 @@ rename_map = {
 }
 
 head_count = 10
-premium_bemchmark = 30
+premium_bemchmark = 25
 stdevry_bemchmark = 30
-bond_ratio = 0.7
 stock_ratio = 0.3
-price_bemchmark = 110
-# out_dir = f'./backlog/bond_ratio_{bond_ratio}_stock_ratio_{stock_ratio}_price_{price_bemchmark}_count_{head_count}_premium_{premium_bemchmark}_stdevry_{stdevry_bemchmark}/'
-out_dir = f'./out/'
+bond_ratio = round(1 - stock_ratio, 2)
+price_bemchmark = 115
+premium_ratio = 0.3
+is_backtest = False
+max_price = 130
+backtest_dir = f'./backlog/bond={bond_ratio}_stock={stock_ratio}_price={price_bemchmark}_count={head_count}_premium={premium_bemchmark}_premium_ratio={premium_ratio}_stdevry={stdevry_bemchmark}_max_price={max_price}/'
+
+out_dir = backtest_dir if is_backtest else f'./out/'
 summary_filename = f'summary.json'
 strategy_list = [
-    # {
-    #     'name': '所有',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_listed_all',
-    #     'head_count': 1000  # 设置一个大值,取所有
-    # },
-    # {
-    #     'name': '所有除新债',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_listed_all_exclude_new',
-    #     'head_count': 1000  # 设置一个大值,取所有
-    # },
-    # {
-    #     'name': '到期保本',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_profit_due',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '回售摸彩',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_return_lucky',
-    #     'head_count': head_count,
-    # },
+    {
+        'name': '所有',
+        'start': "2022-10-22",
+        'filter_key': 'filter_listed_all',
+        'head_count': 1000  # 设置一个大值,取所有
+    },
+    {
+        'name': '所有除新债',
+        'start': "2022-10-22",
+        'filter_key': 'filter_listed_all_exclude_new',
+        'head_count': 1000  # 设置一个大值,取所有
+    },
+    {
+        'name': '到期保本',
+        'start': "2022-10-22",
+        'filter_key': 'filter_profit_due',
+        'head_count': head_count,
+    },
+    {
+        'name': '回售摸彩',
+        'start': "2022-10-22",
+        'filter_key': 'filter_return_lucky',
+        'head_count': head_count,
+    },
     {
         'name': '低价格低溢价',
         'start': "2022-10-22",
         'filter_key': 'filter_double_low',
         'head_count': head_count,
     },
-    # {
-    #     'name': '三低转债',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_three_low',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '转股期未到',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_disable_converte',
-    #     'head_count': head_count,
-    # },
+    {
+        'name': '三低转债',
+        'start': "2022-10-22",
+        'filter_key': 'filter_three_low',
+        'head_count': head_count,
+    },
+    {
+        'name': '转股期未到',
+        'start': "2022-10-22",
+        'filter_key': 'filter_disable_converte',
+        'head_count': head_count,
+    },
     {
         'name': '多因子',
         'start': "2022-10-22",
@@ -123,54 +127,30 @@ strategy_list = [
 ]
 
 multiple_factors_config = {
-    'benchmark_temperature': 30,  # 基准温度
-    # 'real_temperature'
+    'benchmark_temperature': 50,  # 基准温度
     'bond_ratio': bond_ratio,  # 债性系数
     'stock_ratio': stock_ratio,  # 股性系数
     'price_bemchmark': price_bemchmark,  # 价格基准
+    'mid_price_bemchmark': 115,  # 中位数价格基准
     'premium_bemchmark': premium_bemchmark,  # 溢价率基准
-    'stock_pb_ratio': 0.2,  # 正股PB系数 减分项, 小于1.5减分
+    'premium_ratio': premium_ratio,  # 正股PB系数 减分项, 小于1.5减分
     'stock_stdevry_ratio': 0.2,  # 正股波动率系数
-    'stock_option_ratio': 0.2,  # 可转债期权系数 -- 用到期时间衡量, 减分项, 小于一年减分
-    'remain_ratio': 0.3,  # 可转债剩余市值系数
-    'stock_market_cap_ratio': 0.1,  # 正股市值系数
+    'remain_ratio': 0.15,  # 可转债剩余市值系数
+    'stock_market_cap_ratio': 0.15,  # 正股市值系数
+    'stock_pb_ratio': 0.1,  # 正股PB系数 减分项, 小于1.5减分
+    'stock_option_ratio': 0.1,  # 可转债期权系数 -- 用到期时间衡量, 减分项, 小于一年减分
     'stock_option_bemchmark_days': 360,  # 可转债期权基准天数
     'remain_bemchmark_min': 3,  # 剩余市值加分项
     'remain_bemchmark_max': 30,  # 剩余市值减分项
     'remain_score_min': 0.6,  # 剩余市值最低分
     'pb_bemchmark': 1.5,  # 正股PB基准
     'pb_score_min': 0.6,  # 正股PB最低分
-    'stock_market_cap_bemchmark_min': 50,  # 正股市值加分项
-    'stock_market_cap_bemchmark_max': 500,  # 正股市值减分项
+    'stock_market_cap_bemchmark_min': 30,  # 正股市值加分项
+    'stock_market_cap_bemchmark_max': 300,  # 正股市值减分项
     'stock_market_cap_score_min': 0.6,  # 正股市值最低分
     'stock_market_cap_score_max': 1.5,  # 正股市值最高分
     'stock_stdevry_bemchmark': stdevry_bemchmark,  # 波动率基准
     'stock_stdevry_score_min': 0.6,  # 正股波动率最低分
     'stock_stdevry_score_max': 1.5,  # 正股波动率最高分
-}
-
-real_temperature_map = {
-    '2022-10-22': 25.67,
-    '2022-11-05': 27.78,
-    '2022-11-11': 27.78,
-    '2022-11-19': 30.22,
-    '2022-12-03': 31.96,
-    '2022-12-10': 31.46,
-    '2022-12-17': 28.69,
-    '2022-12-23': 22.39,
-    '2022-12-31': 24.07,
-    '2023-01-06': 27.43,
-    '2023-01-14': 28.39,
-    '2023-01-20': 32.66,
-    '2023-02-04': 37.08,
-    '2023-02-11': 38.35,
-    '2023-02-18': 36.63,
-    '2023-02-25': 38.69,
-    '2023-03-04': 39.35,
-    '2023-03-11': 37.02,
-    '2023-03-19': 35.68,
-    '2023-03-25': 38.4,
-    '2023-04-01': 36.58,
-    '2023-04-08': 36.59,
-    '2023-04-15': 35.65
+    'max_price': max_price,  # 最高价
 }

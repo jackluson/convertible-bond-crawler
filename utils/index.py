@@ -19,10 +19,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mplcursors
 
-connect_instance = connect()
-connect = connect_instance.get('connect')
-cursor = connect_instance.get('cursor')
-
 
 def get_bs_source(date, is_read_local=False):
 
@@ -89,6 +85,9 @@ def store_database(df):
     sql_insert = generate_insert_sql(
         store_map, 'convertible_bond', ['id', 'cb_code'])
     list = df.values.tolist()
+    connect_instance = connect()
+    connect = connect_instance.get('connect')
+    cursor = connect_instance.get('cursor')
     cursor.executemany(sql_insert, list)
     connect.commit()
 
