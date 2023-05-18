@@ -71,8 +71,8 @@ def filter_three_low(df):
         #    & (df['date_return_distance'] != '回售内')
         & (df['is_ransom_flag'] == 'False')
         & (df['cb_to_pb'] > 0.5)
-        & (df['remain_amount'] < 1.5)
-        & (df['premium_rate'] < 30)
+        & (df['remain_amount'] < 2)
+        & ((df['premium_rate'] < 30) | (df['price'] < 130))
         & (df['market_cap'] < 100)
     ]
 
@@ -103,7 +103,7 @@ def filter_disable_converte(df):
 
 def filter_multiple_factors(df, *, date, multiple_factors_config):
     """多因子筛选
-    债券+股权
+    债权+股权
     1. 价格
     2. 溢价率
     3. 剩余市值
@@ -114,23 +114,22 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
 
     benchmark_temperature = multiple_factors_config.get(
         "benchmark_temperature")
-    real_temperature = multiple_factors_config.get("real_temperature")
-    temperature_ratio = 1 - ((real_temperature - benchmark_temperature) /
-                             real_temperature)
-    temperature_ratio = round(temperature_ratio, 2)
+    mid_price_bemchmark = multiple_factors_config.get(
+        "mid_price_bemchmark")
     bond_ratio = multiple_factors_config.get("bond_ratio")  # 债性系数
-    # 股性系数 -- 期权系数 -- 0.4, PB系数 -- 0.3, 剩余市值系数 -- 0.3
     stock_ratio = multiple_factors_config.get("stock_ratio")
-    real_stock_ratio = stock_ratio
+
     price_bemchmark = multiple_factors_config.get('price_bemchmark')  # 价格基准
+
     premium_bemchmark = multiple_factors_config.get(
         'premium_bemchmark')  # 溢价率基准
-    real_premium_bemchmark = round(premium_bemchmark * temperature_ratio, 2)
+
+    premium_ratio = multiple_factors_config.get(
+        'premium_ratio')
     stock_option_ratio = multiple_factors_config.get(
         'stock_option_ratio')  # 可转债期权系数 -- 用到期时间衡量, 减分项, 小于一年减分
     stock_option_bemchmark_days = multiple_factors_config.get(
         "stock_option_bemchmark_days")  # 可转债期权基准天数
-
     remain_ratio = multiple_factors_config.get(
         'remain_ratio')  # 正股剩余市值系数
     remain_bemchmark_min = multiple_factors_config.get(
@@ -167,26 +166,37 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
     stock_stdevry_score_min = multiple_factors_config.get(
         "stock_stdevry_score_min")  # 正股波动率最低分
 
+    max_price = multiple_factors_config.get("max_price")  # 最高价
     df_filter = df.loc[
         (df['date_return_distance'] != '无权')
         & (df['is_unlist'] == 'N')
         & (~df["cb_name"].str.contains("EB"))
         & (df['is_ransom_flag'] == 'False')
-        & (df['cb_to_pb'] > 0.5)
+        & (df['cb_to_pb'] > 0.5)  # 排除问题债
+        & (df['cb_to_pb'] < 15)  # 排除问题债
     ]
     weight_score_key = 'weight'
 
     def core_filter(row):
         # if weight_score > 1:
         #     return True
+        if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
+            day_count = float(row.date_remain_distance[0:-1])
+            return day_count > 90 and row[weight_score_key] > 1
+        if row.price > max_price:
+            return False
+        # if '后可能满足强赎条件' in row.pre_ransom_remark and row.price >= 141:
+        #     return False
         return row[weight_score_key] > 1
 
     def calulate_score(row):
         # 股权基础分
-        premium_ratio = 1 - (row.premium_rate -
-                             real_premium_bemchmark) / premium_bemchmark
+        premium_score = 1 - (row.premium_rate -
+                             premium_bemchmark) / premium_bemchmark
         # 债权基础分
-        price_ratio = 1 - (row.price - price_bemchmark) / 100
+        price_score = 1 - (row.price - price_bemchmark) / \
+            price_bemchmark
+        # mid_price_score =
         # 可转债股性市净率评分
         pb_score = round(
             min(1, max(pb_score_min, 1 - (pb_bemchmark - row.pb) / pb_bemchmark)), 2)
@@ -218,27 +228,34 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
                                            (row.market_cap - stock_market_cap_bemchmark_min) /
                                            stock_market_cap_bemchmark_min, 2)
         elif row.market_cap > stock_market_cap_bemchmark_max:
-            stock_market_cap_score = min(stock_market_cap_score_max, max(stock_market_cap_score_min, round(1 -
-                                                                                                           (row.market_cap - stock_market_cap_bemchmark_max) /
-                                                                                                           stock_market_cap_bemchmark_max, 2)))
+            stock_market_cap_score = round(1 -
+                                           (row.market_cap - stock_market_cap_bemchmark_max) /
+                                           stock_market_cap_bemchmark_max, 2)
+
+        stock_market_cap_score = min(stock_market_cap_score_max, max(
+            stock_market_cap_score_min, stock_market_cap_score))
         # 正股波动率评分
         stock_stdevry_score = round(
             1 - (stock_stdevry_bemchmark - row.stock_stdevry) / stock_stdevry_bemchmark, 2)
+
         stock_stdevry_score = min(
             stock_stdevry_score_max, max(stock_stdevry_score_min, stock_stdevry_score))
-        bond_score = round(price_ratio * bond_ratio, 2)
 
-        stock_score = round(premium_ratio * real_stock_ratio *
-                            (pb_score * stock_pb_ratio +
-                             stock_option_score * stock_option_ratio +
-                             remain_score * remain_ratio +
-                             stock_market_cap_score * stock_market_cap_ratio +
-                             stock_stdevry_score * stock_stdevry_ratio
-                             ), 2)
+        bond_score = round(price_score * bond_ratio, 2)
+
+        stock_score = round(stock_ratio *
+                            (
+                                premium_score * premium_ratio +
+                                stock_stdevry_score * stock_stdevry_ratio +
+                                remain_score * remain_ratio +
+                                pb_score * stock_pb_ratio +
+                                stock_option_score * stock_option_ratio +
+                                stock_market_cap_score * stock_market_cap_ratio
+                            ), 2)
 
         row['option'] = stock_option_score
         row['remain'] = remain_score
-        row['pb'] = pb_score
+        row['pb_score'] = pb_score
         row['stdevry'] = stock_stdevry_score
         row['stock_market_cap'] = stock_market_cap_score
         row['bond'] = bond_score

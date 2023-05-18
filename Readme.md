@@ -3,21 +3,66 @@
 <p align=center>
 <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20logs&color=1e8a7a" alt="Docs & Logs"></a
 >
-<img
-    alt="visitor badge"
-    src="https://visitor-badge.glitch.me/badge?page_id=convertible-bond-crawler"
-  />
+<img src="https://badges.toozhao.com/badges/01H0JKS51Z0KYYJ6JP626NJ64Q/blue.svg" />
+<br>
+<img src="./screenshots/plot.png"/>
 </p>
+
+# Table of Contents
+
+本仓库提供如下功能：
+
+1. 数据的获取
+2. 策略筛选，输出
+3. 策略回测
+4. 策略可视化，log
+5. ...等等未来可期
+
+- [数据爬取](#数据爬取)
+  - [安装](#安装)
+  - [运行](#运行)
+  - [数据参考](#数据参考)
+- [策略](#策略)
+  - [整体估值](#整体估值)
+  - [到期保本](#到期保本)
+  - [回售摸彩](#回售摸彩)
+  - [低价格低溢价](#低价格低溢价)
+  - [三低转债](#三低转债)
+  - [转股期未到](#转股期未到)
+  - [多因子](#多因子)
+  - [策略截图](#策略截图)
+- [多因子策略](#多因子策略)
+- [ChangeLog](#ChangeLog)
 
 ## 数据爬取
 
-### 入手
+### 安装
 
-- 直接使用请求 HTMl 的 Response 数据覆盖 output.html 即可
+> 需要提前安装好 chromedriver 驱动（版本需要和你本地电脑 Chrome 浏览器版本一致），
 
-- 使用 cookie 登录，直接 copy 请求头的 cookie 字段值覆盖`.env`的`login_cookie`即可
+1. `pip3 install -r requirements.txt`
 
-注意!!!: 建议使用[全表](https://www.ninwin.cn/index.php?m=cb&a=cb_all&show_cb_only=Y&show_listed_only=Y)页面数据，全表页面数据丰富，但全表页面需要有账号登录，注册还要考试，挺麻烦的。为了快速运行起来，可使用[简表](https://www.ninwin.cn/index.php?m=cb&show_cb_only=Y&show_listed_only=Y)页面数据
+2. 从环境参数模板（.env.example）中复制一份文件（.env）,修改本地环境变量
+
+   > `cp .env.example .env`
+
+   设置`login_cookie`为你的 cookie 值, 如果需要存储到数据库还要设置数据库账号,密码登
+   注意!!!: 建议使用[全表](https://www.ninwin.cn/index.php?m=cb&a=cb_all&show_cb_only=Y&show_listed_only=Y)页面数据，全表页面数据丰富，但全表页面需要有账号登录，注册还要考试，挺麻烦的。为了快速运行起来，可使用[简表](https://www.ninwin.cn/index.php?m=cb&show_cb_only=Y&show_listed_only=Y)页面数据
+
+### 运行
+
+> `python main.py`
+
+```bash
+# 选择你执行操作即可
+请输入下列序号执行操作:
+             1.“输出到本地”
+             2.“存到数据库”
+             3.“回测”
+             4.“可视化”
+             5.“多因子策略回测”
+         输入：
+```
 
 ### 数据示例
 
@@ -29,13 +74,6 @@
 
 如图
 ![screenshot1](./screenshots/screenshot1.jpg)
-
-### 数据输出
-
-提供两种输出方式：
-
-- excel 调用 `output_excel`
-- 入库到 mysql 中`store_database`
 
 ## 策略
 
@@ -65,12 +103,12 @@
 
 - 税后到期收益率 > 0 — 保本
 - 距离转股时间已到 — 这样正股上涨才带得动
-- 转股价格/每股净资产 > 1.5 — 下修有空间
+- 转股价格/每股净资产 > 1.5 — 下修有空间， 同时可以过滤一下垃圾袋
 - 满足下修条件，且不在承诺不下修时间内 — 排除那些在截至时间内承诺不下修的可转债
+  > 具体实现看代码
 
 #### 附加条件
 
-- 除了科创板
 - 转债剩余/市值比例 > 10 — 还债压力大，下修动力强
 
 #### 排序
@@ -83,10 +121,6 @@
 - 可转债价格
 - 回售时间短
 
-#### 策略结果截图
-
-![due_result](./screenshots/due_result.jpg)
-
 ---
 
 ### 回售摸彩
@@ -95,72 +129,86 @@
 
 - 回售内 — 回售期内
 - 满足下修股价要求 -- 必须
-- 转股价格/每股净资产 > 1.5 — 下修有空间
-- 转债剩余/市值比例 > 10 — 还债压力大，下修动力强
-- 转债价格低于 115 > 有一定的安全保底
+- 转股价格/每股净资产 > `1 + premium_rate * 0.008` — 下修有空间
+- 转债剩余/市值比例 > 5 — 还债压力大，下修动力强
+- 转债价格低于 125 > 有一定的安全保底
 - 满足下修条件，且距离不下修承诺截止日小于一个月 — 截至时间有下修机会
+  > 具体实现看代码
 
 #### 附件条件
 
 - 到期时间少于半年 — 时间太短，没什么波动了
 - 到期收益率> -10% — 这一约束意义不大，因为已经在转债价格有约束了
+- 排序 EB 债
 
 #### 排序
 
 - 转债剩余/市值比例倒序排序
 
-#### 策略结果截图
-
-![return_result](./screenshots/return_result.jpg)
-
 ### 低价格低溢价
 
 #### 条件
 
-- 转股溢价< 10% — 低溢价
-- 转债价格低于 130 — 高于 130，股性太强
+- 转股溢价< 10% & 转债价格低于 128 or 转股溢价< 15% & 转债价格低于 125 // 价格越高，股性越强，债性越弱
 - 距离转股时间—已到 — 正股上涨的话，可以及时跟上这股风
 - 转股价格/每股净资产 > 1 — 有下修空间
 - 距离回售时间 -- 有权, 无强赎
 
-#### 策略结果截图
+> 具体实现看代码
 
-![double_low_result](./screenshots/double_low_result.jpg)
+### 三低转债
 
-以上策略条件分别实现在以`filter_xxx`开头的函数中,例如:
+> 有助于挖掘妖债前提特质
+
+- 无强赎
+- 转债剩余余额小
+- 转股溢价率小
+- 正股市值小
+- 溢价率 < 30 or 价格 < 130 // 有点安全垫底
+- 到期时间 > 90 天
+
+> 具体实现看代码
+
+### 转股期未到
+
+> 可当成次新债
+
+- 不能转股
+
+### 多因子
 
 ```python
-def filter_profit_due(df):
-    df_filter = df.loc[(df['rate_expire'] > 0)
-                       & (df['price'] < 115)
-                       & (df['date_convert_distance'] == '已到')
-                       & (df['cb_to_pb'] > 1.5)
-                       & (df['is_repair_flag'] == True)
-                       & (df['remain_to_cap'] > 10)
-                       ]
-
-    def my_filter(row):
-        if '暂不行使下修权利' in row.repair_flag_remark or '距离不下修承诺' in row.repair_flag_remark:
-            return False
-        return True
-    df_filter = df_filter[df_filter.apply(my_filter, axis=1)]
-    output_excel(df_filter, sheet_name="到期保本")
+"""多因子筛选
+债权+股权
+1. 价格
+2. 溢价率
+3. 剩余市值
+4. 正股市值
+5. 到期时间
+6. 波动率
+"""
 ```
 
-### 模拟盘
+> 具体实现看代码
 
-按照三大策略,每周复盘一次,检查入队,出队标的. 做好跟进, 相关 json 数据,文件在`check_make.py`的中
+### 策略截图
 
-如图:
-![check](./screenshots/check.jpg)
+![strategy](./screenshots/strategy.jpg)
 
-### TODO
+以上策略条件分别实现在以`filter.py`文件中
 
-- 企业负债率维度
-- 企业性质维度
-- 是否可以破净下修维度
+### 多因子策略
+
+以上策略的轮动情况已经在 excel 文件中记录，并且输出到 summary.json 文件中。为了模拟实战场景，自定义更多参数，特意写了一个多因子策略回测的脚本，可以支持更多自定义功能。
+
+多因子策略回测，根据多因子策略筛选的结果，模拟买卖情况，记录持仓，计算收益率， log，可视化等等
 
 ### ChangeLog
+
+- 2023-05
+
+1. 丰富多因子策略
+2. 增加多因子策略回测代码
 
 - 2023-04-15
 
@@ -196,6 +244,11 @@ def filter_profit_due(df):
   - 增加税后收益率 > `-10%`
   - 排除掉 EB 类债
   - cb_to_pb 改为大于`(1 + premium_rate * 0.008)`
+
+### TODO
+
+- 企业负债率维度
+- 企业性质维度
 
 ## 最后
 

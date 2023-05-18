@@ -17,7 +17,8 @@ import filter
 from lib.mysnowflake import IdWorker
 from utils.index import get_bs_source, store_database, output_excel, delete_key_for_store, plot
 from utils.json import write_fund_json_data
-from config import rename_map, strategy_list, out_dir, summary_filename, multiple_factors_config, real_temperature_map
+from config import is_backtest, rename_map, strategy_list, out_dir, summary_filename, multiple_factors_config
+from strategy.multiple_factors import impl_multiple_factors
 repair_flag_style = 'color:blue'
 repair_ransom_style = 'color:red'
 pre_ransom_style = 'color:Fuchsia'
@@ -27,7 +28,6 @@ def impl(is_output, is_save_database, *, date, compare_date):
     isReadLocal = False
     output_path = './html/' + date + "_output.html"
     print(f"上期时间为:{compare_date}")
-    print(f"当前股市温度为:{multiple_factors_config['real_temperature']}")
     last_map = {}
     is_start = date == compare_date
     if is_start == False:
@@ -41,6 +41,8 @@ def impl(is_output, is_save_database, *, date, compare_date):
     # filename = f'stdevry.json'
     file_dir = os.getcwd() + f'/out/stdevry/'
     code_stdevry_map = dict()
+    if not os.path.exists(file_dir + filename):
+        filename = f'stdevry.json'
     with open(file_dir + filename) as json_file:
         code_stdevry_map = json.load(json_file)
     if os.path.exists(output_path):
@@ -49,7 +51,6 @@ def impl(is_output, is_save_database, *, date, compare_date):
     bs = get_bs_source(date, isReadLocal)
     # print(bs)
     rows = bs.find_all('tr')
-    print("rows", len(rows))
     list = []
     worker = IdWorker()
     for index in range(0, len(rows)):
@@ -74,13 +75,14 @@ def impl(is_output, is_save_database, *, date, compare_date):
             ransom_flag_remark = ''
             pre_ransom_remark = ''
             for flags in cb_flags:
-                if flags.get('style') == repair_flag_style:
+                flag_style = flags.get('style').replace(' ', '')
+                if flag_style == repair_flag_style:
                     is_repair_flag = True
                     repair_flag_remark = flags.get('title').strip()
-                if flags.get('style') == repair_ransom_style:
+                if flag_style == repair_ransom_style:
                     is_ransom_flag = True
                     ransom_flag_remark = flags.get('title').strip()
-                if flags.get('style') == pre_ransom_style:
+                if flag_style == pre_ransom_style:
                     pre_ransom_remark = flags.get('title').strip()
             arbitrage_percent = row.find_all('td', {'class': "cb_mov2_id"})[
                 1].get_text().strip()[0:-1]  # 日内套利
@@ -247,10 +249,15 @@ def impl(is_output, is_save_database, *, date, compare_date):
             strategy_df = all_strategy_df.head(
                 head_count)  # 读取前20条
             print(f"{strategy_name}'s len", len(strategy_df))
-            strategy_df = pd.merge(all_df_rename, strategy_df,
-                                   on=['可转债代码'], how='inner')
-            cur_percent = strategy_df["较上期涨跌幅_x"].mean().round(2)
-            cur_stocks_percent = strategy_df["较上期股价涨跌幅_x"].mean().round(2)
+            cur_percent = 0
+            cur_stocks_percent = 0
+            if len(strategy_df) > 0:
+                strategy_df = pd.merge(all_df_rename, strategy_df,
+                                       on=['可转债代码'], how='inner')
+                cur_percent = round(strategy_df["较上期涨跌幅_x"].mean().round(
+                    2) * (len(strategy_df) / head_count), 2)  # 乘以仓位
+                cur_stocks_percent = round(strategy_df["较上期股价涨跌幅_x"].mean().round(
+                    2) * (len(strategy_df) / head_count), 2)
             strategy['percent'] = cur_percent
             strategy['stocks_percent'] = cur_stocks_percent
 
@@ -312,34 +319,34 @@ def backtest():
         dateList.append(file[0:10])
 
     sorted_dates = sorted(dateList)
+    prev_date = None
     for idx, date in enumerate(sorted_dates):
         cur_date = date
-        if idx == 0:
-            last_date = date
-        else:
-            last_date = sorted_dates[idx - 1]
-        print(idx, cur_date, last_date)
-        date = cur_date
-        compare_date = last_date
+        compare_date = prev_date if prev_date else sorted_dates[
+            0] if idx == 0 else sorted_dates[idx-1]
+        print(idx, cur_date, compare_date)
+        # last_path = f'{out_dir}{compare_date}_cb_list.xlsx'
+        # if idx != 0 and not os.path.exists(last_path):
+
+        #     continue
         is_save_database = False
         is_output = True
-        multiple_factors_config['real_temperature'] = real_temperature_map.get(
-            date)
-        impl(is_output, is_save_database, date=date,
+        impl(is_output, is_save_database, date=cur_date,
              compare_date=compare_date)
+        prev_date = cur_date  # 成功输出之后，更新prev_date
 
 
 if __name__ == "__main__":
-
     input_value = input("请输入下列序号执行操作:\n \
-        1.“输出到本地” \n \
-        2.“存到数据库” \n \
-        3.“回测” \n \
-        4.“可视化” \n \
-    输入：")
+            1.“输出到本地” \n \
+            2.“存到数据库” \n \
+            3.“回测” \n \
+            4.“可视化” \n \
+            5.“多因子策略回测” \n \
+        输入：")
     date = datetime.now().strftime("%Y-%m-%d")
-    multiple_factors_config['real_temperature'] = 35.65
-    compare_date = "2023-04-08"
+    # date = "2023-04-21"
+    compare_date = "2023-05-06"
     if input_value == '1':
         is_save_database = False
         is_output = True
@@ -352,5 +359,11 @@ if __name__ == "__main__":
              compare_date=compare_date)
     elif input_value == '3':
         backtest()
+        plot()
     elif input_value == '4':
         plot()
+    elif input_value == '5':
+        # file_dir = 'bond=0.7_stock=0.3_price=115_count=10_premium=25_premium_ratio=0.3_stdevry=30_max_price=130/'
+        file_dir = 'out/'
+        parent_dir = './'
+        impl_multiple_factors(file_dir=file_dir, parent_dir=parent_dir)
