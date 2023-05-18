@@ -50,7 +50,7 @@ class MultipleFactorsStrategy():
         self.until_win = until_win
         self.data_source_dir = f'{parent_dir}{file_dir}'
         suffix = '_win' if self.until_win else ''
-        log_file_name = f'./backlog/log/multiple_factors_{file_dir[0:-1]}{suffix}.log'
+        log_file_name = f'{self.data_source_dir}/multiple_factors{suffix}.log'
         self.logger = get_logger(log_file_name, log_file_name)
         self.make_data_source()
 
