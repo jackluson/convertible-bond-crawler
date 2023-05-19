@@ -160,8 +160,8 @@ def impl(is_output, is_save_database, *, date, compare_date):
                 'date_remain_distance': date_remain_distance,
                 'date_return_distance': date_return_distance,
                 # 快到期或者强赎的情况为<-100
-                'rate_expire': -100 if '<-100' in rate_expire else float(rate_expire),
-                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else float(rate_expire_aftertax),
+                'rate_expire': -100 if '<-100' in rate_expire else (100 if ('>100' in rate_expire) else float(rate_expire)),
+                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else (100 if ('>100' in rate_expire_aftertax) else float(rate_expire_aftertax)),
                 'remain_to_cap': float(remain_to_cap),
                 'is_repair_flag': str(is_repair_flag),
                 'repair_flag_remark': repair_flag_remark,

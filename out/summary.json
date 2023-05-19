@@ -51,10 +51,10 @@
     },
     {
       "name": "多因子(距2022-10-22)",
-      "total": 11,
+      "total": 38,
       "head": 10,
-      "percent": 2.03,
-      "stocks_percent": -0.88
+      "percent": 1.56,
+      "stocks_percent": -2.52
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -93,8 +93,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 2.03,
-      "stocks_percent": -0.88
+      "percent": 1.56,
+      "stocks_percent": -2.52
     }
   ],
   "2022-11-11": [
@@ -149,10 +149,10 @@
     },
     {
       "name": "多因子(距2022-11-05)",
-      "total": 5,
-      "head": 5,
-      "percent": 1.46,
-      "stocks_percent": 3.54
+      "total": 15,
+      "head": 10,
+      "percent": 1.97,
+      "stocks_percent": 4.53
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -191,8 +191,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 3.52,
-      "stocks_percent": 2.63
+      "percent": 3.56,
+      "stocks_percent": 1.9
     }
   ],
   "2022-11-19": [
@@ -247,10 +247,10 @@
     },
     {
       "name": "多因子(距2022-11-11)",
-      "total": 6,
-      "head": 6,
-      "percent": -1.36,
-      "stocks_percent": 0.56
+      "total": 12,
+      "head": 10,
+      "percent": -1.74,
+      "stocks_percent": 2.02
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -289,8 +289,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 2.11,
-      "stocks_percent": 3.2
+      "percent": 1.76,
+      "stocks_percent": 3.96
     }
   ],
   "2022-12-03": [
@@ -345,10 +345,10 @@
     },
     {
       "name": "多因子(距2022-11-19)",
-      "total": 23,
+      "total": 76,
       "head": 10,
-      "percent": 3.49,
-      "stocks_percent": 5.1
+      "percent": 3.73,
+      "stocks_percent": 5.13
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -387,8 +387,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 5.67,
-      "stocks_percent": 8.46
+      "percent": 5.56,
+      "stocks_percent": 9.29
     }
   ],
   "2022-12-10": [
@@ -443,10 +443,10 @@
     },
     {
       "name": "多因子(距2022-12-03)",
-      "total": 10,
+      "total": 15,
       "head": 10,
-      "percent": -0.95,
-      "stocks_percent": -1.72
+      "percent": -1.5,
+      "stocks_percent": -3.02
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -485,8 +485,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 4.67,
-      "stocks_percent": 6.59
+      "percent": 3.98,
+      "stocks_percent": 5.99
     }
   ],
   "2022-12-17": [
@@ -541,10 +541,10 @@
     },
     {
       "name": "多因子(距2022-12-10)",
-      "total": 14,
+      "total": 33,
       "head": 10,
-      "percent": -1.86,
-      "stocks_percent": -1.69
+      "percent": -2.18,
+      "stocks_percent": -0.65
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -583,8 +583,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 2.72,
-      "stocks_percent": 4.79
+      "percent": 1.71,
+      "stocks_percent": 5.3
     }
   ],
   "2022-12-23": [
@@ -639,10 +639,10 @@
     },
     {
       "name": "多因子(距2022-12-17)",
-      "total": 36,
+      "total": 125,
       "head": 10,
-      "percent": -2.94,
-      "stocks_percent": -5.99
+      "percent": -3.18,
+      "stocks_percent": -5.93
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -681,8 +681,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": -0.3,
-      "stocks_percent": -1.49
+      "percent": -1.52,
+      "stocks_percent": -0.94
     }
   ],
   "2022-12-31": [
@@ -737,10 +737,10 @@
     },
     {
       "name": "多因子(距2022-12-23)",
-      "total": 70,
+      "total": 178,
       "head": 10,
-      "percent": 1.03,
-      "stocks_percent": 0.31
+      "percent": 0.59,
+      "stocks_percent": -1.22
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -779,8 +779,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 0.73,
-      "stocks_percent": -1.18
+      "percent": -0.94,
+      "stocks_percent": -2.15
     }
   ],
   "2023-01-06": [
@@ -835,10 +835,10 @@
     },
     {
       "name": "多因子(距2022-12-31)",
-      "total": 50,
+      "total": 155,
       "head": 10,
-      "percent": 2.61,
-      "stocks_percent": 1.8
+      "percent": 2.26,
+      "stocks_percent": 1.23
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -877,8 +877,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 3.36,
-      "stocks_percent": 0.6
+      "percent": 1.3,
+      "stocks_percent": -0.95
     }
   ],
   "2023-01-14": [
@@ -933,10 +933,10 @@
     },
     {
       "name": "多因子(距2023-01-06)",
-      "total": 22,
+      "total": 87,
       "head": 10,
-      "percent": -0.01,
-      "stocks_percent": 0.14
+      "percent": 0.83,
+      "stocks_percent": 1.81
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -975,8 +975,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 3.35,
-      "stocks_percent": 0.74
+      "percent": 2.14,
+      "stocks_percent": 0.84
     }
   ],
   "2023-01-20": [
@@ -1031,10 +1031,10 @@
     },
     {
       "name": "多因子(距2023-01-14)",
-      "total": 24,
+      "total": 72,
       "head": 10,
-      "percent": 1.82,
-      "stocks_percent": 0.77
+      "percent": 1.85,
+      "stocks_percent": 0.74
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1073,8 +1073,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 5.23,
-      "stocks_percent": 1.52
+      "percent": 4.03,
+      "stocks_percent": 1.59
     }
   ],
   "2023-02-04": [
@@ -1129,10 +1129,10 @@
     },
     {
       "name": "多因子(距2023-01-20)",
-      "total": 8,
-      "head": 8,
-      "percent": 0.38,
-      "stocks_percent": 1.87
+      "total": 10,
+      "head": 10,
+      "percent": 0.88,
+      "stocks_percent": 3.21
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1171,8 +1171,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 5.63,
-      "stocks_percent": 3.42
+      "percent": 4.95,
+      "stocks_percent": 4.85
     }
   ],
   "2023-02-11": [
@@ -1227,10 +1227,10 @@
     },
     {
       "name": "多因子(距2023-02-04)",
-      "total": 13,
-      "head": 10,
-      "percent": 0.5,
-      "stocks_percent": 1.62
+      "total": 5,
+      "head": 5,
+      "percent": 0.19,
+      "stocks_percent": 0.44
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1269,8 +1269,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 6.16,
-      "stocks_percent": 5.1
+      "percent": 5.15,
+      "stocks_percent": 5.31
     }
   ],
   "2023-02-18": [
@@ -1325,10 +1325,10 @@
     },
     {
       "name": "多因子(距2023-02-11)",
-      "total": 12,
-      "head": 10,
-      "percent": -1.57,
-      "stocks_percent": -2.28
+      "total": 3,
+      "head": 3,
+      "percent": -0.5,
+      "stocks_percent": -1.0
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1367,8 +1367,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 4.49,
-      "stocks_percent": 2.7
+      "percent": 4.62,
+      "stocks_percent": 4.26
     }
   ],
   "2023-02-25": [
@@ -1423,10 +1423,10 @@
     },
     {
       "name": "多因子(距2023-02-18)",
-      "total": 24,
+      "total": 22,
       "head": 10,
-      "percent": 0.92,
-      "stocks_percent": 0.87
+      "percent": 1.3,
+      "stocks_percent": 1.54
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1465,8 +1465,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 5.45,
-      "stocks_percent": 3.59
+      "percent": 5.98,
+      "stocks_percent": 5.87
     }
   ],
   "2023-03-04": [
@@ -1521,10 +1521,10 @@
     },
     {
       "name": "多因子(距2023-02-25)",
-      "total": 23,
+      "total": 10,
       "head": 10,
-      "percent": 1.57,
-      "stocks_percent": 1.66
+      "percent": 1.49,
+      "stocks_percent": 1.18
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1563,8 +1563,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 7.11,
-      "stocks_percent": 5.31
+      "percent": 7.56,
+      "stocks_percent": 7.12
     }
   ],
   "2023-03-11": [
@@ -1619,10 +1619,10 @@
     },
     {
       "name": "多因子(距2023-03-04)",
-      "total": 12,
-      "head": 10,
-      "percent": 1.31,
-      "stocks_percent": 0.64
+      "total": 3,
+      "head": 3,
+      "percent": 1.87,
+      "stocks_percent": 2.45
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1661,8 +1661,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 8.51,
-      "stocks_percent": 5.98
+      "percent": 9.57,
+      "stocks_percent": 9.74
     }
   ],
   "2023-03-19": [
@@ -1717,10 +1717,10 @@
     },
     {
       "name": "多因子(距2023-03-11)",
-      "total": 15,
+      "total": 21,
       "head": 10,
-      "percent": 0.53,
-      "stocks_percent": 0.36
+      "percent": 0.65,
+      "stocks_percent": 1.7
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1759,8 +1759,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.09,
-      "stocks_percent": 6.36
+      "percent": 10.28,
+      "stocks_percent": 11.61
     }
   ],
   "2023-03-25": [
@@ -1815,10 +1815,10 @@
     },
     {
       "name": "多因子(距2023-03-19)",
-      "total": 14,
+      "total": 23,
       "head": 10,
-      "percent": 0.73,
-      "stocks_percent": -1.55
+      "percent": 1.16,
+      "stocks_percent": -0.96
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1857,8 +1857,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.89,
-      "stocks_percent": 4.71
+      "percent": 11.56,
+      "stocks_percent": 10.54
     }
   ],
   "2023-04-01": [
@@ -1913,10 +1913,10 @@
     },
     {
       "name": "多因子(距2023-03-25)",
-      "total": 6,
-      "head": 6,
-      "percent": -0.41,
-      "stocks_percent": -1.87
+      "total": 3,
+      "head": 3,
+      "percent": -0.31,
+      "stocks_percent": -1.31
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -1955,8 +1955,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.44,
-      "stocks_percent": 2.75
+      "percent": 11.21,
+      "stocks_percent": 9.09
     }
   ],
   "2023-04-08": [
@@ -2011,10 +2011,10 @@
     },
     {
       "name": "多因子(距2023-04-01)",
-      "total": 4,
-      "head": 4,
-      "percent": 0.29,
-      "stocks_percent": -0.11
+      "total": 3,
+      "head": 3,
+      "percent": 0.28,
+      "stocks_percent": -0.08
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -2053,8 +2053,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.76,
-      "stocks_percent": 2.64
+      "percent": 11.52,
+      "stocks_percent": 9.0
     }
   ],
   "2023-04-15": [
@@ -2109,10 +2109,10 @@
     },
     {
       "name": "多因子(距2023-04-08)",
-      "total": 3,
-      "head": 3,
-      "percent": -0.09,
-      "stocks_percent": 0.06
+      "total": 2,
+      "head": 2,
+      "percent": -0.17,
+      "stocks_percent": -0.33
     },
     {
       "name": "累计所有(2022-10-22至今)",
@@ -2151,8 +2151,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.66,
-      "stocks_percent": 2.7
+      "percent": 11.33,
+      "stocks_percent": 8.64
     }
   ],
   "2023-04-21": [
@@ -2249,8 +2249,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.16,
-      "stocks_percent": 1.96
+      "percent": 10.82,
+      "stocks_percent": 7.86
     }
   ],
   "2023-04-27": [
@@ -2347,8 +2347,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 9.44,
-      "stocks_percent": 0.45
+      "percent": 11.11,
+      "stocks_percent": 6.26
     }
   ],
   "2023-05-06": [
@@ -2445,8 +2445,8 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 10.13,
-      "stocks_percent": 2.04
+      "percent": 11.81,
+      "stocks_percent": 7.94
     }
   ],
   "2023-05-12": [
@@ -2543,8 +2543,106 @@
     },
     {
       "name": "累计多因子(2022-10-22至今)",
-      "percent": 8.7,
-      "stocks_percent": 2.11
+      "percent": 10.36,
+      "stocks_percent": 8.02
+    }
+  ],
+  "2023-05-19": [
+    {
+      "name": "所有(距2023-05-12)",
+      "total": 498,
+      "head": 497,
+      "percent": 0.79,
+      "stocks_percent": 0.71
+    },
+    {
+      "name": "所有除新债(距2023-05-12)",
+      "total": 494,
+      "head": 493,
+      "percent": 0.76,
+      "stocks_percent": 0.69
+    },
+    {
+      "name": "到期保本(距2023-05-12)",
+      "total": 21,
+      "head": 10,
+      "percent": 1.83,
+      "stocks_percent": 4.85
+    },
+    {
+      "name": "回售摸彩(距2023-05-12)",
+      "total": 14,
+      "head": 10,
+      "percent": 1.02,
+      "stocks_percent": 1.14
+    },
+    {
+      "name": "低价格低溢价(距2023-05-12)",
+      "total": 14,
+      "head": 10,
+      "percent": 1.05,
+      "stocks_percent": -1.24
+    },
+    {
+      "name": "三低转债(距2023-05-12)",
+      "total": 18,
+      "head": 10,
+      "percent": 1.44,
+      "stocks_percent": 3.11
+    },
+    {
+      "name": "转股期未到(距2023-05-12)",
+      "total": 60,
+      "head": 10,
+      "percent": 0.48,
+      "stocks_percent": 1.67
+    },
+    {
+      "name": "多因子(距2023-05-12)",
+      "total": 43,
+      "head": 10,
+      "percent": 1.96,
+      "stocks_percent": -1.23
+    },
+    {
+      "name": "累计所有(2022-10-22至今)",
+      "percent": -0.46,
+      "stocks_percent": 1.92
+    },
+    {
+      "name": "累计所有除新债(2022-10-22至今)",
+      "percent": -0.51,
+      "stocks_percent": 1.95
+    },
+    {
+      "name": "累计到期保本(2022-10-22至今)",
+      "percent": 1.87,
+      "stocks_percent": 21.12
+    },
+    {
+      "name": "累计回售摸彩(2022-10-22至今)",
+      "percent": 4.86,
+      "stocks_percent": 16.89
+    },
+    {
+      "name": "累计低价格低溢价(2022-10-22至今)",
+      "percent": 7.09,
+      "stocks_percent": 1.47
+    },
+    {
+      "name": "累计三低转债(2022-10-22至今)",
+      "percent": -0.96,
+      "stocks_percent": 0.65
+    },
+    {
+      "name": "累计转股期未到(2022-10-22至今)",
+      "percent": -13.09,
+      "stocks_percent": -4.37
+    },
+    {
+      "name": "累计多因子(2022-10-22至今)",
+      "percent": 12.52,
+      "stocks_percent": 6.69
     }
   ]
 }
