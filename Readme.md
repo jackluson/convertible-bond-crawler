@@ -8,8 +8,6 @@
 <img src="./screenshots/plot.png"/>
 </p>
 
-# Table of Contents
-
 本仓库提供如下功能：
 
 1. 数据的获取
@@ -17,6 +15,8 @@
 3. 策略回测
 4. 策略可视化，log
 5. ...等等未来可期
+
+# Table of Contents
 
 - [数据爬取](#数据爬取)
   - [安装](#安装)
