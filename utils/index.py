@@ -11,7 +11,7 @@ import json
 from bs4 import BeautifulSoup
 import time
 from .login import login
-from .connect import connect
+from .connect import new_connect
 from .excel import update_xlsx_file
 from selenium.webdriver.common.by import By
 from config import rename_map, out_dir, summary_filename
@@ -85,7 +85,7 @@ def store_database(df):
     sql_insert = generate_insert_sql(
         store_map, 'convertible_bond', ['id', 'cb_code'])
     list = df.values.tolist()
-    connect_instance = connect()
+    connect_instance = new_connect()
     connect = connect_instance.get('connect')
     cursor = connect_instance.get('cursor')
     cursor.executemany(sql_insert, list)

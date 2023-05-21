@@ -14,7 +14,7 @@ import pymysql
 from dotenv import load_dotenv
 
 
-def connect():
+def new_connect():
     load_dotenv()
     env_db_host = os.getenv('db_host')
     env_db_name = os.getenv('db_name')
@@ -32,4 +32,4 @@ def connect():
 
 
 if __name__ == '__main__':
-    connect()
+    new_connect()
