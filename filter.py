@@ -286,3 +286,18 @@ def filter_listed_all_exclude_new(df):
         & (df['last_is_unlist'] == 'N')
     ]
     return df_filter
+
+
+def filter_downward_revise(df):
+    df_filter = df.loc[
+        (df['cb_to_pb'] > 1.2)
+        & (~df["cb_name"].str.contains("EB"))
+        & (df['date_convert_distance'] == '已到')
+        & (~df["repair_flag_remark"].str.contains("暂不行使下修权利"))
+        & (~df["repair_flag_remark"].str.contains("距离不下修承诺"))
+        & (df["price"] < 120)
+        & (df["premium_rate"] > 35)
+    ]
+    df_filter = df_filter.sort_values(
+        by='new_style', ascending=True, ignore_index=True)
+    return df_filter

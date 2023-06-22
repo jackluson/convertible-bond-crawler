@@ -113,7 +113,13 @@ strategy_list = [
         'head_count': head_count,
     },
     {
-        'name': '转股期未到',
+        'name': '下修博弈',
+        'start': "2022-10-22",
+        'filter_key': 'filter_downward_revise',
+        'head_count': head_count,
+    },
+    {
+        'name': '次新',
         'start': "2022-10-22",
         'filter_key': 'filter_disable_converte',
         'head_count': head_count,
