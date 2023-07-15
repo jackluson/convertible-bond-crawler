@@ -11,7 +11,6 @@ import json
 from bs4 import BeautifulSoup
 import time
 from .login import login
-from .connect import new_connect
 from .excel import update_xlsx_file
 from selenium.webdriver.common.by import By
 from config import rename_map, out_dir, summary_filename
@@ -64,32 +63,6 @@ def generate_insert_sql(target_dict, table_name, ignore_list):
         update_values=update_values[0:-1]
     )
     return sql_insert
-
-
-def delete_key_for_store(data):
-    del data['last_price']
-    del data['last_cb_percent']
-    del data['last_stock_price']
-    del data['last_stock_percent']
-    del data['last_is_unlist']
-    del data['industry']
-    del data['stock_stdevry']
-    del data['pre_ransom_remark']
-    if data.get('weight_score'):
-        del data['weight_score']
-    return data
-
-
-def store_database(df):
-    store_map = delete_key_for_store(rename_map)
-    sql_insert = generate_insert_sql(
-        store_map, 'convertible_bond', ['id', 'cb_code'])
-    list = df.values.tolist()
-    connect_instance = new_connect()
-    connect = connect_instance.get('connect')
-    cursor = connect_instance.get('cursor')
-    cursor.executemany(sql_insert, list)
-    connect.commit()
 
 
 def output_excel(df, *, sheet_name="All", date):

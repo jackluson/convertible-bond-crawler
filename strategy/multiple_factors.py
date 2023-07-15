@@ -27,10 +27,10 @@ def get_logger(name, log_file, level=logging.INFO):
 
 
 class MultipleFactorsStrategy():
-    max_hold_num = 12
+    max_hold_num = 8  # 目前回测，8，12 两个最优
     holdlist = []
     # count_position = 20
-    per = 0.083
+    per = 1 / max_hold_num
     dates = []
     cur_date = None
     data_source_dir = ''
@@ -41,13 +41,15 @@ class MultipleFactorsStrategy():
     sell_win_count = 0
     sell_loss_count = 0
     until_win = False
+    is_predict = False
     # sell_percents = []
     # sell_percent = 0
 
-    def __init__(self, *, file_dir, parent_dir='./backlog/', until_win=False):
+    def __init__(self, *, is_predict=False, file_dir, parent_dir='./backlog/', until_win=False):
         # log_file_name = 'log/' + begin_date + '至' + end_date + '_momentum.log'
         # self.logger = get_logger(log_file_name, log_file_name)
         self.until_win = until_win
+        self.is_predict = is_predict
         self.data_source_dir = f'{parent_dir}{file_dir}'
         suffix = '_win' if self.until_win else ''
         log_file_name = f'{self.data_source_dir}/multiple_factors{suffix}.log'
@@ -94,7 +96,9 @@ class MultipleFactorsStrategy():
         code_field_key = rename_map['cb_code']
         date_data = self.date_map_source[self.cur_date]
         candidate = date_data['candidate']
-
+        if self.is_predict:
+            print(f"================={self.cur_date}候选名单====================")
+            print(candidate)
         if index == 0:
             for index, item in candidate.head(self.max_hold_num).iterrows():
                 self.buyone(item)
@@ -110,10 +114,20 @@ class MultipleFactorsStrategy():
                 cur_price = latest_item['转债价格']
                 buy_price = item['buy_price']
                 if latest_item['是否满足强赎条件']:
-                    sell_list.append(item)
+                    sell_list.append({
+                        **item,
+                        'cur_price': cur_price,
+                        'premium_rate': latest_item['转股溢价率'],
+                        'industry': latest_item['行业'],
+                    })
                     continue
                 if cur_price <= buy_price and self.until_win:
-                    keep_list.append(item)
+                    keep_list.append({
+                        **item,
+                        'cur_price': cur_price,
+                        'premium_rate': latest_item['转股溢价率'],
+                        'industry': latest_item['行业'],
+                    })
                     continue
                 is_exist = False
                 for index, candidate_item in candidate.iterrows():
@@ -121,15 +135,24 @@ class MultipleFactorsStrategy():
                         is_exist = True
                         break
                 if is_exist == False:
-                    sell_list.append(item)
+                    sell_list.append({
+                        **item,
+                        'cur_price': cur_price,
+                        'premium_rate': latest_item['转股溢价率'],
+                        'industry': latest_item['行业'],
+                    })
                 else:
-                    keep_list.append(item)
+                    keep_list.append({
+                        **item,
+                        'cur_price': cur_price,
+                        'premium_rate': latest_item['转股溢价率'],
+                        'industry': latest_item['行业'],
+                    })
             keep_cnt = len(keep_list)
             # make buy holdlist
             for index, candidate_item in candidate.iterrows():
                 if len(buy_list) + keep_cnt == self.max_hold_num:
                     break
-                cur_price = latest_item['转债价格']
                 candidate_item_code = candidate_item[code_field_key]
                 is_exist = False
                 for item in self.holdlist:
@@ -138,11 +161,20 @@ class MultipleFactorsStrategy():
                         break
                 if is_exist == False:
                     buy_list.append(candidate_item)
-            self.compute()
-            for item in sell_list:
-                self.sellone(item)
-            for item in buy_list:
-                self.buyone(item)
+            if self.is_predict:
+                print("=================保持名单====================")
+                print(pd.DataFrame(keep_list))
+                print("=================卖出名单====================")
+                print(pd.DataFrame(sell_list))
+                print("=================买入名单====================")
+                print(pd.DataFrame(buy_list))
+            else:
+                self.compute()
+                # 以收盘价进行卖出，买入，和实操有一定差异
+                for item in sell_list:
+                    self.sellone(item)
+                for item in buy_list:
+                    self.buyone(item)
             self.logger.warn(
                 f"[汇总] -- 时间:{self.cur_date},最新持仓数量:{len(self.holdlist)}, 留仓数量:{keep_cnt}, 卖出数量:{len(sell_list)},买入数量:{len(buy_list)}")
 
@@ -231,25 +263,92 @@ class MultipleFactorsStrategy():
 
         df_cumprod['max_dd'] = df_cumprod['dd'].rolling(
             len(df_cumprod), min_periods=1).min().round(4)
-        print(df_cumprod)
+        # print(df_cumprod)
         total_percent = round(
             (df_cumprod.iloc[-1]['percent'] - 1) * 100, 2)  # 总盈亏比例
         max_percent = round(
             (df_cumprod.iloc[-1]['max_percent'] - 1) * 100, 2)  # 最大盈亏比例
         max_dd = round(df_cumprod.iloc[-1]['max_dd'] * 100, 2)  # 最大回撤
-        self.logger.warn(
-            f"[汇总] - - 当前盈亏: {total_percent} %, 最大盈亏: {max_percent}%, 最大回撤: {max_dd}%"
-        )
+        log = f"[汇总] - - 当前盈亏: {total_percent} %, 最大盈亏: {max_percent}%, 最大回撤: {max_dd}%"
+        print(log)
+        self.logger.warn(log)
         # print(plt_data.cumprod().round(4))
         plt.show()
         pass
 
+    def predict(self):
+        last_idx = len(self.dates) - 1
+        self.holdlist = [
+            {
+                "code": "123189",
+                "name": "晓鸣转债",
+                "buy_price": 100
+            },
+            {
+                "code": "123190",
+                "name": "道氏转债",
+                "buy_price": 100
+            },
+            {
+                "code": "123196",
+                "name": "正元转02",
+                "buy_price": 100
+            },
+            {
+                "code": "128044",
+                "name": "岭南转债",
+                "buy_price": 119.15
+            },
+            {
+                "code": "128081",
+                "name": "海亮转债",
+                "buy_price": 126.85
+            },
+            {
+                "code": "128087",
+                "name": "孚日转债",
+                "buy_price": 122.91
+            },
+            {
+                "code": "110084",
+                "name": "贵燃转债",
+                "buy_price": 121.81
+            },
+            {
+                "code": "113054",
+                "name": "绿动转债",
+                "buy_price": 109.0
+            },
+            {
+                "code": "113561",
+                "name": "正裕转债",
+                "buy_price": 128.32
+            },
 
-def impl_multiple_factors(*, file_dir, parent_dir='./backlog/', until_win=False):
+            {
+                "code": "113640",
+                "name": "苏利转债",
+                "buy_price": 114.56
+            },
+            {
+                "code": "113595",
+                "name": "花王转债",
+                "buy_price": 125.91
+            }
+        ]
+        print(f'目前持仓数量:{len(self.holdlist)}')
+        self.trade(last_idx)
+
+
+def impl_multiple_factors(*, is_predict=False, file_dir, parent_dir='./backlog/', until_win=False):
     strategy = MultipleFactorsStrategy(
+        is_predict=is_predict,
         file_dir=file_dir, parent_dir=parent_dir, until_win=until_win)
-    strategy.traverse()
-    strategy.summary()
+    if is_predict:
+        strategy.predict()
+    else:
+        strategy.traverse()
+        strategy.summary()
 
 
 if __name__ == "__main__":
