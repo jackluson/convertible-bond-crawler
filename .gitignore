@@ -5,5 +5,8 @@ archive_data/
 temp/
 .DS_Store
 backlog/
+backtest/
 dynamic_out/
-pratices/
+dyna
+mic_out/
+liquidity_out/

@@ -6,7 +6,6 @@ Author: luxuemin2108@gmail.com
 -----
 Copyright (c) 2022 Camel Lu
 '''
-import json
 
 from params import backtest_dir, head_count
 from utils.json import get_mid_temperature_data
@@ -68,62 +67,73 @@ rename_map = {
     'old_style': '老式双底',
     'new_style': '新式双底',
     'rating': '债券评级',
-    'weight_score': '多因子得分',
+    'weight': '多因子得分',
 }
 
 is_backtest = True
 
 out_dir = backtest_dir if is_backtest else f'./liquidity_out/'
 summary_filename = f'summary.json'
-strategy_list = [
-    # {
-    #     'name': '所有',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_listed_all',
-    #     'head_count': 1000  # 设置一个大值,取所有
-    # },
-    # {
-    #     'name': '所有除新债',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_listed_all_exclude_new',
-    #     'head_count': 1000  # 设置一个大值,取所有
-    # },
-    # {
-    #     'name': '到期保本',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_profit_due',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '回售摸彩',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_return_lucky',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '低价格低溢价',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_double_low',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '三低转债',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_three_low',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '下修博弈',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_downward_revise',
-    #     'head_count': head_count,
-    # },
-    # {
-    #     'name': '次新',
-    #     'start': "2022-10-22",
-    #     'filter_key': 'filter_disable_converte',
-    #     'head_count': head_count,
-    # },
+strategy_list = [{
+    'name': '多因子',
+    'start': "2022-10-22",
+    'filter_key': 'filter_multiple_factors',
+    'head_count': head_count,
+}] if is_backtest else [
+    {
+        'name': '所有',
+        'start': "2022-10-22",
+        'filter_key': 'filter_listed_all',
+        'head_count': 1000  # 设置一个大值,取所有
+    },
+    {
+        'name': '所有除新债',
+        'start': "2022-10-22",
+        'filter_key': 'filter_listed_all_exclude_new',
+        'head_count': 1000  # 设置一个大值,取所有
+    },
+    {
+        'name': '到期保本',
+        'start': "2022-10-22",
+        'filter_key': 'filter_profit_due',
+        'head_count': head_count,
+    },
+    {
+        'name': '回售摸彩',
+        'start': "2022-10-22",
+        'filter_key': 'filter_return_lucky',
+        'head_count': head_count,
+    },
+    {
+        'name': '低价格低溢价',
+        'start': "2022-10-22",
+        'filter_key': 'filter_double_low',
+        'head_count': head_count,
+    },
+    {
+        'name': '三低转债',
+        'start': "2022-10-22",
+        'filter_key': 'filter_three_low',
+        'head_count': head_count,
+    },
+    {
+        'name': '下修博弈',
+        'start': "2022-10-22",
+        'filter_key': 'filter_downward_revise',
+        'head_count': head_count,
+    },
+    {
+        'name': '候选圈',
+        'start': "2022-10-22",
+        'filter_key': 'filter_candidate',
+        'head_count': head_count,
+    },
+    {
+        'name': '次新',
+        'start': "2022-10-22",
+        'filter_key': 'filter_disable_converte',
+        'head_count': head_count,
+    },
     {
         'name': '多因子',
         'start': "2022-10-22",

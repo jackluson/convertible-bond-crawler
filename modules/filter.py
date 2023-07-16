@@ -279,16 +279,24 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
             stock_option_score *
             multiple_factors_config.get('stock_option_ratio'),
             2)
-        row['bond_price'] = round(bond_price_score, 3)
-        row['stock_premium'] = round(stock_premium_score, 3)
-        liquidity_score = liquidity_turnover_rate_score * \
-            multiple_factors_config.get('liquidity_turnover_rate_ratio')
-        row['liquidity'] = round(liquidity_score * liquidity_ratio, 3)
+        liquidity_score = 0
+        if liquidity_ratio > 0:
+            liquidity_score = liquidity_turnover_rate_score * \
+                multiple_factors_config.get('liquidity_turnover_rate_ratio')
+            liquidity_score = round(liquidity_score * liquidity_ratio, 3)
+            row['liquidity'] = liquidity_score
         row['stock'] = round(stock_score * stock_ratio, 3)
-
         row['bond'] = round(bond_score * bond_ratio, 3)
-        weight_score = row['liquidity'] + row['stock'] + row['bond']
+        weight_score = liquidity_score + row['stock'] + row['bond']
         row[weight_score_key] = weight_score
+        row['bond_price'] = round(
+            bond_price_score * multiple_factors_config.get('bond_price_ratio') * rating_ratio * bond_ratio, 3)
+        row['bond_remain'] = round(
+            bond_remain_score * multiple_factors_config.get('bond_remain_ratio') * bond_ratio, 3)
+
+        row['stock_premium'] = round(
+            stock_premium_score * multiple_factors_config.get('stock_premium_ratio') * stock_ratio, 3)
+
         return row
     df_filter = df_filter.apply(calulate_score, axis=1)
     df_filter = df_filter[df_filter.apply(core_filter, axis=1)]
@@ -327,4 +335,25 @@ def filter_downward_revise(df):
     ]
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)
+    return df_filter
+
+
+def filter_candidate(df):
+    df_filter = df.loc[
+        (df['cb_to_pb'] > 1.2)
+        & (df['is_unlist'] == 'N')
+        & (~df["cb_name"].str.contains("EB"))
+        & (df["price"] < 130)
+        & (df["premium_rate"] < 30)
+        & (df["turnover_rate"] > 2)
+    ]
+
+    def due_filter(row):
+        if '年' in row.date_remain_distance and row.date_remain_distance[0] != '0':
+            return True
+        return False
+    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
+
+    df_filter = df_filter.sort_values(
+        by='remain_amount', ascending=True, ignore_index=True)
     return df_filter

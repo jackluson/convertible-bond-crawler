@@ -53,37 +53,41 @@ def add_data(list, date, compare_date):
         df_all_last['可转债代码'] = df_all_last['可转债代码'].astype(str)
         for index, item in df_all_last.iterrows():
             last_map[item['可转债代码']] = item.to_dict()
+    new_list = []
     for index in range(len(list)):
         item = list[index]
         stock_code = item['stock_code']
         price = item['price']
         stock_price = item['stock_price']
         cb_code = item['cb_code']
-        item_stock = code_stdevry_map.get(stock_code)
-        list[index]['industry'] = item_stock.get(
-            'industry') if item_stock else '-'
-        list[index]['stock_stdevry'] = item_stock.get(
-            'stdevry') if item_stock else multiple_factors_config.get("stock_stdevry_bemchmark")
+        item_stock = code_stdevry_map.get(
+            stock_code) if code_stdevry_map.get(stock_code) else dict()
+        merge_item = {
+            **item,
+            **item_stock,
+        }
+        new_item = dict()
+        for key in rename_map.keys():
+            new_item[key] = merge_item.get(key)
+
         last_record = last_map.get(cb_code)
-        list[index]['last_price'] = None
-        list[index]['last_cb_percent'] = None
-        list[index]['last_stock_price'] = None
-        list[index]['last_stock_percent'] = None
-        list[index]['last_is_unlist'] = item['is_unlist'] if date == compare_date else "Y",
+        new_item['last_is_unlist'] = item['is_unlist'] if date == compare_date else "Y"
         if last_record:
-            list[index]['last_price'] = last_record.get(
+            new_item['last_price'] = last_record.get(
                 rename_map.get('price'))
-            list[index]['last_stock_price'] = last_record.get(
+            new_item['last_stock_price'] = last_record.get(
                 rename_map.get('stock_price'))
-            list[index]['last_stock_percent'] = round((float(stock_price) - last_record.get(
+            new_item['last_stock_percent'] = round((float(stock_price) - last_record.get(
                 rename_map.get('stock_price')))/last_record.get(rename_map.get('stock_price'))*100, 2)
-            list[index]['last_cb_percent'] = round((float(price) - last_record.get(
+            new_item['last_cb_percent'] = round((float(price) - last_record.get(
                 rename_map.get('price')))/last_record.get(rename_map.get('price'))*100, 2)
-            list[index]['last_is_unlist'] = last_record.get(
+            new_item['last_is_unlist'] = last_record.get(
                 rename_map.get("is_unlist"))
-        del list[index]['cb_id']
+        del new_item['id']
+        del new_item['cb_id']
+        new_list.append(new_item)
     return {
-        'list': list,
+        'list': new_list,
         'last_xls': xls
     }
 
@@ -117,6 +121,10 @@ def output(*, date, compare_date):
         filter_data_dict[filter_key] = filter_data
     if date == compare_date:
         print('success!!! data total: ', len(list))
+        filename = "multiple_factors_config.json"
+        file_dir = f'{out_dir}'
+        pathname = file_dir + filename
+        write_fund_json_data(multiple_factors_config, filename, file_dir)
         return
     all_df_rename = df.rename(columns=rename_map).reset_index()
     percents = []
@@ -254,6 +262,7 @@ def output_with_prepare(date=None):
         date = "2023-07-14"
     res = prepare_config(date)
     compare_date = res.get('compare_date')
+    print(f"当前日期：{date}, 上期日期：{compare_date}")
     output(date=date, compare_date=compare_date)
 
 
