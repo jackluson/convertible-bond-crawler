@@ -6,6 +6,8 @@ File Created: Saturday, 23rd July 2022 9:09:56 pm
 -----
 Copyright (c) 2022 Camel Lu
 '''
+from datetime import datetime
+
 from modules.output import output_with_prepare
 from modules.store import store_database
 from modules.backtest import backtest
@@ -22,7 +24,9 @@ if __name__ == "__main__":
             5.“多因子策略回测” \n \
         输入：")
     if input_value == '1':
-        output_with_prepare()
+        date = datetime.now().strftime("%Y-%m-%d")
+        # date = "2023-07-14"
+        output_with_prepare(date)
     if input_value == '2':
         store_database()
     elif input_value == '3':

@@ -16,6 +16,7 @@ from config import repair_flag_style, repair_ransom_style, pre_ransom_style, ren
 
 def crawler(*, date):
     output_path = './html/' + date + "_output.html"
+    isReadLocal = False
     if os.path.exists(output_path):
         if os.path.getsize(output_path) > 0:
             isReadLocal = True

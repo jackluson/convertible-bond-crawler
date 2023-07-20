@@ -231,7 +231,7 @@ def show_log(stats_info, date):
     avg_remain_amount = stats_info['avg_remain_amount']
     total_remain_amount = stats_info['total_remain_amount']
     print(f"\n{date}统计数据:\n")
-    print(f'  价格中位数: {mid_price}      价格平均数: {avg_price}')
+    print(f'  价格中位数: {mid_price}       价格平均数: {avg_price}')
     print(f'  溢价中位数: {mid_premium_rate}%        溢价平均数: {avg_premium_rate}%\n')
     print(
         f'  可转债数量: {count}只            涨跌比: {raise_count}/{fall_count} ')
@@ -243,7 +243,7 @@ def show_log(stats_info, date):
     print(
         f'  成交量总数: {total_trade_amount}亿     最大成交量: {max_trade_amount}亿     前十成交量之和: {top_trade_amount_total}亿')
     print(
-        f'  余额中位数: {mid_remain_amount}亿       余额平均数: {avg_remain_amount}亿      总余额: {total_remain_amount}亿 \n')
+        f'  余额中位数: {mid_remain_amount}亿        余额平均数: {avg_remain_amount}亿             总余额: {total_remain_amount}亿 \n')
 
     if multiple_factors_config.get(
             "is_dynamic_temperature"):
@@ -258,8 +258,8 @@ def show_log(stats_info, date):
 
 def output_with_prepare(date=None):
     if date == None:
-        # date = datetime.now().strftime("%Y-%m-%d")
-        date = "2023-07-14"
+        date = datetime.now().strftime("%Y-%m-%d")
+        # date = "2023-07-14"
     res = prepare_config(date)
     compare_date = res.get('compare_date')
     print(f"当前日期：{date}, 上期日期：{compare_date}")

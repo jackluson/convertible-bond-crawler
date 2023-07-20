@@ -14,7 +14,7 @@ def statistics(df):
     df_all = filter.filter_listed_all(df)
     df_all['turnover_rate'] = (
         df_all['trade_amount']/df_all['remain_amount'] * 100).round(2)
-    mid_price = df_all['price'].median()
+    mid_price = df_all['price'].median().round(2)
     avg_price = df_all['price'].mean().round(2)
     mid_premium_rate = df_all['premium_rate'].median().round(2)
     avg_premium_rate = df_all['premium_rate'].mean().round(2)
