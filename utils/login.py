@@ -20,6 +20,8 @@ def login(redirect_url, is_cookies_login=False):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--no-sandbox")
     # chrome_options.add_argument('--headless')
+    chrome_options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    chrome_driver_binary = "/usr/local/bin/chromedriver"
     chrome_driver = webdriver.Chrome(options=chrome_options)
     chrome_driver.set_page_load_timeout(12000)
     """

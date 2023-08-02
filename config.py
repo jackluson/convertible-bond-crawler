@@ -70,7 +70,7 @@ rename_map = {
     'weight': '多因子得分',
 }
 
-is_backtest = True
+is_backtest = False
 
 out_dir = backtest_dir if is_backtest else f'./liquidity_out/'
 summary_filename = f'summary.json'

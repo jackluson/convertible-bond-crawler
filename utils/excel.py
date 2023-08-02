@@ -16,8 +16,15 @@ from openpyxl import load_workbook
 def update_xlsx_file(path, df_data, sheet_name, *, index=False):
     try:
         if os.path.exists(path):
-            writer = pd.ExcelWriter(path, engine='openpyxl')
+            with pd.ExcelWriter(path, mode="a", engine="openpyxl", if_sheet_exists="replace",) as writer:
+                workbook = writer.book
+                if writer.sheets.get(sheet_name):
+                    workbook.remove(workbook[sheet_name])
+                df_data.to_excel(writer, sheet_name=sheet_name, index=False)
+            return
             book = load_workbook(path)
+            writer = pd.ExcelWriter(path, mode='a', engine='openpyxl')
+            writer.book = book
             # 表名重复，删掉，重写
             if sheet_name in book.sheetnames:
                 del book[sheet_name]
