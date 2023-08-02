@@ -15,7 +15,7 @@ from modules.source import crawler
 from modules.stats import statistics
 from utils.json import write_fund_json_data, get_stock_info
 from utils.index import output_excel
-from config import rename_map, strategy_list, out_dir, summary_filename, real_mid_temperature_map
+from config import rename_map, strategy_list, out_dir, summary_filename, real_mid_temperature_map, output_stats_map, output_stats_list
 from params import multiple_factors_config
 
 pd.options.mode.chained_assignment = None
@@ -98,8 +98,47 @@ def output(*, date, compare_date):
     data_list = res.get('list')
     last_xls = res.get('last_xls')
     df = pd.DataFrame.from_records(data_list)
+    stats_list = []
+    for item in output_stats_list:
+        lte = item.get('lte')
+        gt = item.get('gt')
+        key = item.get('key')
+        if item.get('lte') == None and item.get('gt') == None:
+            stats_df = df
+        elif lte != None and gt == None:
+            stats_df = df[df[key] <= lte]
+        elif lte != None and gt != None:
+            stats_df = df[(df[key] <= lte) & (df[key] > gt)]
+        elif gt != None:
+            stats_df = df[df[key] > gt]
+        # print(item.get('title'), "\n")
+        # print(stats_df)
+        stats_df.to_csv(f"stats/details/{item.get('title')}.csv",
+                        header=True, index=True)
+
+        stats_info = statistics(stats_df)
+        stats_dict = {
+            'title': item.get('title'),
+            **stats_info
+        }
+        stats_list.append(stats_dict)
     stats_info = statistics(df)
     show_log(stats_info, date)
+    df_stats_list = pd.DataFrame.from_records(stats_list)
+    df_stats_list = df_stats_list.rename(columns=output_stats_map)
+    df_stats_list.set_index('标题', inplace=True)
+    print(df_stats_list)
+    df_stats_list.to_csv(f"stats/{date}.csv", header=True, index=True)
+    if multiple_factors_config.get(
+            "is_dynamic_temperature"):
+        print(
+            f"        当前股市温度为: {multiple_factors_config['real_temperature']}")
+        if multiple_factors_config.get("is_dynamic_ratio"):
+            print(
+                f"当前real_stock_ratio为: {multiple_factors_config['real_stock_ratio']}")
+            print(
+                f" 当前real_bond_ratio为: {multiple_factors_config['real_bond_ratio']} \n")
+
     # if not multiple_factors_config.get('real_mid_price'):
     multiple_factors_config['real_mid_price'] = stats_info.get('mid_price')
 
@@ -199,7 +238,7 @@ def prepare_config(date):
     real_temperature = cur_mid_temperature.get(
         'temperature') if cur_mid_temperature else None
     if real_temperature == None:
-        real_temperature = 32.79
+        real_temperature = 32.82
     set_dynamic_props(real_mid_price=real_mid_price,
                       real_temperature=real_temperature)
     return {
@@ -236,24 +275,14 @@ def show_log(stats_info, date):
     print(
         f'  可转债数量: {count}只            涨跌比: {raise_count}/{fall_count} ')
     print(
-        f'  涨幅中位数: {mid_cb_percent}%       涨幅平均数: {avg_cb_percent}% \n')
+        f'  涨幅中位数: {mid_cb_percent}%        涨幅平均数: {avg_cb_percent}% \n')
 
     print(f'成交量中位数: {mid_trade_amount}亿     成交量平均数: {avg_trade_amount}亿')
     print(f'换手率中位数: {mid_turnover_rate}%      换手率平均数: {avg_turnover_rate}%')
     print(
         f'  成交量总数: {total_trade_amount}亿     最大成交量: {max_trade_amount}亿     前十成交量之和: {top_trade_amount_total}亿')
     print(
-        f'  余额中位数: {mid_remain_amount}亿        余额平均数: {avg_remain_amount}亿             总余额: {total_remain_amount}亿 \n')
-
-    if multiple_factors_config.get(
-            "is_dynamic_temperature"):
-        print(
-            f"        当前股市温度为: {multiple_factors_config['real_temperature']}")
-        if multiple_factors_config.get("is_dynamic_ratio"):
-            print(
-                f"当前real_stock_ratio为: {multiple_factors_config['real_stock_ratio']}")
-            print(
-                f" 当前real_bond_ratio为: {multiple_factors_config['real_bond_ratio']} \n")
+        f'  余额中位数: {mid_remain_amount}亿       余额平均数: {avg_remain_amount}亿             总余额: {total_remain_amount}亿 \n')
 
 
 def output_with_prepare(date=None):

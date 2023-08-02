@@ -70,6 +70,173 @@ rename_map = {
     'weight': '多因子得分',
 }
 
+output_stats_map = {
+    'title': '标题',
+    'count': '总数量(只)',
+    'raise_count': '上涨数量',
+    'fall_count': '下跌数量',
+    'mid_cb_percent': '涨跌幅中位数(%)',
+    'avg_cb_percent': '涨跌幅平均数(%)',
+    'mid_price': '中位数',
+    'avg_price': '平均数',
+    'mid_premium_rate': '溢价中位数(%)',
+    'avg_premium_rate': '溢价平均数',
+    'mid_remain_amount': '剩余规模中位数(亿)',
+    'avg_remain_amount': '剩余规模平均数',
+    'total_remain_amount': '总剩余规模',
+    'total_trade_amount': '总成交额(亿)',
+    'top_trade_amount_total': '前10成交额',
+    'mid_trade_amount': '成交额中位数',
+    'avg_trade_amount': '平均成交额',
+    'max_trade_amount': '最大成交额',
+    'mid_turnover_rate': '换手率中位数(%)',
+    'avg_turnover_rate': '平均换手率',
+}
+
+output_stats_list = [
+    {
+        'title': '所有',
+    },
+    {
+        'title': '<=100',
+        'key': 'price',
+        'lte': 100
+    },
+    {
+        'title': '100~110',
+        'key': 'price',
+        'gt': 100,
+        'lte': 110,
+    },
+    {
+        'title': '110~120',
+        'key': 'price',
+        'gt': 110,
+        'lte': 120,
+    },
+    {
+        'title': '120~130',
+        'key': 'price',
+        'gt': 120,
+        'lte': 130,
+    },
+    {
+        'title': '130~150',
+        'key': 'price',
+        'gt': 130,
+        'lte': 150,
+    },
+    {
+        'title': '>150',
+        'key': 'price',
+        'gt': 150,
+    },
+    {
+        'title': '溢价<=0',
+        'key': 'premium_rate',
+        'lte': 0,
+    },
+    {
+        'title': '溢价0~10',
+        'key': 'premium_rate',
+        'gt': 0,
+        'lte': 10,
+    },
+    {
+        'title': '溢价10~20',
+        'key': 'premium_rate',
+        'gt': 10,
+        'lte': 20,
+    },
+    {
+        'title': '溢价20~30',
+        'key': 'premium_rate',
+        'gt': 20,
+        'lte': 30,
+    },
+    {
+        'title': '溢价30~40',
+        'key': 'premium_rate',
+        'gt': 30,
+        'lte': 40,
+    },
+    {
+        'title': '溢价40~50',
+        'key': 'premium_rate',
+        'gt': 40,
+        'lte': 50,
+    },
+    {
+        'title': '溢价50~70',
+        'key': 'premium_rate',
+        'gt': 50,
+        'lte': 70,
+    },
+    {
+        'title': '溢价>70',
+        'key': 'premium_rate',
+        'gt': 70,
+    },
+    {
+        'title': '规模<=1.5',
+        'key': 'remain_amount',
+        'lte': 1.5,
+    },
+    {
+        'title': '规模1.5~3',
+        'key': 'remain_amount',
+        'gt': 1.5,
+        'lte': 3,
+    },
+    {
+        'title': '规模3~4',
+        'key': 'remain_amount',
+        'gt': 3,
+        'lte': 4,
+    },
+    {
+        'title': '规模4~5',
+        'key': 'remain_amount',
+        'gt': 4,
+        'lte': 5,
+    },
+    {
+        'title': '规模5~6',
+        'key': 'remain_amount',
+        'gt': 5,
+        'lte': 6,
+    },
+    {
+        'title': '规模6~8',
+        'key': 'remain_amount',
+        'gt': 6,
+        'lte': 8,
+    },
+    {
+        'title': '规模8~10',
+        'key': 'remain_amount',
+        'gt': 8,
+        'lte': 10,
+    },
+    {
+        'title': '规模10~20',
+        'key': 'remain_amount',
+        'gt': 10,
+        'lte': 20,
+    },
+    {
+        'title': '规模20~50',
+        'key': 'remain_amount',
+        'gt': 20,
+        'lte': 50,
+    },
+    {
+        'title': '规模>50',
+        'key': 'remain_amount',
+        'gt': 50,
+    },
+]
+
 is_backtest = False
 
 out_dir = backtest_dir if is_backtest else f'./liquidity_out/'

@@ -47,18 +47,17 @@ def statistics(df):
         'count': len(df_all),
         'raise_count': len(df_raise),
         'fall_count': len(df_fall),
+        'mid_cb_percent': mid_cb_percent,
+        'avg_cb_percent': avg_cb_percent,
 
         'mid_price': mid_price,
         'avg_price': avg_price,
         'mid_premium_rate': mid_premium_rate,
         'avg_premium_rate': avg_premium_rate,
 
-        'avg_remain_amount': avg_remain_amount,
         'mid_remain_amount': mid_remain_amount,
+        'avg_remain_amount': avg_remain_amount,
         'total_remain_amount': total_remain_amount,
-
-        'mid_cb_percent': mid_cb_percent,
-        'avg_cb_percent': avg_cb_percent,
 
         'total_trade_amount': total_trade_amount,
         'top_trade_amount_total': top_trade_amount_total,
