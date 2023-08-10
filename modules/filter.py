@@ -10,7 +10,7 @@ from datetime import datetime
 from config import rating_map
 
 
-def filter_profit_due(df):
+def filter_profit_due(df, *, multiple_factors_config=None):
     df_filter = df.loc[(df['rate_expire_aftertax'] > 0)
                        #    & (df['price'] < 115)
                        & (df['date_convert_distance'] == '已到')
@@ -27,7 +27,7 @@ def filter_profit_due(df):
     return df_filter
 
 
-def filter_return_lucky(df):
+def filter_return_lucky(df, *, multiple_factors_config=None):
     df_filter = df.loc[(df['price'] < 125)
                        & (df['rate_expire_aftertax'] > -10)
                        & (df['date_return_distance'] == '回售内')
@@ -41,7 +41,7 @@ def filter_return_lucky(df):
     return df_filter
 
 
-def filter_double_low(df):
+def filter_double_low(df, *, multiple_factors_config=None):
     df_filter = df.loc[(df['date_return_distance'] != '无权')
                        & (~df["cb_name"].str.contains("EB"))
                        & (df['is_unlist'] == 'N')
@@ -66,39 +66,88 @@ def filter_double_low(df):
     return df_filter
 
 
-def filter_three_low(df):
+def filter_genie(df, *, multiple_factors_config):
+    real_mid_turnover_rate = multiple_factors_config.get(
+        'real_mid_turnover_rate')
     df_filter = df.loc[
         (~df["cb_name"].str.contains("EB"))
-        #    & (df['date_return_distance'] != '回售内')
+        & (df['date_convert_distance'] == '已到')
         & (df['is_ransom_flag'] == 'False')
-        & (df['cb_to_pb'] > 0.5)
-        & (df['remain_amount'] < 2)
-        & ((df['premium_rate'] < 30) | (df['price'] < 145))
-        & (df['market_cap'] < 100)
+        & (df['remain_amount'] < 1.5)
+        & ((df['price'] < 300))
+        & (df['market_cap'] < 50)
+        & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
-    def due_filter(row):
-        if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
-            day_count = float(row.date_remain_distance[0:-1])
-            return day_count > 90
-        return True
-    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
+    def integrate_filter(row):
+        if rating_map.get(
+                row.rating) < 0.95:
+            return False
+        if row.pre_ransom_remark:
+            return False
+        if '年' in row.date_remain_distance and row.date_remain_distance[0] != '0':
+            return True
+        return False
+    df_filter = df_filter[df_filter.apply(integrate_filter, axis=1)]
 
     df_filter = df_filter.sort_values(
-        by='remain_amount', ascending=True, ignore_index=True)
+        by='new_style', ascending=True, ignore_index=True)
     return df_filter
 
 
-def filter_disable_converte(df):
+def filter_small_scale_not_ransom(df, *, multiple_factors_config):
+    real_mid_turnover_rate = multiple_factors_config.get(
+        'real_mid_turnover_rate')
+    df_filter = df.loc[
+        (~df["cb_name"].str.contains("EB"))
+        & (df['date_convert_distance'] == '已到')
+        & (df['is_ransom_flag'] == 'False')
+        & ((df['remain_amount'] > 1.5) & (df['remain_amount'] < 3))
+        & ((df['price'] < 180))
+        & ((df['premium_rate'] < 50))
+        & (df['market_cap'] < 100)
+        & (df['turnover_rate'] >= real_mid_turnover_rate)
+    ]
+
+    def integrate_filter(row):
+        if rating_map.get(
+                row.rating) < 0.95:
+            return False
+        if row.pre_ransom_remark:
+            return False
+        if '年' in row.date_remain_distance and row.date_remain_distance[0] != '0':
+            return True
+        return False
+    df_filter = df_filter[df_filter.apply(integrate_filter, axis=1)]
+
+    df_filter = df_filter.sort_values(
+        by='new_style', ascending=True, ignore_index=True)
+    return df_filter
+
+
+def filter_new_small(df, *, multiple_factors_config):
+    real_mid_turnover_rate = multiple_factors_config.get(
+        'real_mid_turnover_rate')
     df_filter = df.loc[
         (~df["cb_name"].str.contains("EB"))
         & (df['date_convert_distance'] != '已到')
         & (df['is_unlist'] == 'N')
         & (df['last_is_unlist'] == 'N')
+        & (df['remain_amount'] < 5)
+        & ((df['price'] < 180))
+        & ((df['premium_rate'] < 50))
+        & (df['market_cap'] < 100)
+        & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
+    def integrate_filter(row):
+        # 根据不足两个月仅仅显示天数规则
+        if '月' in row.date_convert_distance:
+            return True
+        return False
+    df_filter = df_filter[df_filter.apply(integrate_filter, axis=1)]
     df_filter = df_filter.sort_values(
-        by='remain_amount', ascending=True, ignore_index=True)
+        by='new_style', ascending=True, ignore_index=True)
     return df_filter
 
 
@@ -306,7 +355,7 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
     return df_filter
 
 
-def filter_listed_all(df):
+def filter_listed_all(df, *, multiple_factors_config=None):
     df_filter = df.loc[
         (~df["cb_name"].str.contains("EB"))
         & (df['is_unlist'] == 'N')
@@ -314,7 +363,7 @@ def filter_listed_all(df):
     return df_filter
 
 
-def filter_listed_all_exclude_new(df):
+def filter_listed_all_exclude_new(df, *, multiple_factors_config=None):
     df_filter = df.loc[
         (~df["cb_name"].str.contains("EB"))
         & (df['is_unlist'] == 'N')
@@ -323,7 +372,7 @@ def filter_listed_all_exclude_new(df):
     return df_filter
 
 
-def filter_downward_revise(df):
+def filter_downward_revise(df, *, multiple_factors_config=None):
     df_filter = df.loc[
         (df['cb_to_pb'] > 1.2)
         & (~df["cb_name"].str.contains("EB"))
@@ -338,7 +387,9 @@ def filter_downward_revise(df):
     return df_filter
 
 
-def filter_candidate(df):
+def filter_candidate(df, *, multiple_factors_config):
+    real_mid_turnover_rate = multiple_factors_config.get(
+        'real_mid_turnover_rate')
     df_filter = df.loc[
         (df['cb_to_pb'] > 1.2)
         & (df['is_unlist'] == 'N')
@@ -346,6 +397,7 @@ def filter_candidate(df):
         & (df["price"] < 130)
         & (df["premium_rate"] < 30)
         & (df["turnover_rate"] > 2)
+        & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
     def due_filter(row):
@@ -355,5 +407,5 @@ def filter_candidate(df):
     df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
 
     df_filter = df_filter.sort_values(
-        by='remain_amount', ascending=True, ignore_index=True)
+        by='new_style', ascending=True, ignore_index=True)
     return df_filter

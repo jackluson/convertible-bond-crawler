@@ -15,7 +15,8 @@ from modules.source import crawler
 from modules.stats import statistics
 from utils.json import write_fund_json_data, get_stock_info
 from utils.index import output_excel
-from config import rename_map, strategy_list, out_dir, summary_filename, real_mid_temperature_map, output_stats_map, output_stats_list
+from config import (is_backtest, out_dir, output_stats_list, output_stats_map,
+                    real_mid_temperature_map, rename_map, strategy_list, summary_filename)
 from params import multiple_factors_config
 
 pd.options.mode.chained_assignment = None
@@ -92,43 +93,43 @@ def add_data(list, date, compare_date):
     }
 
 
-def output(*, date, compare_date):
+def output(*, date, compare_date, is_stats=True):
     list = crawler(date=date)
     res = add_data(list, date, compare_date)
     data_list = res.get('list')
     last_xls = res.get('last_xls')
     df = pd.DataFrame.from_records(data_list)
-    stats_list = []
-    for item in output_stats_list:
-        lte = item.get('lte')
-        gt = item.get('gt')
-        key = item.get('key')
-        if item.get('lte') == None and item.get('gt') == None:
-            stats_df = df
-        elif lte != None and gt == None:
-            stats_df = df[df[key] <= lte]
-        elif lte != None and gt != None:
-            stats_df = df[(df[key] <= lte) & (df[key] > gt)]
-        elif gt != None:
-            stats_df = df[df[key] > gt]
-        # print(item.get('title'), "\n")
-        # print(stats_df)
-        stats_df.to_csv(f"stats/details/{item.get('title')}.csv",
-                        header=True, index=True)
+    if is_stats:
+        stats_list = []
+        for item in output_stats_list:
+            lte = item.get('lte')
+            gt = item.get('gt')
+            key = item.get('key')
+            if item.get('lte') == None and item.get('gt') == None:
+                stats_df = df
+            elif lte != None and gt == None:
+                stats_df = df[df[key] <= lte]
+            elif lte != None and gt != None:
+                stats_df = df[(df[key] <= lte) & (df[key] > gt)]
+            elif gt != None:
+                stats_df = df[df[key] > gt]
+            # print(item.get('title'), "\n")
+            # print(stats_df)
+            stats_df.to_csv(f"stats/details/{item.get('title')}.csv",
+                            header=True, index=True)
 
-        stats_info = statistics(stats_df)
-        stats_dict = {
-            'title': item.get('title'),
-            **stats_info
-        }
-        stats_list.append(stats_dict)
-    stats_info = statistics(df)
-    show_log(stats_info, date)
-    df_stats_list = pd.DataFrame.from_records(stats_list)
-    df_stats_list = df_stats_list.rename(columns=output_stats_map)
-    df_stats_list.set_index('标题', inplace=True)
-    print(df_stats_list)
-    df_stats_list.to_csv(f"stats/{date}.csv", header=True, index=True)
+            stats_info = statistics(stats_df)
+            stats_dict = {
+                'title': item.get('title'),
+                **stats_info
+            }
+            stats_list.append(stats_dict)
+
+        df_stats_list = pd.DataFrame.from_records(stats_list)
+        df_stats_list = df_stats_list.rename(columns=output_stats_map)
+        df_stats_list.set_index('标题', inplace=True)
+        print(df_stats_list)
+        df_stats_list.to_csv(f"stats/{date}.csv", header=True, index=True)
     if multiple_factors_config.get(
             "is_dynamic_temperature"):
         print(
@@ -139,6 +140,8 @@ def output(*, date, compare_date):
             print(
                 f" 当前real_bond_ratio为: {multiple_factors_config['real_bond_ratio']} \n")
 
+    stats_info = statistics(df)
+    show_log(stats_info, date)
     # if not multiple_factors_config.get('real_mid_price'):
     multiple_factors_config['real_mid_price'] = stats_info.get('mid_price')
 
@@ -154,7 +157,8 @@ def output(*, date, compare_date):
             filter_data = filter_processor(
                 df, date=date, multiple_factors_config=multiple_factors_config)
         else:
-            filter_data = filter_processor(df)
+            filter_data = filter_processor(
+                df, multiple_factors_config=multiple_factors_config)
         print(f"{strategy_name}的数量：{len(filter_data)}只")
         output_excel(filter_data, sheet_name=strategy_name, date=date)
         filter_data_dict[filter_key] = filter_data
@@ -238,7 +242,7 @@ def prepare_config(date):
     real_temperature = cur_mid_temperature.get(
         'temperature') if cur_mid_temperature else None
     if real_temperature == None:
-        real_temperature = 32.82
+        real_temperature = 29.12
     set_dynamic_props(real_mid_price=real_mid_price,
                       real_temperature=real_temperature)
     return {
@@ -292,7 +296,7 @@ def output_with_prepare(date=None):
     res = prepare_config(date)
     compare_date = res.get('compare_date')
     print(f"当前日期：{date}, 上期日期：{compare_date}")
-    output(date=date, compare_date=compare_date)
+    output(date=date, compare_date=compare_date, is_stats=~is_backtest)
 
 
 if __name__ == "__main__":

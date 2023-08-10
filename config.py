@@ -239,7 +239,7 @@ output_stats_list = [
 
 is_backtest = False
 
-out_dir = backtest_dir if is_backtest else f'./liquidity_out/'
+out_dir = backtest_dir if is_backtest else f'./strict_out/'
 summary_filename = f'summary.json'
 strategy_list = [{
     'name': '多因子',
@@ -260,6 +260,48 @@ strategy_list = [{
         'head_count': 1000  # 设置一个大值,取所有
     },
     {
+        'name': '低价格低溢价',
+        'start': "2022-10-22",
+        'filter_key': 'filter_double_low',
+        'head_count': head_count,
+    },
+    {
+        'name': '多因子',
+        'start': "2022-10-22",
+        'filter_key': 'filter_multiple_factors',
+        'head_count': head_count,
+    },
+    {
+        'name': '妖债基因',
+        'start': "2022-10-22",
+        'filter_key': 'filter_genie',
+        'head_count': head_count,
+    },
+    {
+        'name': '小规模不强赎',
+        'start': "2022-10-22",
+        'filter_key': 'filter_small_scale_not_ransom',
+        'head_count': head_count,
+    },
+    {
+        'name': '次新小规模',
+        'start': "2022-10-22",
+        'filter_key': 'filter_new_small',
+        'head_count': head_count,
+    },
+    {
+        'name': '候选圈',
+        'start': "2022-10-22",
+        'filter_key': 'filter_candidate',
+        'head_count': head_count,
+    },
+    {
+        'name': '下修博弈',
+        'start': "2022-10-22",
+        'filter_key': 'filter_downward_revise',
+        'head_count': head_count,
+    },
+    {
         'name': '到期保本',
         'start': "2022-10-22",
         'filter_key': 'filter_profit_due',
@@ -271,42 +313,6 @@ strategy_list = [{
         'filter_key': 'filter_return_lucky',
         'head_count': head_count,
     },
-    {
-        'name': '低价格低溢价',
-        'start': "2022-10-22",
-        'filter_key': 'filter_double_low',
-        'head_count': head_count,
-    },
-    {
-        'name': '三低转债',
-        'start': "2022-10-22",
-        'filter_key': 'filter_three_low',
-        'head_count': head_count,
-    },
-    {
-        'name': '下修博弈',
-        'start': "2022-10-22",
-        'filter_key': 'filter_downward_revise',
-        'head_count': head_count,
-    },
-    {
-        'name': '候选圈',
-        'start': "2022-10-22",
-        'filter_key': 'filter_candidate',
-        'head_count': head_count,
-    },
-    {
-        'name': '次新',
-        'start': "2022-10-22",
-        'filter_key': 'filter_disable_converte',
-        'head_count': head_count,
-    },
-    {
-        'name': '多因子',
-        'start': "2022-10-22",
-        'filter_key': 'filter_multiple_factors',
-        'head_count': head_count,
-    }
 ]
 
 

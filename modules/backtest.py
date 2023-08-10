@@ -51,5 +51,5 @@ def backtest():
         if is_dynamic_temperature or is_dynamic_mid_price:
             set_dynamic_props(real_mid_price=real_mid_price,
                               real_temperature=real_temperature)
-        output(date=date, compare_date=compare_date)
+        output(date=date, compare_date=compare_date, is_stats=False)
         prev_date = cur_date  # 成功输出之后，更新prev_date

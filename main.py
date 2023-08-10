@@ -25,7 +25,7 @@ if __name__ == "__main__":
         输入：")
     if input_value == '1':
         date = datetime.now().strftime("%Y-%m-%d")
-        # date = "2023-08-02"
+        # date = "2023-08-09"
         output_with_prepare(date)
     if input_value == '2':
         store_database()
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     elif input_value == '4':
         plot()
     elif input_value == '5':
-        file_dir = 'price=115_count=10_premium=15_premium_ratio=0.5_stdevry=35_max_price=130_open_rating=1_score_bemchmark=1dynamic=True/'
+        file_dir = 'stock_ratio=0.3_price=115_count=10_premium=15_premium_ratio=0.5_stdevry=35_max_price=130_open_rating=1_score_bemchmark=1dynamic=True/'
         # file_dir = 'liquidity_out/'
         parent_dir = './backtest/'
         impl_multiple_factors(
