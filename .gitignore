@@ -11,3 +11,6 @@ dyna
 mic_out/
 liquidity_out/
 stats/
+strict_out/
+strict_out_backup/
+strict_out_mini/
