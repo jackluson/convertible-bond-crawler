@@ -75,6 +75,7 @@ def filter_genie(df, *, multiple_factors_config):
         & (df['is_ransom_flag'] == 'False')
         & (df['remain_amount'] < 1.5)
         & ((df['price'] < 300))
+        & ((df['pb'] > 1.3))
         & (df['market_cap'] < 50)
         & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
@@ -104,6 +105,7 @@ def filter_small_scale_not_ransom(df, *, multiple_factors_config):
         & (df['is_ransom_flag'] == 'False')
         & ((df['remain_amount'] > 1.5) & (df['remain_amount'] < 3))
         & ((df['price'] < 180))
+        & ((df['pb'] > 1.3))
         & ((df['premium_rate'] < 50))
         & (df['market_cap'] < 100)
         & (df['turnover_rate'] >= real_mid_turnover_rate)
@@ -134,6 +136,7 @@ def filter_new_small(df, *, multiple_factors_config):
         & (df['is_unlist'] == 'N')
         & (df['last_is_unlist'] == 'N')
         & (df['remain_amount'] < 5)
+        & ((df['pb'] > 1.3))
         & ((df['price'] < 180))
         & ((df['premium_rate'] < 50))
         & (df['market_cap'] < 100)

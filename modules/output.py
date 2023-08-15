@@ -18,6 +18,7 @@ from utils.index import output_excel
 from config import (is_backtest, out_dir, output_stats_list, output_stats_map,
                     real_mid_temperature_map, rename_map, strategy_list, summary_filename)
 from params import multiple_factors_config
+from modules.fetch import fetch_indictor
 
 pd.options.mode.chained_assignment = None
 
@@ -113,17 +114,19 @@ def output(*, date, compare_date, is_stats=True):
                 stats_df = df[(df[key] <= lte) & (df[key] > gt)]
             elif gt != None:
                 stats_df = df[df[key] > gt]
-            # print(item.get('title'), "\n")
+            print(item.get('title'), len(stats_df), "\n")
             # print(stats_df)
             stats_df.to_csv(f"stats/details/{item.get('title')}.csv",
                             header=True, index=True)
+            stats_df = filter.filter_listed_all(stats_df)
 
-            stats_info = statistics(stats_df)
-            stats_dict = {
-                'title': item.get('title'),
-                **stats_info
-            }
-            stats_list.append(stats_dict)
+            if len(stats_df) > 0:
+                stats_info = statistics(stats_df)
+                stats_dict = {
+                    'title': item.get('title'),
+                    **stats_info
+                }
+                stats_list.append(stats_dict)
 
         df_stats_list = pd.DataFrame.from_records(stats_list)
         df_stats_list = df_stats_list.rename(columns=output_stats_map)
@@ -142,6 +145,9 @@ def output(*, date, compare_date, is_stats=True):
 
     stats_info = statistics(df)
     show_log(stats_info, date)
+    top_10 = df.sort_values(
+        by='trade_amount', ascending=False).head(10)
+    print(top_10)
     # if not multiple_factors_config.get('real_mid_price'):
     multiple_factors_config['real_mid_price'] = stats_info.get('mid_price')
 
@@ -242,7 +248,9 @@ def prepare_config(date):
     real_temperature = cur_mid_temperature.get(
         'temperature') if cur_mid_temperature else None
     if real_temperature == None:
-        real_temperature = 29.12
+        data = fetch_indictor()
+        real_temperature = float(data.get('median_pb_temperature'))
+        print("real_temperature", real_temperature)
     set_dynamic_props(real_mid_price=real_mid_price,
                       real_temperature=real_temperature)
     return {

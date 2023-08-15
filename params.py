@@ -59,7 +59,7 @@ multiple_factors_config = {
     'stock_stdevry_bemchmark': stdevry_bemchmark,  # 波动率基准
     'stock_stdevry_score_min': 0.5,  # 正股波动率最低分
     'stock_stdevry_score_max': 1.5,  # 正股波动率最高分
-    'pb_bemchmark': 1.5,  # 正股PB基准
+    'pb_bemchmark': 1.5,  # 正股PB基准 是否考虑作为过滤项
     'pb_score_min': 0.5,  # 正股PB最低分
     # 流动性因子
     'liquidity_turnover_rate_ratio': 1,  # 换手率系数
