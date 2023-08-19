@@ -154,5 +154,13 @@
   "2023-08-04": {
     "temperature": 31.77,
     "mid_price": 124.499
+  },
+  "2023-08-11": {
+    "temperature": 27.47,
+    "mid_price": 123.01
+  },
+  "2023-08-18": {
+    "temperature": 26.08,
+    "mid_price": 122.48
   }
 }

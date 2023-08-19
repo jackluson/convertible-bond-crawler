@@ -114,7 +114,6 @@ def output(*, date, compare_date, is_stats=True):
                 stats_df = df[(df[key] <= lte) & (df[key] > gt)]
             elif gt != None:
                 stats_df = df[df[key] > gt]
-            print(item.get('title'), len(stats_df), "\n")
             # print(stats_df)
             stats_df.to_csv(f"stats/details/{item.get('title')}.csv",
                             header=True, index=True)

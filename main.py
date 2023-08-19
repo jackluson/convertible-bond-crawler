@@ -25,7 +25,7 @@ if __name__ == "__main__":
         输入：")
     if input_value == '1':
         date = datetime.now().strftime("%Y-%m-%d")
-        # date = "2023-08-09"
+        # date = "2023-08-11"
         output_with_prepare(date)
     if input_value == '2':
         store_database()
