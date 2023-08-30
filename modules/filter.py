@@ -248,7 +248,9 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
         #     return True
         if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
             day_count = float(row.date_remain_distance[0:-1])
-            return day_count > 90 and row[weight_score_key] > 1
+            return day_count > 90 and row[weight_score_key] > score_bemchmark
+        if '年' in row.date_remain_distance and row.date_remain_distance[0] == '0':
+            return row['price'] < 115 and row[weight_score_key] > score_bemchmark
         # if '后可能满足强赎条件' in row.pre_ransom_remark and row.price >= 141:
         #     return False
         return row[weight_score_key] > score_bemchmark
@@ -399,14 +401,13 @@ def filter_candidate(df, *, multiple_factors_config):
         & (~df["cb_name"].str.contains("EB"))
         & (df["price"] < 130)
         & (df["premium_rate"] < 30)
-        & (df["turnover_rate"] > 2)
         & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
     def due_filter(row):
         if '年' in row.date_remain_distance and row.date_remain_distance[0] != '0':
             return True
-        return False
+        return row['price'] < 115
     df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
 
     df_filter = df_filter.sort_values(

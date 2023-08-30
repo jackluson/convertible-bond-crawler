@@ -130,8 +130,10 @@ def output(*, date, compare_date, is_stats=True):
         df_stats_list = pd.DataFrame.from_records(stats_list)
         df_stats_list = df_stats_list.rename(columns=output_stats_map)
         df_stats_list.set_index('标题', inplace=True)
-        print(df_stats_list)
         df_stats_list.to_csv(f"stats/{date}.csv", header=True, index=True)
+        source_path = f"stats/{date}.csv"
+        dest_path = f'stats/lastest.csv'
+        os.system(f'cp {source_path} {dest_path}')
     if multiple_factors_config.get(
             "is_dynamic_temperature"):
         print(
@@ -146,7 +148,7 @@ def output(*, date, compare_date, is_stats=True):
     show_log(stats_info, date)
     top_10 = df.sort_values(
         by='trade_amount', ascending=False).head(10)
-    print(top_10)
+    print(top_10.set_index('cb_code'))
     # if not multiple_factors_config.get('real_mid_price'):
     multiple_factors_config['real_mid_price'] = stats_info.get('mid_price')
 
@@ -231,6 +233,9 @@ def output(*, date, compare_date, is_stats=True):
     stats_data[date] = percents
     write_fund_json_data(stats_data, filename, file_dir)
     output_excel(pd.DataFrame(percents), sheet_name="汇总", date=date)
+    source_path = f'{out_dir}{date}_cb_list.xlsx'
+    dest_path = f'{out_dir}cb_list.xlsx'
+    os.system(f'cp {source_path} {dest_path}')
 
 
 def prepare_config(date):
