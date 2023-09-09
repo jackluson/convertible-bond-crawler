@@ -387,6 +387,14 @@ def filter_downward_revise(df, *, multiple_factors_config=None):
         & (df["price"] < 118)
         & (df["premium_rate"] > 40)
     ]
+
+    def special_price_and_amount_filter(row):
+        # 如果价格不小于115的规模必须不大于10亿
+        if row['price'] >= 115:
+            return row['remain_amount'] <= 10
+        return True
+    df_filter = df_filter[df_filter.apply(
+        special_price_and_amount_filter, axis=1)]
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)
     return df_filter
