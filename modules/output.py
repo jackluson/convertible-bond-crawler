@@ -47,6 +47,9 @@ def set_dynamic_props(*, real_mid_price=None, real_temperature=None):
 def add_data(list, date, compare_date):
     last_map = {}
     code_stdevry_map = get_stock_info(date)
+    path = os.getcwd() + '/data/holder.json'
+    f_data = open(path, "r")
+    all_map = json.loads(f_data.read())
     xls = None
     if date != compare_date:
         last_path = f'{out_dir}{compare_date}_cb_list.xlsx'
@@ -64,9 +67,17 @@ def add_data(list, date, compare_date):
         cb_code = item['cb_code']
         item_stock = code_stdevry_map.get(
             stock_code) if code_stdevry_map.get(stock_code) else dict()
+        circulating_amount = item.get('remain_amount')
+        if item.get("date_convert_distance") != '已到':
+            if all_map.get(cb_code):
+                circulating_amount = round((100 - all_map.get(cb_code).get(
+                    'over_5_total')) * circulating_amount * 0.01, 2)
+            else:
+                print(f'未找到{cb_code}, {item["cb_name"]}的持仓信息')
         merge_item = {
             **item,
             **item_stock,
+            'circulating_amount': circulating_amount
         }
         new_item = dict()
         for key in rename_map.keys():
@@ -148,7 +159,9 @@ def output(*, date, compare_date, is_stats=True):
     show_log(stats_info, date)
     top_10 = df.sort_values(
         by='trade_amount', ascending=False).head(10)
-    print(top_10.set_index('cb_code'))
+    selected_columns = ['cb_code', 'cb_name', 'price', 'premium_rate', 'cb_percent', 'stock_percent',
+                        'remain_amount', 'date_convert_distance', 'date_remain_distance', 'stock_name', 'market_cap', 'industry', 'trade_amount', 'turnover_rate']
+    print(top_10[selected_columns].set_index('cb_code'))
     # if not multiple_factors_config.get('real_mid_price'):
     multiple_factors_config['real_mid_price'] = stats_info.get('mid_price')
 

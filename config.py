@@ -38,6 +38,7 @@ rename_map = {
     'ransom_flag_remark': '强赎备注',
 
     'remain_amount': '剩余规模',
+    'circulating_amount': '流通规模',
     'trade_amount': '成交额',
     'turnover_rate': '换手率',
     'market_cap': '股票市值',
