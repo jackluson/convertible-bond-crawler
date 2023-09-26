@@ -70,8 +70,11 @@ def add_data(list, date, compare_date):
         circulating_amount = item.get('remain_amount')
         if item.get("date_convert_distance") != '已到':
             if all_map.get(cb_code):
-                circulating_amount = round((100 - all_map.get(cb_code).get(
-                    'over_5_total')) * circulating_amount * 0.01, 2)
+                limited_ratio = all_map.get(cb_code).get('limited_ratio')
+                limited_ratio = limited_ratio if limited_ratio else all_map.get(cb_code).get(
+                    'over_5_total')
+                circulating_amount = round(
+                    (100 - limited_ratio) * circulating_amount * 0.01, 2)
             else:
                 print(f'未找到{cb_code}, {item["cb_name"]}的持仓信息')
         merge_item = {
