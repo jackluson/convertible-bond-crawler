@@ -103,7 +103,7 @@ def filter_small_scale_not_ransom(df, *, multiple_factors_config):
         (~df["cb_name"].str.contains("EB"))
         & (df['date_convert_distance'] == '已到')
         & (df['is_ransom_flag'] == 'False')
-        & ((df['remain_amount'] > 1.5) & (df['remain_amount'] < 3))
+        & ((df['remain_amount'] >= 1.5) & (df['remain_amount'] < 3))
         & ((df['price'] < 180))
         & ((df['pb'] > 1.3))
         & ((df['premium_rate'] < 50))

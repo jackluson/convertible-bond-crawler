@@ -17,7 +17,7 @@ from infra.api.eastmoney import ApiEastMoney
 def save_holder():
     last_path = f'{out_dir}cb_list.xlsx'
     xls = pd.ExcelFile(last_path, engine='openpyxl')
-    df_all_last = xls.parse("所有")
+    df_all_last = xls.parse("All_ROW")
     df_all_last['可转债代码'] = df_all_last['可转债代码'].astype(
         str).apply(lambda x: x.zfill(6))
     path = os.getcwd() + '/data/holder.json'
@@ -31,19 +31,20 @@ def save_holder():
             stock_code = item['股票代码']
             market = item['市场']
             holder_list = parser.get_holder_list(code, market)
-            df_holder_list = pd.DataFrame(holder_list)
-            df_holder_list = df_holder_list.loc[(df_holder_list['radio'] > 5)]
-            df_holder_list = df_holder_list.sort_values(
-                by='radio', ascending=False, ignore_index=True)
-            save_item = {
-                'top_holder_list': holder_list,
-                'name': item['可转债名称'],
-                'stock_code': str(stock_code).zfill(6),
-                'over_5_list': df_holder_list.to_dict('records'),
-                'over_5_total': df_holder_list['radio'].sum().round(2),
-                'date_convert_distance': date_convert_distance
-            }
-            all_map[code] = save_item
+            if holder_list:
+                df_holder_list = pd.DataFrame(holder_list)
+                df_holder_list = df_holder_list.loc[(df_holder_list['radio'] > 5)]
+                df_holder_list = df_holder_list.sort_values(
+                    by='radio', ascending=False, ignore_index=True)
+                save_item = {
+                    'top_holder_list': holder_list,
+                    'name': item['可转债名称'],
+                    'stock_code': str(stock_code).zfill(6),
+                    'over_5_list': df_holder_list.to_dict('records'),
+                    'over_5_total': df_holder_list['radio'].sum().round(2),
+                    'date_convert_distance': date_convert_distance
+                }
+                all_map[code] = save_item
         elif item['可转债代码'] in all_map.keys():
             save_item = {
                 **all_map[code],
@@ -123,5 +124,6 @@ def calc_limited_ratio():
 
 
 if __name__ == '__main__':
+    save_holder()
+    save_yzxdr()
     calc_limited_ratio()
-    # save_holder()
