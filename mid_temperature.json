@@ -166,5 +166,33 @@
   "2023-08-25": {
     "temperature": 20.03,
     "mid_price": 119.26
+  },
+  "2023-09-01": {
+    "temperature": 26.63,
+    "mid_price": 122.63
+  },
+  "2023-09-08": {
+    "temperature": 27.11,
+    "mid_price": 120.98
+  },
+  "2023-09-15": {
+    "temperature": 25.65,
+    "mid_price": 120.36
+  },
+  "2023-09-22": {
+    "temperature": 25.68,
+    "mid_price": 120.43
+  },
+  "2023-09-28": {
+    "temperature": 26.19,
+    "mid_price": 120.43
+  },
+  "2023-10-13": {
+    "temperature": 26.26,
+    "mid_price": 120.89
+  },
+  "2023-10-20": {
+    "temperature": 19.62,
+    "mid_price": 116.17
   }
 }
