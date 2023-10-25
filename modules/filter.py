@@ -52,6 +52,7 @@ def filter_double_low(df, *, multiple_factors_config=None):
                        & (((df['price'] < 128)
                            & (df['premium_rate'] < 10)) | ((df['price'] < 125)
                                                            & (df['premium_rate'] < 15)))
+                       & ((df['remain_amount'] < 5) | df['over_mid_turnover_rate'])
                        ]
 
     def due_filter(row):
@@ -77,7 +78,8 @@ def filter_genie(df, *, multiple_factors_config):
         & ((df['price'] < 300))
         & ((df['pb'] > 1.3))
         & (df['market_cap'] < 50)
-        & (df['turnover_rate'] >= real_mid_turnover_rate)
+        
+        # & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
     def integrate_filter(row):
@@ -108,7 +110,7 @@ def filter_small_scale_not_ransom(df, *, multiple_factors_config):
         & ((df['pb'] > 1.3))
         & ((df['premium_rate'] < 50))
         & (df['market_cap'] < 100)
-        & (df['turnover_rate'] >= real_mid_turnover_rate)
+        # & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
     def integrate_filter(row):
@@ -140,7 +142,7 @@ def filter_new_small(df, *, multiple_factors_config):
         & ((df['price'] < 150))
         & ((df['premium_rate'] < 50))
         & (df['market_cap'] < 100)
-        & (df['turnover_rate'] >= real_mid_turnover_rate)
+        # & (df['turnover_rate'] >= real_mid_turnover_rate)
     ]
 
     def integrate_filter(row):
@@ -235,12 +237,13 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
         & (df['is_ransom_flag'] == 'False')
         & (df['cb_to_pb'] > 0.5)  # 排除问题债
         & (df['price'] < max_price)  # 排除问题债
+        & ((df['remain_amount'] < 5) | df['over_mid_turnover_rate'])
     ]
     real_mid_turnover_rate = multiple_factors_config.get(
         'real_mid_turnover_rate')
-    if multiple_factors_config.get('open_turnover_rate'):
-        df_filter = df_filter.loc[(
-            df_filter['turnover_rate'] >= real_mid_turnover_rate)]  # 是否开启换手率过滤
+    # if multiple_factors_config.get('open_turnover_rate'):
+    #     df_filter = df_filter.loc[(
+    #         df_filter['turnover_rate'] >= real_mid_turnover_rate)]  # 是否开启换手率过滤
     weight_score_key = 'weight'
 
     def core_filter(row):
@@ -409,7 +412,9 @@ def filter_candidate(df, *, multiple_factors_config):
         & (~df["cb_name"].str.contains("EB"))
         & (df["price"] < 130)
         & (df["premium_rate"] < 30)
-        & (df['turnover_rate'] >= real_mid_turnover_rate)
+        &((df['remain_amount'] < 5) | df['over_mid_turnover_rate'])
+        # & (df['turnover_rate'] >= real_mid_turnover_rate)
+        
     ]
 
     def due_filter(row):

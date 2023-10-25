@@ -17,7 +17,7 @@ price_bemchmark = 115
 premium_ratio = 0.5
 max_price = 130
 open_rating = 1
-open_turnover_rate = True
+open_turnover_rate = False
 score_bemchmark = 1
 is_dynamic = True
 
@@ -67,7 +67,7 @@ multiple_factors_config = {
     'liquidity_turnover_score_max': 2,  # 正股波动率最高分
     # 'real_mid_turnover_rate'
     'open_rating': open_rating,
-    'open_turnover_rate': open_turnover_rate,
+    # 'open_turnover_rate': open_turnover_rate,
     # 过滤项
     'max_price': max_price,  # 最高价
     'score_bemchmark': score_bemchmark  # 最小多因子分数
