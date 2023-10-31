@@ -171,6 +171,8 @@ def output(*, date, compare_date, is_stats=True):
     multiple_factors_config['real_mid_turnover_rate'] = stats_info.get(
         'mid_turnover_rate')
     output_excel(df, sheet_name='All_ROW', date=date)
+    df['over_mid_turnover_rate'] = df.apply(lambda x: 1 if x.turnover_rate >= stats_info.get(
+        'mid_turnover_rate') else 0, axis=1)
     filter_data_dict = {}
     for strategy in strategy_list:
         strategy_name = strategy['name']
@@ -283,6 +285,8 @@ def show_log(stats_info, date):
     avg_price = stats_info['avg_price']
     mid_premium_rate = stats_info['mid_premium_rate']
     avg_premium_rate = stats_info['avg_premium_rate']
+    mid_cb_value = stats_info['mid_cb_value']
+    avg_cb_value = stats_info['avg_cb_value']
     count = stats_info['count']
     raise_count = stats_info['raise_count']
     fall_count = stats_info['fall_count']
@@ -304,6 +308,7 @@ def show_log(stats_info, date):
     print(f"\n{date}统计数据:\n")
     print(f'  价格中位数: {mid_price}       价格平均数: {avg_price}')
     print(f'  溢价中位数: {mid_premium_rate}%        溢价平均数: {avg_premium_rate}%\n')
+    print(f'转股价值中位数: {mid_cb_value}%  转股价值平均数: {avg_cb_value}%\n')
     print(
         f'  可转债数量: {count}只            涨跌比: {raise_count}/{fall_count} ')
     print(
@@ -312,7 +317,7 @@ def show_log(stats_info, date):
     print(f'成交量中位数: {mid_trade_amount}亿     成交量平均数: {avg_trade_amount}亿')
     print(f'换手率中位数: {mid_turnover_rate}%      换手率平均数: {avg_turnover_rate}%')
     print(
-        f'  成交量总数: {total_trade_amount}亿     最大成交量: {max_trade_amount}亿     前十成交量之和: {top_trade_amount_total}亿')
+        f'  成交量总数: {total_trade_amount}亿     最大成交量: {max_trade_amount}亿      前十成交量之和: {top_trade_amount_total}亿')
     print(
         f'  余额中位数: {mid_remain_amount}亿       余额平均数: {avg_remain_amount}亿             总余额: {total_remain_amount}亿 \n')
 

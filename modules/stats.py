@@ -18,6 +18,10 @@ def statistics(df):
     avg_price = df_all['price'].mean().round(2)
     mid_premium_rate = df_all['premium_rate'].median().round(2)
     avg_premium_rate = df_all['premium_rate'].mean().round(2)
+    
+    mid_cb_value = df_all['cb_value'].median().round(2)
+    avg_cb_value = df_all['cb_value'].mean().round(2)
+    
     mid_remain_amount = df_all['remain_amount'].median().round(2)
     min_remain_amount = df_all['remain_amount'].min()
     df_sort_amount = df_all.sort_values(
@@ -25,6 +29,7 @@ def statistics(df):
     max_remain_amount = df_all['remain_amount'].max()
     avg_remain_amount = df_all['remain_amount'].mean().round(2)
     total_remain_amount = df_all['remain_amount'].sum().round(2)
+    
     total_trade_amount = df_all['trade_amount'].sum().round(2)
     mid_trade_amount = df_all['trade_amount'].median().round(2)
     avg_trade_amount = df_all['trade_amount'].mean().round(2)
@@ -55,6 +60,8 @@ def statistics(df):
         'mid_premium_rate': mid_premium_rate,
         'avg_premium_rate': avg_premium_rate,
 
+        'mid_cb_value': mid_cb_value,
+        'avg_cb_value': avg_cb_value,
         'mid_remain_amount': mid_remain_amount,
         'avg_remain_amount': avg_remain_amount,
         'total_remain_amount': total_remain_amount,

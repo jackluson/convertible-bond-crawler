@@ -85,7 +85,8 @@ def crawler(*, date):
             # item['距离回售时间'].translate(str.maketrans("", "", string.whitespace))
             date_return_distance = date_return_distance.translate(
                 str.maketrans("", "", string.whitespace))
-
+            cb_value = row.find(
+                    'td', {'class': "cb_value_id"}).get_text().strip()
             remain_amount = row.get("data-remain_amount")  # 剩余规模
             trade_amount = row.find_all('td', {'class': "cb_trade_amount_id"})[
                 0].get_text().strip().replace(',', '')   # 成交额（单位是百万）
@@ -138,6 +139,7 @@ def crawler(*, date):
                 'is_ransom_flag': str(is_ransom_flag),
                 'ransom_flag_remark': ransom_flag_remark,
 
+                'cb_value': round(float(cb_value), 2),
                 'remain_amount': round(float(remain_amount), 2),
                 'trade_amount': float(trade_amount) / 100,  # 转换单位亿
                 # 转换单位亿

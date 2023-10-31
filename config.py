@@ -37,6 +37,7 @@ rename_map = {
     'is_ransom_flag': '是否满足强赎条件',
     'ransom_flag_remark': '强赎备注',
 
+    'cb_value': '转股价值',
     'remain_amount': '剩余规模',
     'circulating_amount': '流通规模',
     'trade_amount': '成交额',
@@ -85,6 +86,8 @@ output_stats_map = {
     'mid_remain_amount': '剩余规模中位数(亿)',
     'avg_remain_amount': '剩余规模平均数',
     'total_remain_amount': '总剩余规模',
+    'mid_cb_value': '转股价值中位数',
+    'avg_cb_value': '转股价值平均数',
     'total_trade_amount': '总成交额(亿)',
     'top_trade_amount_total': '前10成交额',
     'mid_trade_amount': '成交额中位数',
@@ -179,6 +182,46 @@ output_stats_list = [
         'gt': 70,
     },
     {
+        'title': '转股价值<=60',
+        'key': 'cb_value',
+        'lte': 60,
+    },
+    {
+        'title': '转股价值60~80',
+        'key': 'cb_value',
+        'gt': 60,
+        'lte': 80,
+    },
+    {
+        'title': '转股价值80~90',
+        'key': 'cb_value',
+        'gt': 80,
+        'lte': 90,
+    },
+    {
+        'title': '转股价值90~100',
+        'key': 'cb_value',
+        'gt': 90,
+        'lte': 100,
+    },
+    {
+        'title': '转股价值100~110',
+        'key': 'cb_value',
+        'gt': 100,
+        'lte': 110,
+    },
+    {
+        'title': '转股价值110~120',
+        'key': 'cb_value',
+        'gt': 110,
+        'lte': 120,
+    },
+    {
+        'title': '转股价值>130',
+        'key': 'cb_value',
+        'gt': 130,
+    },
+    {
         'title': '规模<=1.5',
         'key': 'remain_amount',
         'lte': 1.5,
@@ -235,7 +278,7 @@ output_stats_list = [
         'title': '规模>50',
         'key': 'remain_amount',
         'gt': 50,
-    },
+    }
 ]
 
 is_backtest = False
