@@ -13,23 +13,95 @@ from utils.json import get_mid_temperature_data
 repair_flag_style = 'color:blue'
 repair_ransom_style = 'color:red'
 pre_ransom_style = 'color:Fuchsia'
-# 要item字段一一对应,否则数据库插入顺序
-rename_map = {
+# 要item字段一一
+
+save_database_map = {
     'id': 'id',
     'cb_id': 'id',
     'cb_code': '可转债代码',
     'cb_name': '可转债名称',
     'stock_code': '股票代码',
     'stock_name': '股票名称',
-    'industry': '行业',
+    
     'price': '转债价格',
     'premium_rate': '转股溢价率',
-    'stock_stdevry': '正股波动率',
+    'cb_percent': '转债涨跌幅',
+    'stock_percent': '股价涨跌幅',
+    'pb': '市净率',
     'cb_to_pb': '转股价格/每股净资产',
+    
+    'cb_value': '转股价值',
+    'remain_amount': '剩余规模',
+    'trade_amount': '成交额',
+    'market_cap': '股票市值',
+    
     'date_remain_distance': '距离到期时间',
     'date_return_distance': '距离回售时间',
     'rate_expire': '到期收益率',
     'rate_expire_aftertax': '税后到期收益率',
+    'rate_return': '回售收益率',
+    'remain_to_cap': '转债剩余/市值比例',
+    'is_repair_flag': '是否满足下修条件',
+    'repair_flag_remark': '下修备注',
+    'pre_ransom_remark': '预满足强赎备注',
+    'is_ransom_flag': '是否满足强赎条件',
+    'ransom_flag_remark': '强赎备注',
+    
+    'stock_price': '股价',
+    'arbitrage_percent': '日内套利',
+    'convert_stock_price': '转股价格',
+    'market': '市场',
+
+    'remain_price': '剩余本息',
+    'remain_price_tax': '税后剩余本息',
+
+    'is_unlist': '未发行',
+    'issue_date': '发行日期',
+    'date_convert_distance': '距离转股时间',
+
+    'old_style': '老式双底',
+    'new_style': '新式双底',
+    'rating': '债券评级',
+}
+
+rename_map = {
+    # 'id': 'id',
+    # 'cb_id': 'id',
+    'cb_code': '可转债代码',
+    'cb_name': '可转债名称',
+    'stock_code': '股票代码',
+    'stock_name': '股票名称',
+     # 简介（不存数据库）
+    'industry': '行业',
+    'classi_name': '企业性质',
+    'provincial_name': '省份',
+    'main_operation_business': '主营业务',
+    
+    'price': '转债价格',
+    'premium_rate': '转股溢价率',
+    'cb_percent': '转债涨跌幅',
+    'stock_percent': '股价涨跌幅',
+    'stock_stdevry': '正股波动率',
+    'pb': '市净率',
+    'cb_to_pb': '转股价格/每股净资产',
+        # 估值水位字段（不存数据库）
+    'pb_percent': 'pb水位',
+    'pe': 'PE',
+    'pe_percent': 'pe水位',
+    'pe_koufei': '扣非PE',
+    'pe_koufei_percent': '扣非PE水位',
+    'cb_value': '转股价值',
+    'remain_amount': '剩余规模',
+    'circulating_amount': '流通规模',
+    'trade_amount': '成交额',
+    'market_cap': '股票市值',
+    'turnover_rate': '换手率',
+    
+    'date_remain_distance': '距离到期时间',
+    'date_return_distance': '距离回售时间',
+    'rate_expire': '到期收益率',
+    'rate_expire_aftertax': '税后到期收益率',
+    'rate_return': '回售收益率',
     'remain_to_cap': '转债剩余/市值比例',
     'is_repair_flag': '是否满足下修条件',
     'repair_flag_remark': '下修备注',
@@ -37,24 +109,15 @@ rename_map = {
     'is_ransom_flag': '是否满足强赎条件',
     'ransom_flag_remark': '强赎备注',
 
-    'cb_value': '转股价值',
-    'remain_amount': '剩余规模',
-    'circulating_amount': '流通规模',
-    'trade_amount': '成交额',
-    'turnover_rate': '换手率',
-    'market_cap': '股票市值',
 
     'last_price': '上期转债价格',
     'last_cb_percent': '较上期涨跌幅',
-    'cb_percent': '转债涨跌幅',
     'stock_price': '股价',
-    'stock_percent': '股价涨跌幅',
     'last_stock_price': '上期股价',
     'last_stock_percent': '较上期股价涨跌幅',
-    'arbitrage_percent': '日内套利',
+    # 'arbitrage_percent': '日内套利',
     'convert_stock_price': '转股价格',
-    'pb': '市净率',
-    'market': '市场',
+    # 'market': '市场',
 
     'remain_price': '剩余本息',
     'remain_price_tax': '税后剩余本息',
@@ -64,12 +127,11 @@ rename_map = {
     'issue_date': '发行日期',
     'date_convert_distance': '距离转股时间',
 
-    'rate_return': '回售收益率',
-
     'old_style': '老式双底',
     'new_style': '新式双底',
     'rating': '债券评级',
     'weight': '多因子得分',
+
 }
 
 output_stats_map = {

@@ -126,19 +126,11 @@ def crawler(*, date):
                 'stock_name': stock_name,
                 'price': float(price),
                 'premium_rate': float(premium_rate),
+                'cb_percent': float(cb_percent),
+                'stock_percent': float(stock_percent),
+                'pb': float(pb),
                 'cb_to_pb': float(cb_to_pb),
-                'date_remain_distance': date_remain_distance,
-                'date_return_distance': date_return_distance,
-                # 快到期或者强赎的情况为<-100
-                'rate_expire': -100 if '<-100' in rate_expire else (100 if ('>100' in rate_expire) else float(rate_expire)),
-                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else (100 if ('>100' in rate_expire_aftertax) else float(rate_expire_aftertax)),
-                'remain_to_cap': float(remain_to_cap),
-                'is_repair_flag': str(is_repair_flag),
-                'repair_flag_remark': repair_flag_remark,
-                'pre_ransom_remark': pre_ransom_remark,
-                'is_ransom_flag': str(is_ransom_flag),
-                'ransom_flag_remark': ransom_flag_remark,
-
+                
                 'cb_value': round(float(cb_value), 2),
                 'remain_amount': round(float(remain_amount), 2),
                 'trade_amount': float(trade_amount) / 100,  # 转换单位亿
@@ -147,12 +139,23 @@ def crawler(*, date):
                 'turnover_rate': round(float(trade_amount) / float(remain_amount), 2),
                 'market_cap': int(market_cap.replace(",", "")),
 
-                'cb_percent': float(cb_percent),
+                'date_remain_distance': date_remain_distance,
+                'date_return_distance': date_return_distance,
+                # 快到期或者强赎的情况为<-100
+                'rate_expire': -100 if '<-100' in rate_expire else (100 if ('>100' in rate_expire) else float(rate_expire)),
+                'rate_expire_aftertax': -100 if '<-100' in rate_expire_aftertax else (100 if ('>100' in rate_expire_aftertax) else float(rate_expire_aftertax)),
+                'rate_return': rate_return,
+
+                'remain_to_cap': float(remain_to_cap),
+                'is_repair_flag': str(is_repair_flag),
+                'repair_flag_remark': repair_flag_remark,
+                'pre_ransom_remark': pre_ransom_remark,
+                'is_ransom_flag': str(is_ransom_flag),
+                'ransom_flag_remark': ransom_flag_remark,
+
                 'stock_price': float(stock_price),
-                'stock_percent': float(stock_percent),
                 'arbitrage_percent': float(arbitrage_percent),
                 'convert_stock_price': float(convert_stock_price),
-                'pb': float(pb),
                 'market': market,
 
                 'remain_price': float(remain_price),
@@ -162,7 +165,6 @@ def crawler(*, date):
                 'issue_date': date if issue_date == '今日上市' else issue_date,
                 'date_convert_distance': date_convert_distance,
 
-                'rate_return': rate_return,
 
                 'old_style': float(old_style.replace(",", "")),
                 'new_style': float(new_style.replace(",", "")),

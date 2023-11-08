@@ -19,6 +19,7 @@ from config import (is_backtest, out_dir, output_stats_list, output_stats_map,
                     real_mid_temperature_map, rename_map, strategy_list, summary_filename)
 from params import multiple_factors_config
 from modules.fetch import fetch_indictor
+from infra.sql.stocks.query import StockQuery
 
 pd.options.mode.chained_assignment = None
 
@@ -47,6 +48,11 @@ def set_dynamic_props(*, real_mid_price=None, real_temperature=None):
 def add_data(list, date, compare_date):
     last_map = {}
     code_stdevry_map = get_stock_info(date)
+    stock_query = StockQuery()
+    stock_pe_pb_list = stock_query.query_stock_pe_pb(date)
+    code_dict = {}
+    for item in stock_pe_pb_list:
+        code_dict[item['code']] = item
     path = os.getcwd() + '/data/holder.json'
     f_data = open(path, "r")
     all_map = json.loads(f_data.read())
@@ -66,7 +72,9 @@ def add_data(list, date, compare_date):
         stock_price = item['stock_price']
         cb_code = item['cb_code']
         item_stock = code_stdevry_map.get(
-            stock_code) if code_stdevry_map.get(stock_code) else dict()
+            stock_code, {})
+        item_stock_pe_pb = code_dict.get(
+            stock_code, {})
         circulating_amount = item.get('remain_amount')
         if item.get("date_convert_distance") != '已到':
             if all_map.get(cb_code):
@@ -80,7 +88,8 @@ def add_data(list, date, compare_date):
         merge_item = {
             **item,
             **item_stock,
-            'circulating_amount': circulating_amount
+            'circulating_amount': circulating_amount,
+            **item_stock_pe_pb,
         }
         new_item = dict()
         for key in rename_map.keys():
@@ -99,8 +108,9 @@ def add_data(list, date, compare_date):
                 rename_map.get('price')))/last_record.get(rename_map.get('price'))*100, 2)
             new_item['last_is_unlist'] = last_record.get(
                 rename_map.get("is_unlist"))
-        del new_item['id']
-        del new_item['cb_id']
+        # del new_item['id']
+        # del new_item['cb_id']
+        # del new_item['arbitrage_percent']
         new_list.append(new_item)
     return {
         'list': new_list,
