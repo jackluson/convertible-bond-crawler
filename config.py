@@ -82,8 +82,8 @@ rename_map = {
     'cb_percent': '转债涨跌幅',
     'stock_percent': '股价涨跌幅',
     'stock_stdevry': '正股波动率',
-    'pb': '市净率',
-    'cb_to_pb': '转股价格/每股净资产',
+    'market_cap': '股票市值',
+    'pb': 'PB',
         # 估值水位字段（不存数据库）
     'pb_percent': 'pb水位',
     'pe': 'PE',
@@ -91,10 +91,10 @@ rename_map = {
     'pe_koufei': '扣非PE',
     'pe_koufei_percent': '扣非PE水位',
     'cb_value': '转股价值',
+    'cb_to_pb': '转股价格/每股净资产',
     'remain_amount': '剩余规模',
     'circulating_amount': '流通规模',
     'trade_amount': '成交额',
-    'market_cap': '股票市值',
     'turnover_rate': '换手率',
     
     'date_remain_distance': '距离到期时间',
