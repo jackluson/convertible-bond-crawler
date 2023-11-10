@@ -27,7 +27,7 @@ if __name__ == "__main__":
         输入：")
     if input_value == '1':
         date = datetime.now().strftime("%Y-%m-%d")
-        date = "2023-11-09"
+        # date = "2023-11-10"
         output_with_prepare(date)
     if input_value == '2':
         store_database()
@@ -46,5 +46,5 @@ if __name__ == "__main__":
             parent_dir=parent_dir,
             until_win=False
         )
-    elif input_value == '5':
+    elif input_value == '6':
         save_and_calc_limited_ratio()

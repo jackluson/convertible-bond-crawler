@@ -109,6 +109,7 @@ def add_data(list, date, compare_date):
             **item_stock_main_financial,
             **item,
             **item_stock,
+            'pb': float(item_stock_quote.get("pb", item.get('pb'))), # 原来pb有一定错误概率
             'circulating_amount': circulating_amount,
         }
         new_item = dict()
