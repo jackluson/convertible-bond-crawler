@@ -61,7 +61,7 @@ class MultipleFactorsStrategy():
         dateList = []
         code_field_key = rename_map['cb_code']
         for file in files:
-            if not file.endswith('.xlsx'):
+            if not file.endswith('.xlsx') or file == 'cb_list.xlsx':
                 continue
             date = file[0:10]
             dateList.append(date)

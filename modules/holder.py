@@ -12,6 +12,7 @@ from infra.parser.jqka import JqkaParser
 import json
 from config import (is_backtest, out_dir)
 from infra.api.eastmoney import ApiEastMoney
+from infra.utils.index import get_symbol_by_code
 
 
 def save_holder():
@@ -29,8 +30,7 @@ def save_holder():
         code = item['可转债代码']
         if code not in all_map.keys() and date_convert_distance != '已到':
             stock_code = item['股票代码']
-            market = item['市场']
-            holder_list = parser.get_holder_list(code, market)
+            holder_list = parser.get_holder_list(code)
             if holder_list:
                 df_holder_list = pd.DataFrame(holder_list)
                 df_holder_list = df_holder_list.loc[(df_holder_list['radio'] > 5)]
@@ -122,8 +122,10 @@ def calc_limited_ratio():
         json.dump(all_holder_map, f, ensure_ascii=False, indent=2)
         f.close()
 
-
-if __name__ == '__main__':
+def save_and_calc_limited_ratio():
     save_holder()
     save_yzxdr()
     calc_limited_ratio()
+
+if __name__ == '__main__':
+    save_and_calc_limited_ratio()

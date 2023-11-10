@@ -13,6 +13,7 @@ from modules.store import store_database
 from modules.backtest import backtest
 from utils.index import plot
 from strategy.multiple_factors import impl_multiple_factors
+from modules.holder import save_and_calc_limited_ratio
 
 
 if __name__ == "__main__":
@@ -22,10 +23,11 @@ if __name__ == "__main__":
             3.“回测” \n \
             4.“可视化” \n \
             5.“多因子策略回测” \n \
+            6.“流通规模股东信息” \n \
         输入：")
     if input_value == '1':
         date = datetime.now().strftime("%Y-%m-%d")
-        # date = "2023-08-11"
+        date = "2023-11-09"
         output_with_prepare(date)
     if input_value == '2':
         store_database()
@@ -35,12 +37,14 @@ if __name__ == "__main__":
     elif input_value == '4':
         plot()
     elif input_value == '5':
-        file_dir = 'stock_ratio=0.3_price=115_count=10_premium=15_premium_ratio=0.5_stdevry=35_max_price=130_open_rating=1_score_bemchmark=1dynamic=True/'
-        # file_dir = 'liquidity_out/'
-        parent_dir = './backtest/'
+        # file_dir = 'stock_ratio=0.3_price=115_count=10_premium=15_premium_ratio=0.5_stdevry=35_max_price=130_open_rating=1_score_bemchmark=1dynamic=True/'
+        file_dir = 'strict_out/'
+        parent_dir = './'
         impl_multiple_factors(
             is_predict=False,
             file_dir=file_dir,
             parent_dir=parent_dir,
             until_win=False
         )
+    elif input_value == '5':
+        save_and_calc_limited_ratio()

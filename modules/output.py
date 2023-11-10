@@ -15,11 +15,12 @@ from modules.source import crawler
 from modules.stats import statistics
 from utils.json import write_fund_json_data, get_stock_info
 from utils.index import output_excel
-from config import (is_backtest, out_dir, output_stats_list, output_stats_map,
-                    real_mid_temperature_map, rename_map, strategy_list, summary_filename)
+from config import (is_backtest, main_financial_map, out_dir, output_stats_list, output_stats_map,
+    real_mid_temperature_map, rename_map, strategy_list, summary_filename)
 from params import multiple_factors_config
 from modules.fetch import fetch_indictor
 from infra.sql.stocks.query import StockQuery
+from infra.utils.enum import Freq
 
 pd.options.mode.chained_assignment = None
 
@@ -53,6 +54,19 @@ def add_data(list, date, compare_date):
     code_dict = {}
     for item in stock_pe_pb_list:
         code_dict[item['code']] = item
+        
+    period_quarter_dict = pd.Timestamp(date).to_period(freq=Freq.QUARTER.value)
+    last_quarter_end = (period_quarter_dict.start_time - pd.DateOffset(days=1)).strftime('%Y-%m-%d')
+    main_financial_stock_list = stock_query.query_stock_main_financial(report_date=last_quarter_end)
+    stock_main_financial_dict = {}
+    for item in main_financial_stock_list:
+        stock_main_financial_dict[item['code']] = item
+
+    stock_quote_list = stock_query.query_stock_quote(date)
+    stock_quote_dict = {}
+    for item in stock_quote_list:
+        stock_quote_dict[item['code']] = item
+        
     path = os.getcwd() + '/data/holder.json'
     f_data = open(path, "r")
     all_map = json.loads(f_data.read())
@@ -75,6 +89,10 @@ def add_data(list, date, compare_date):
             stock_code, {})
         item_stock_pe_pb = code_dict.get(
             stock_code, {})
+        item_stock_main_financial = stock_main_financial_dict.get(
+            stock_code, {})
+        item_stock_quote = stock_quote_dict.get(
+            stock_code, {})
         circulating_amount = item.get('remain_amount')
         if item.get("date_convert_distance") != '已到':
             if all_map.get(cb_code):
@@ -86,14 +104,25 @@ def add_data(list, date, compare_date):
             else:
                 print(f'未找到{cb_code}, {item["cb_name"]}的持仓信息')
         merge_item = {
+            **item_stock_quote,
+            **item_stock_pe_pb,
+            **item_stock_main_financial,
             **item,
             **item_stock,
             'circulating_amount': circulating_amount,
-            **item_stock_pe_pb,
         }
         new_item = dict()
         for key in rename_map.keys():
-            new_item[key] = merge_item.get(key)
+            if key in main_financial_map:
+                val = merge_item.get(key)
+                if 'yoy' in key and val:
+                    val = val * 100
+                if 'net_asset' == key and val and merge_item.get('total_shares') and merge_item.get('navps'):
+                    # 总股本 * 每股净资产
+                    val = (merge_item.get('total_shares') * merge_item.get('navps')) / (10 ** 8)
+                new_item[key] =  round(val,2) if val else None
+            else:
+                new_item[key] = merge_item.get(key)
 
         last_record = last_map.get(cb_code)
         new_item['last_is_unlist'] = item['is_unlist'] if date == compare_date else "Y"
@@ -207,6 +236,9 @@ def output(*, date, compare_date, is_stats=True):
     all_df_rename = df.rename(columns=rename_map).reset_index()
     percents = []
     for strategy in strategy_list:
+        start = strategy['start']
+        if start == date:
+            continue
         strategy_name = strategy['name']
         head_count = strategy['head_count']
         all_last_strategy_df = last_xls.parse(strategy['name'])
@@ -246,6 +278,8 @@ def output(*, date, compare_date, is_stats=True):
     for strategy in strategy_list:
         last_accumulate_item = dict()
         start = strategy['start']
+        if start == date:
+            continue
         for percent in last_period_percents:
             if percent['name'] == f'累计{strategy["name"]}({start}至今)':
                 last_accumulate_item = percent

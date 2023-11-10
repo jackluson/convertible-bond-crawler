@@ -251,9 +251,10 @@ def filter_multiple_factors(df, *, date, multiple_factors_config):
         #     return True
         if '天' in row.date_remain_distance and not '年' in row.date_remain_distance:
             day_count = float(row.date_remain_distance[0:-1])
-            return day_count > 90 and row[weight_score_key] > score_bemchmark
+            # 临期债到期收益率大于零（铁汉吃了大亏）
+            return day_count > 90 and row[weight_score_key] > score_bemchmark and row['rate_expire'] > 0
         if '年' in row.date_remain_distance and row.date_remain_distance[0] == '0':
-            return row['price'] < 115 and row[weight_score_key] > score_bemchmark
+            return row['price'] < 112 and row[weight_score_key] > score_bemchmark
         # if '后可能满足强赎条件' in row.pre_ransom_remark and row.price >= 141:
         #     return False
         return row[weight_score_key] > score_bemchmark
@@ -425,4 +426,33 @@ def filter_candidate(df, *, multiple_factors_config):
 
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)
+    return df_filter
+
+def filter_low_level_stock(df, *, multiple_factors_config):
+    df_filter = df.loc[
+        (df['price'] < 135)
+        & (df['is_unlist'] == 'N')
+        & (~df["cb_name"].str.contains("EB"))
+        & (df["premium_rate"] < 45)
+        & (df["market_cap"] < 100)
+        & (df["pb"] > 1.2)
+        & (df["pb_percent"] < 30)
+        & (df["pe_percent"] < 30)
+        & (df["pe_koufei_percent"] < 30)
+        & (df["total_revenue_yoy"] > 0)
+        & (df["net_profit_atsopc_yoy"] > 0)
+        # & (df['turnover_rate'] >= real_mid_turnover_rate)
+    ]
+
+    def advanced_filter(row):
+        goodwill_in_net_assets = row.get('goodwill_in_net_assets')
+        if goodwill_in_net_assets and goodwill_in_net_assets >= 10:
+            return False
+        if '年' in row.date_remain_distance and row.date_remain_distance[0] != '0':
+            return True
+        return row['price'] < 110
+    df_filter = df_filter[df_filter.apply(advanced_filter, axis=1)]
+
+    df_filter = df_filter.sort_values(
+        by='market_cap', ascending=True, ignore_index=True)
     return df_filter

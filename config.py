@@ -64,6 +64,18 @@ save_database_map = {
     'rating': '债券评级',
 }
 
+main_financial_map = {
+    'total_revenue_yoy': '营收同比%',
+    'net_profit_atsopc_yoy': '净利润同比%',
+    'net_profit_after_nrgal_atsolc_yoy': '扣非净利润同比%',
+    'net_selling_rate': '净利率',
+    'gross_selling_rate': '毛利率',
+    'roe': 'ROE',
+    'asset_liab_ratio': '资产负债率',
+    'net_asset': '净资产',
+    'goodwill_in_net_assets': '商誉占比%',
+}
+
 rename_map = {
     # 'id': 'id',
     # 'cb_id': 'id',
@@ -83,19 +95,23 @@ rename_map = {
     'stock_percent': '股价涨跌幅',
     'stock_stdevry': '正股波动率',
     'market_cap': '股票市值',
+    'remain_amount': '剩余规模',
+    'circulating_amount': '流通规模',
+    'trade_amount': '成交额',
+    'turnover_rate': '换手率',
+    
+    # 估值水位字段
     'pb': 'PB',
-        # 估值水位字段（不存数据库）
     'pb_percent': 'pb水位',
     'pe': 'PE',
     'pe_percent': 'pe水位',
     'pe_koufei': '扣非PE',
     'pe_koufei_percent': '扣非PE水位',
+    **main_financial_map,
+    
+    
     'cb_value': '转股价值',
     'cb_to_pb': '转股价格/每股净资产',
-    'remain_amount': '剩余规模',
-    'circulating_amount': '流通规模',
-    'trade_amount': '成交额',
-    'turnover_rate': '换手率',
     
     'date_remain_distance': '距离到期时间',
     'date_return_distance': '距离回售时间',
@@ -375,6 +391,12 @@ strategy_list = [{
         'name': '多因子',
         'start': "2022-10-22",
         'filter_key': 'filter_multiple_factors',
+        'head_count': head_count,
+    },
+    {
+        'name': '低水位',
+        'start': "2023-11-09",
+        'filter_key': 'filter_low_level_stock',
         'head_count': head_count,
     },
     {
