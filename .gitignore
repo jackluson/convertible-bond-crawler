@@ -17,3 +17,4 @@ strict_out_mini/
 .cache/
 tmp/
 *.log
+versions/

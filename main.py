@@ -6,6 +6,7 @@ File Created: Saturday, 23rd July 2022 9:09:56 pm
 -----
 Copyright (c) 2022 Camel Lu
 '''
+import argparse
 from datetime import datetime
 
 from modules.output import output_with_prepare
@@ -15,8 +16,10 @@ from utils.index import plot
 from strategy.multiple_factors import impl_multiple_factors
 from modules.holder import save_and_calc_limited_ratio
 
-
-if __name__ == "__main__":
+def impl():
+    parser = argparse.ArgumentParser(description='Process stats info and ouput.')
+    parser.add_argument("-d", "--date", help="target date that you want to crawl ", default=datetime.now().strftime("%Y-%m-%d"))
+    args = parser.parse_args()
     input_value = input("请输入下列序号执行操作:\n \
             1.“输出到本地” \n \
             2.“存到数据库” \n \
@@ -26,9 +29,8 @@ if __name__ == "__main__":
             6.“流通规模股东信息” \n \
         输入：")
     if input_value == '1':
-        date = datetime.now().strftime("%Y-%m-%d")
-        # date = "2023-11-10"
-        output_with_prepare(date)
+        # date = datetime.now().strftime("%Y-%m-%d")
+        output_with_prepare(args.date)
     if input_value == '2':
         store_database()
     elif input_value == '3':
@@ -48,3 +50,7 @@ if __name__ == "__main__":
         )
     elif input_value == '6':
         save_and_calc_limited_ratio()
+
+
+if __name__ == "__main__":
+    impl()
