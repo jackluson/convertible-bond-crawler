@@ -405,24 +405,28 @@ def filter_downward_revise(df, *, multiple_factors_config=None):
 
 
 def filter_candidate(df, *, multiple_factors_config):
-    real_mid_turnover_rate = multiple_factors_config.get(
-        'real_mid_turnover_rate')
+    # real_mid_turnover_rate = multiple_factors_config.get(
+    #     'real_mid_turnover_rate')
     df_filter = df.loc[
         (df['cb_to_pb'] > 1.2)
         & (df['is_unlist'] == 'N')
         & (~df["cb_name"].str.contains("EB"))
         & (df["price"] < 130)
-        & (df["premium_rate"] < 30)
-        &((df['remain_amount'] < 5) | df['over_mid_turnover_rate'])
+        & (df["premium_rate"] < 50)
+        & (df["old_style"] < 150)
+        # & (df["remain_amount"] < 10 | df["price"] < 110)
+        # &((df['remain_amount'] < 5) | df['over_mid_turnover_rate'])
         # & (df['turnover_rate'] >= real_mid_turnover_rate)
         
     ]
 
-    def due_filter(row):
+    def advanced_filter(row):
+        if row.remain_amount > 10 and row.price > 110:
+            return False
         if '年' in row.date_remain_distance and row.date_remain_distance[0] != '0':
             return True
         return row['price'] < 115
-    df_filter = df_filter[df_filter.apply(due_filter, axis=1)]
+    df_filter = df_filter[df_filter.apply(advanced_filter, axis=1)]
 
     df_filter = df_filter.sort_values(
         by='new_style', ascending=True, ignore_index=True)

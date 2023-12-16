@@ -21,6 +21,7 @@ from params import multiple_factors_config
 from modules.fetch import fetch_indictor
 from infra.sql.stocks.query import StockQuery
 from infra.utils.enum import Freq
+from infra.redis.anchor_plan_redis import get_anchor_plan_redis
 
 pd.options.mode.chained_assignment = None
 
@@ -153,7 +154,9 @@ def output(*, date, compare_date, is_stats=True):
     res = add_data(list, date, compare_date)
     data_list = res.get('list')
     last_xls = res.get('last_xls')
+    anchor_redis = get_anchor_plan_redis()
     df = pd.DataFrame.from_records(data_list)
+    all_stats_info = None
     if is_stats:
         stats_list = []
         for item in output_stats_list:
@@ -171,12 +174,16 @@ def output(*, date, compare_date, is_stats=True):
             # print(stats_df)
             stats_df.to_csv(f"stats/details/{item.get('title')}.csv",
                             header=True, index=True)
+            len_df = len(stats_df)
             stats_df = filter.filter_listed_all(stats_df)
 
-            if len(stats_df) > 0:
-                stats_info = statistics(stats_df)
+            if len_df > 0:
+                title = item.get('title')
+                stats_info = statistics(stats_df, title)
+                if  len_df == len(df) and not all_stats_info:
+                    all_stats_info = stats_info
                 stats_dict = {
-                    'title': item.get('title'),
+                    'title': title,
                     **stats_info
                 }
                 stats_list.append(stats_dict)
@@ -198,35 +205,43 @@ def output(*, date, compare_date, is_stats=True):
             print(
                 f" 当前real_bond_ratio为: {multiple_factors_config['real_bond_ratio']} \n")
 
-    stats_info = statistics(df)
-    show_log(stats_info, date)
+    all_stats_info = all_stats_info if all_stats_info else statistics(df, "所有")
+    show_log(all_stats_info, date)
     top_10 = df.sort_values(
         by='trade_amount', ascending=False).head(10)
     selected_columns = ['cb_code', 'cb_name', 'price', 'premium_rate', 'cb_percent', 'stock_percent',
                         'remain_amount', 'date_convert_distance', 'date_remain_distance', 'stock_name', 'market_cap', 'industry', 'trade_amount', 'turnover_rate']
     print(top_10[selected_columns].set_index('cb_code'))
     # if not multiple_factors_config.get('real_mid_price'):
-    multiple_factors_config['real_mid_price'] = stats_info.get('mid_price')
+    multiple_factors_config['real_mid_price'] = float(stats_info.get('mid_price'))
 
-    multiple_factors_config['real_mid_turnover_rate'] = stats_info.get(
-        'mid_turnover_rate')
+    multiple_factors_config['real_mid_turnover_rate'] = float(stats_info.get(
+        'mid_turnover_rate'))
     output_excel(df, sheet_name='All_ROW', date=date)
-    df['over_mid_turnover_rate'] = df.apply(lambda x: 1 if x.turnover_rate >= stats_info.get(
-        'mid_turnover_rate') else 0, axis=1)
+    df['over_mid_turnover_rate'] = df.apply(lambda x: 1 if x.turnover_rate >= float(stats_info.get(
+        'mid_turnover_rate')) else 0, axis=1)
     filter_data_dict = {}
     for strategy in strategy_list:
         strategy_name = strategy['name']
         filter_key = strategy['filter_key']
-        filter_processor = getattr(filter, filter_key)
-        if filter_key == 'filter_multiple_factors':
-            filter_data = filter_processor(
-                df, date=date, multiple_factors_config=multiple_factors_config)
+        is_cache = strategy.get('is_cache')
+        cache_data = anchor_redis.get_convertible_bond_filter_result(key=filter_key) if is_cache else None
+        if cache_data:
+            filter_data = pd.DataFrame.from_records(cache_data)
+            filter_data_dict[filter_key] = filter_data
         else:
-            filter_data = filter_processor(
-                df, multiple_factors_config=multiple_factors_config)
+            filter_processor = getattr(filter, filter_key)
+            if filter_key == 'filter_multiple_factors':
+                filter_data = filter_processor(
+                    df, date=date, multiple_factors_config=multiple_factors_config)
+            else:
+                filter_data = filter_processor(
+                    df, multiple_factors_config=multiple_factors_config)
         print(f"{strategy_name}的数量：{len(filter_data)}只")
         output_excel(filter_data, sheet_name=strategy_name, date=date)
         filter_data_dict[filter_key] = filter_data
+        if is_cache:
+            anchor_redis.set_convertible_bond_filter_result(filter_key, filter_data.to_dict("records"))
     if date == compare_date:
         print('success!!! data total: ', len(list))
         filename = "multiple_factors_config.json"

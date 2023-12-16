@@ -8,9 +8,14 @@ Copyright (c) 2023 Camel Lu
 '''
 from datetime import datetime
 import modules.filter as filter
+from infra.redis.anchor_plan_redis import get_anchor_plan_redis
 
 
-def statistics(df):
+def statistics(df, title):
+    anchor_redis = get_anchor_plan_redis()
+    cache_result = anchor_redis.get_convertible_bond_stats_info(title)
+    if cache_result:
+        return cache_result
     df_all = filter.filter_listed_all(df)
     df_all['turnover_rate'] = (
         df_all['trade_amount']/df_all['remain_amount'] * 100).round(2)
@@ -76,4 +81,5 @@ def statistics(df):
         'avg_turnover_rate': avg_turnover_rate,
 
     }
+    anchor_redis.set_convertible_bond_stats_info(title, res)
     return res

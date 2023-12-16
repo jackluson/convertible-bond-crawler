@@ -386,18 +386,21 @@ strategy_list = [{
         'start': "2022-10-22",
         'filter_key': 'filter_double_low',
         'head_count': head_count,
+        'is_cache': True,
     },
     {
         'name': '多因子',
         'start': "2022-10-22",
         'filter_key': 'filter_multiple_factors',
         'head_count': head_count,
+        'is_cache': True,
     },
     {
         'name': '低水位',
         'start': "2023-11-09",
         'filter_key': 'filter_low_level_stock',
         'head_count': head_count,
+        'is_cache': True,
     },
     {
         'name': '妖债基因',
@@ -410,6 +413,7 @@ strategy_list = [{
         'start': "2022-10-22",
         'filter_key': 'filter_small_scale_not_ransom',
         'head_count': head_count,
+        'is_cache': True,
     },
     {
         'name': '次新小规模',
@@ -427,6 +431,7 @@ strategy_list = [{
         'name': '下修博弈',
         'start': "2022-10-22",
         'filter_key': 'filter_downward_revise',
+        'is_cache': True,
         'head_count': head_count,
     },
     {
