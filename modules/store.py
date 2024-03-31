@@ -7,7 +7,7 @@ Author: luxuemin2108@gmail.com
 Copyright (c) 2023 Camel Lu
 '''
 from datetime import datetime
-from lib.mysnowflake import IdWorker
+from infra.lib.mysnowflake import IdWorker
 import pandas as pd
 from config import out_dir, rename_map, save_database_map, summary_filename
 from utils.index import generate_insert_sql

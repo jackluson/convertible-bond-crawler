@@ -15,10 +15,12 @@ from modules.backtest import backtest
 from utils.index import plot
 from strategy.multiple_factors import impl_multiple_factors
 from modules.holder import save_and_calc_limited_ratio
+from infra.config.parser import conf_parser
 
 def impl():
     parser = argparse.ArgumentParser(description='Process stats info and ouput.')
-    parser.add_argument("-d", "--date", help="target date that you want to crawl ", default=datetime.now().strftime("%Y-%m-%d"))
+    data_date = conf_parser.latest_data_day
+    parser.add_argument("-d", "--date", help="target date that you want to crawl ", default=data_date)
     args = parser.parse_args()
     input_value = input("请输入下列序号执行操作:\n \
             1.“输出到本地” \n \
@@ -29,8 +31,8 @@ def impl():
             6.“流通规模股东信息” \n \
         输入：")
     if input_value == '1':
-        # date = datetime.now().strftime("%Y-%m-%d")
-        output_with_prepare(args.date)
+        date = args.date # datetime.now().strftime("%Y-%m-%d")
+        output_with_prepare(date)
     if input_value == '2':
         store_database()
     elif input_value == '3':

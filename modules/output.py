@@ -51,13 +51,21 @@ def add_data(list, date, compare_date):
     last_map = {}
     code_stdevry_map = get_stock_info(date)
     stock_query = StockQuery()
-    stock_pe_pb_list = stock_query.query_stock_pe_pb(date)
+    stock_pe_pb_list = stock_query.query_stock_pe_pb_lastest(5000)
     code_dict = {}
     for item in stock_pe_pb_list:
-        code_dict[item['code']] = item
+        if not code_dict.get(item['code']):
+            code_dict[item['code']] = item
         
-    period_quarter_dict = pd.Timestamp(date).to_period(freq=Freq.QUARTER.value)
+    # period_quarter_dict = pd.Timestamp(date).to_period(freq=Freq.QUARTER.value)
+    # 偏移一点31天求当前季度开始时间， 比如1月这个情况，应该求上一年Q4时间，一般财报
+    period_quarter_dict = pd.Timestamp.fromtimestamp(pd.Timestamp(
+            date).timestamp() - 90 * 24 * 3600 - 1).to_period(freq=Freq.QUARTER.value)
+
+        # period_quarter_dict = pd.Timestamp(self.date).to_period(freq=Freq.QUARTER.value)
     last_quarter_end = (period_quarter_dict.start_time - pd.DateOffset(days=1)).strftime('%Y-%m-%d')
+    # last_quarter_end = (period_quarter_dict.start_time - pd.DateOffset(days=99)).strftime('%Y-%m-%d')
+    # print("last_quarter_end", last_quarter_end)
     main_financial_stock_list = stock_query.query_stock_main_financial(report_date=last_quarter_end)
     stock_main_financial_dict = {}
     for item in main_financial_stock_list:
