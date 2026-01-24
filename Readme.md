@@ -3,7 +3,6 @@
 <p align=center>
 <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20logs&color=1e8a7a" alt="Docs & Logs"></a
 >
-<img src="https://badges.toozhao.com/badges/01H0JKS51Z0KYYJ6JP626NJ64Q/blue.svg" />
 <br>
 <img src="./screenshots/plot.png"/>
 </p>
@@ -14,7 +13,6 @@
 2. 策略筛选，输出
 3. 策略回测
 4. 策略可视化，log
-5. ...等等未来可期
 
 # Table of Contents
 
@@ -34,7 +32,7 @@
   - [策略截图](#策略截图)
 - [多因子策略](#多因子策略)
 - [ChangeLog](#ChangeLog)
-
+- [最后&其他项目](#最后&其他项目)
 ## 数据爬取
 
 ### 安装
@@ -255,8 +253,14 @@
 - 企业负债率维度
 - 企业性质维度
 
-## 最后
+## 最后&其他项目
 
-如果遇到感兴趣该项目,欢迎扫描下方微信二维码（anchor_data）,欢迎交流
+如果遇到感兴趣该项目,欢迎扫描下方微信二维码（anchor_data）,欢迎交流。
+此外欢迎体验个人其他项目：
+
+- [债券理论价值计算器](https://bond-calculator.anchor-data.cn/)
+- [雪球网增强数据助手](https://chromewebstore.google.com/detail/ndmhfodnpgmmfpcigjkboipnbffjibjg)
+- [套利工具箱](https://github.com/jackluson/arbitrage-toolbox-extension)
+
 
 <img width=480  src="./screenshots/qrcode_merge.png" />
